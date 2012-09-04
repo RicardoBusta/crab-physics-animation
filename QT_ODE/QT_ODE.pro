@@ -39,12 +39,11 @@ DEPENDPATH += $$PWD/../../../../../../usr/local/include
 
 unix:!macx:!symbian: PRE_TARGETDEPS += $$PWD/../../../../../../usr/local/lib/libode.a
 
-#win32
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../ode-0.12/lib/DebugSingleLib/ -llibode_single
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../ode-0.12/lib/DebugSingleLib/ -llibode_singled
+#windows
 
-INCLUDEPATH += $$PWD/../ode-0.12/lib/DebugSingleLib
-DEPENDPATH += $$PWD/../ode-0.12/lib/DebugSingleLib
 
-win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../ode-0.12/lib/DebugSingleLib/libode_single.a
-#else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../ode-0.12/lib/DebugSingleLib/libode_singled.a
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../ode-0.12/lib/DebugSingleDLL/ -lode_single
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../ode-0.12/lib/DebugSingleDLL/ -lode_singled
+
+INCLUDEPATH += $$PWD/../ode-0.12/include
+DEPENDPATH += $$PWD/../ode-0.12/include
