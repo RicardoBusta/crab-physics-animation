@@ -19,6 +19,13 @@ public:
 private:
     Scene *scene;
 
+    void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
+
+    QPoint mousexy;
+
+    float xrot, yrot;
+
 signals:
     
 public slots:
