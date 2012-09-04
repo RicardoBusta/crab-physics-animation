@@ -9,6 +9,8 @@ QT       += core gui opengl
 TARGET = QT_ODE
 TEMPLATE = app
 
+DEFINES += dSINGLE
+
 SOURCES += \
     main.cpp \
     physics/physics.cpp \
@@ -28,9 +30,6 @@ HEADERS  += \
 
 FORMS    += \
     interface/mainwindow.ui
-
-INCLUDEPATH += $$PWD/../ode-0.12/include
-DEPENDPATH += $$PWD/../ode-0.12/include
 
 #linux
 unix:!macx:!symbian: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lode
