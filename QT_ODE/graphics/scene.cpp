@@ -21,7 +21,9 @@ void Scene::draw()
     Material mat;
     mat.gl();
 
-    GLPrimitive::box(100.0,100.0,100.0,0);
+    //GLPrimitive::box(100.0,100.0,100.0,0);
 
-    GLPrimitive::sphere(120,0);
+    //GLPrimitive::sphere(100,0);
+
+    GLPrimitive::capsule(100,100,0);
 }
