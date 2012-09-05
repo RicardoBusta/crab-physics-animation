@@ -16,5 +16,6 @@ Scene::~Scene(){
 
 void Scene::draw()
 {
-    GLPrimitive::box(200.0,200.0,200.0,0);
+    //GLPrimitive::box(100.0,100.0,100.0,0);
+    GLPrimitive::sphere(100,0);
 }
