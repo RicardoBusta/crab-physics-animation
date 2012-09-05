@@ -33,6 +33,10 @@ HEADERS  += \
 FORMS    += \
     interface/mainwindow.ui
 
+OTHER_FILES += \
+    shaders/vshader.vert \
+    shaders/fshader.frag
+
 #linux
 unix:!macx:!symbian: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lode
 INCLUDEPATH += $$PWD/../../../../../../usr/local/include
@@ -44,3 +48,6 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../ode-0.12/lib/DebugSingl
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../ode-0.12/lib/DebugSingleDLL/ -lode_singled
 INCLUDEPATH += $$PWD/../ode-0.12/include
 DEPENDPATH += $$PWD/../ode-0.12/include
+
+RESOURCES += \
+    shaders/shaders.qrc
