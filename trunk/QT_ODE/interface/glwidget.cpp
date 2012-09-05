@@ -30,9 +30,9 @@ void GLWidget::initializeGL()
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHTING);
 
-    float lspecular[] = {0.3,0.3,0.3,1.0};
-    float lambient[] = {0.5,0.5,0.5,1.0};
-    float ldiffuse[] = {0.8,0.8,0.8,1.0};
+    float lspecular[] = {1,1,1,1.0};
+    float lambient[] = {0,0,0,1.0};
+    float ldiffuse[] = {1,1,1,1.0};
     float lposition[] = {0,0,0,1.0};
 
     glLightfv(GL_LIGHT0, GL_SPECULAR, lspecular);
