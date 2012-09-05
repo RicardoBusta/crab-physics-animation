@@ -6,8 +6,8 @@ namespace GLPrimitive
 {
     void sphere(float r, float* rot=0);
     void box(float lx, float ly, float lz, float* rot=0);
-    void cylinder(float r, float l);
-    void capsule(float r, float l);
+    void cylinder(float r, float l, float* rot=0);
+    void capsule(float r, float l, float* rot=0);
 
     //future implementation
     //void triMesh();
