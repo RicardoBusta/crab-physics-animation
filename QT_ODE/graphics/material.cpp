@@ -5,11 +5,11 @@
 Material::Material()
 {
     for(int i=0;i<4;i++){
-        specular[i]=0;
+        specular[i]=0.1;
         diffuse[i]=1;
         emission[i]=0;
     }
-    shininess[0]=1;
+    shininess[0]=120;
 }
 
 void Material::set(int color){
@@ -21,9 +21,11 @@ void Material::set(int color){
         diffuse[3] = 1;
 
         specular[0] = 1;
-        specular[1] = 0;
-        specular[2] = 0;
+        specular[1] = 1;
+        specular[2] = 1;
         specular[3] = 1;
+
+        shininess[0]=120;
         break;
     case MAT_GREEN:
         diffuse[0] = 0;
@@ -31,9 +33,9 @@ void Material::set(int color){
         diffuse[2] = 0;
         diffuse[3] = 1;
 
-        specular[0] = 0;
+        specular[0] = 1;
         specular[1] = 1;
-        specular[2] = 0;
+        specular[2] = 1;
         specular[3] = 1;
         break;
     case MAT_BLUE:

@@ -4,6 +4,8 @@
 #include <QGLWidget>
 #include "../graphics/scene.h"
 
+#include <QGLShaderProgram>
+
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
@@ -23,8 +25,11 @@ private:
     void mouseMoveEvent(QMouseEvent *);
 
     QPoint mousexy;
+    int mouseButton;
 
     float xrot, yrot;
+
+    QGLShaderProgram shaderProgram;
 
 signals:
     
