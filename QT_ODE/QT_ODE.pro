@@ -18,7 +18,8 @@ SOURCES += \
     interface/glframe.cpp \
     interface/mainwindow.cpp \
     graphics/scene.cpp \
-    graphics/glprimitive.cpp
+    graphics/glprimitive.cpp \
+    graphics/material.cpp
 
 HEADERS  += \
     physics/physics.h \
@@ -26,7 +27,8 @@ HEADERS  += \
     interface/glframe.h \
     interface/mainwindow.h \
     graphics/scene.h \
-    graphics/glprimitive.h
+    graphics/glprimitive.h \
+    graphics/material.h
 
 FORMS    += \
     interface/mainwindow.ui
