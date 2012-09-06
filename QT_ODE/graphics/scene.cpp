@@ -18,7 +18,10 @@ Scene::~Scene(){
 
 void Scene::draw()
 {
+
     Material mat;
+
+
     mat.set(MAT_RED);
     mat.gl();
     GLPrimitive::sphere(120,0);
@@ -29,6 +32,9 @@ void Scene::draw()
 
     mat.set(MAT_BLUE);
     mat.gl();
-
     GLPrimitive::capsule(100,100,0);
+
+//    mat.set(MAT_YELLOW);
+//    mat.gl();
+//    GLPrimitive::cylinder(100.0,100.0,0);
 }

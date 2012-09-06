@@ -11,13 +11,11 @@ using namespace std;
 #define CLASS "GLPrimitive"
 #define PI_180 0.017453292519943295769
 
-
-
-
 void gen_sphere(int div);
 void gen_box();
 void gen_icosphere(int div);
 void gen_icocapsule(int div);
+void gen_icocylinder(int div);
 
 ofstream out ("../graphics/glprimitive.cpp");
 
@@ -31,11 +29,13 @@ int main() {
 
         out << endl;
         //gen_sphere(10);
-        gen_icosphere(3);
+        gen_icosphere(2);
         out << endl;
         gen_box();
         out << endl;
-        gen_icocapsule(3);
+        gen_icocapsule(2);
+        out << endl;
+        gen_icocylinder(2);
 
         cout << "file generated with success!"<< endl;
     } else cout << "Unable to open file" << endl;
@@ -286,18 +286,34 @@ void icocapsule_pole_rec(float x1, float y1, float z1,
 
 void icocapsule_center_rec(float x1, float y1, float z1,
                            float x2, float y2, float z2,
-                           float x3, float y3, float z3,
-                           float x4, float y4, float z4,
                            int depth ) {
     if(depth>0) {
+        float x12 = (x1+x2);
+        float y12 = (y1+y2);
+        float z12 = (z1+z2);
+        float d = sqrt( (x12*x12) + (y12*y12) + (z12*z12) );
+        x12/=d;
+        y12/=d;
+        z12/=d;
+
+        icocapsule_center_rec(x1, y1, z1, x12, y12, z12, depth-1);
+        icocapsule_center_rec(x12, y12, z12, x2, y2, z2, depth-1);
     } else {
+        out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"-l,r*"<<z1<<");" << endl;
+        out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"-l,r*"<<z2<<");" << endl;
+        out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l,r*"<<z2<<");" << endl;
+        out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l,r*"<<z1<<");" << endl;
     }
 }
 
 void gen_icocapsule(int div) {
     out << "void " << CLASS << "::capsule(float r, float l, float* rot){" << endl;
     out << "\t//SPHERE DIV " << div << endl;
-    out << "\t//PARAM: r : ray" << endl;
+    out << "\t//PARAM: r : ray / l : length" << endl;
 
     out << "\tglBegin(GL_TRIANGLES);" << endl;
     icocapsule_pole_rec(0,1,0, 0,0,1, 1,0,0 ,true,div);
@@ -309,13 +325,74 @@ void gen_icocapsule(int div) {
     icocapsule_pole_rec(0,-1,0, 0,0,-1, 1,0,0 ,false,div);
     icocapsule_pole_rec(0,-1,0, -1,0,0, 0,0,-1 ,false,div);
     icocapsule_pole_rec(0,-1,0, 0,0,1, -1,0,0 ,false,div);
+    out << "\tglEnd();" << endl;
 
-	icocapsule_center_rec(1,0,0, 0,0,-1, -1,0,0, 0,0,1, )
+    out << "\tglBegin(GL_QUADS);" << endl;
+    icocapsule_center_rec(1,0,0, 0,0,-1, div);
+    icocapsule_center_rec(0,0,-1, -1,0,0, div);
+    icocapsule_center_rec(-1,0,0, 0,0,1, div);
+    icocapsule_center_rec(0,0,1, 1,0,0, div);
     out << "\tglEnd();" << endl;
 
     out << "}" << endl;
 }
 
+//--------------------------------------------------------------------------------
+//CYLINDER
+//--------------------------------------------------------------------------------
+
+void icocylinder_rec(float x1, float y1, float z1,
+                           float x2, float y2, float z2,
+                           int depth ) {
+    if(depth>0) {
+        float x12 = (x1+x2);
+        float y12 = (y1+y2);
+        float z12 = (z1+z2);
+        float d = sqrt( (x12*x12) + (y12*y12) + (z12*z12) );
+        x12/=d;
+        y12/=d;
+        z12/=d;
+
+        icocylinder_rec(x1, y1, z1, x12, y12, z12, depth-1);
+        icocylinder_rec(x12, y12, z12, x2, y2, z2, depth-1);
+    } else {
+        out << "\tglBegin(GL_QUADS);" << endl;
+        out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"-l,r*"<<z1<<");" << endl;
+        out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"-l,r*"<<z2<<");" << endl;
+        out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l,r*"<<z2<<");" << endl;
+        out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l,r*"<<z1<<");" << endl;
+        out << "\tglEnd();" << endl;
+
+        out << "\tglBegin(GL_TRIANGLES);" << endl;
+        out << "\tglNormal3f(0,-1,0);" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"-l,r*"<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"-l,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(0,-l,0);" << endl;
+
+        out << "\tglNormal3f(0,+1,0);" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l,r*"<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(0,+l,0);" << endl;
+        out << "\tglEnd();" << endl;
+    }
+}
+
+void gen_icocylinder(int div) {
+    out << "void " << CLASS << "::cylinder(float r, float l, float* rot){" << endl;
+    out << "\t//CYLINDER DIV " << div << endl;
+    out << "\t//PARAM: r : ray / l : length" << endl;
+
+    icocylinder_rec(1,0,0, 0,0,-1, div);
+    icocylinder_rec(0,0,-1, -1,0,0, div);
+    icocylinder_rec(-1,0,0, 0,0,1, div);
+    icocylinder_rec(0,0,1, 1,0,0, div);
+
+    out << "}" << endl;
+}
 
 //--------------------------------------------------------------------------------
 //SHAPE

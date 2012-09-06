@@ -48,6 +48,12 @@ void main(void)
     I += Kd *Id2 * max(0.0, dot(wi2, normal)) + Ks *Is2 * pow(max(0.0, dot(wr2, wo)), shininess);
     I += Kd *Id3 * max(0.0, dot(wi3, normal)) + Ks *Is3 * pow(max(0.0, dot(wr3, wo)), shininess);
 
+    //added by Ricardo
+    //float intensity = dot(I,I);
+    //if(intensity < 0.5) {I = Kd*vec3(0.5,0.5,0.5);}
+    //else I = Kd;
+    //end
+
     gl_FragColor = vec4(I, 1.0);
 }
 
