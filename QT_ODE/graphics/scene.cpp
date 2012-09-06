@@ -27,6 +27,8 @@ void Scene::draw()
     mat.gl();
     GLPrimitive::box(100.0,100.0,100.0,0);
 
+    mat.set(MAT_BLUE);
+    mat.gl();
 
-    //GLPrimitive::capsule(100,100,0);
+    GLPrimitive::capsule(100,100,0);
 }

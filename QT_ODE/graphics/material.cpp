@@ -24,8 +24,6 @@ void Material::set(int color){
         specular[1] = 1;
         specular[2] = 1;
         specular[3] = 1;
-
-        shininess[0]=120;
         break;
     case MAT_GREEN:
         diffuse[0] = 0;
@@ -44,8 +42,8 @@ void Material::set(int color){
         diffuse[2] = 1;
         diffuse[3] = 1;
 
-        specular[0] = 0;
-        specular[1] = 0;
+        specular[0] = 1;
+        specular[1] = 1;
         specular[2] = 1;
         specular[3] = 1;
         break;
@@ -57,7 +55,7 @@ void Material::set(int color){
 
         specular[0] = 1;
         specular[1] = 1;
-        specular[2] = 0;
+        specular[2] = 1;
         specular[3] = 1;
         break;
     case MAT_CYAN:
@@ -66,7 +64,7 @@ void Material::set(int color){
         diffuse[2] = 1;
         diffuse[3] = 1;
 
-        specular[0] = 0;
+        specular[0] = 1;
         specular[1] = 1;
         specular[2] = 1;
         specular[3] = 1;
@@ -78,7 +76,7 @@ void Material::set(int color){
         diffuse[3] = 1;
 
         specular[0] = 1;
-        specular[1] = 0;
+        specular[1] = 1;
         specular[2] = 1;
         specular[3] = 1;
         break;
@@ -99,9 +97,9 @@ void Material::set(int color){
         diffuse[2] = 0.75;
         diffuse[3] = 1;
 
-        specular[0] = 0.75;
-        specular[1] = 0.75;
-        specular[2] = 0.75;
+        specular[0] = 1;
+        specular[1] = 1;
+        specular[2] = 1;
         specular[3] = 1;
         break;
     case MAT_GRAY_50:
@@ -110,9 +108,9 @@ void Material::set(int color){
         diffuse[2] = 0.5;
         diffuse[3] = 1;
 
-        specular[0] = 0.5;
-        specular[1] = 0.5;
-        specular[2] = 0.5;
+        specular[0] = 1;
+        specular[1] = 1;
+        specular[2] = 1;
         specular[3] = 1;
         break;
     case MAT_GRAY_25:
@@ -121,9 +119,9 @@ void Material::set(int color){
         diffuse[2] = 0.25;
         diffuse[3] = 1;
 
-        specular[0] = 0.25;
-        specular[1] = 0.25;
-        specular[2] = 0.25;
+        specular[0] = 1;
+        specular[1] = 1;
+        specular[2] = 1;
         specular[3] = 1;
         break;
     default:
