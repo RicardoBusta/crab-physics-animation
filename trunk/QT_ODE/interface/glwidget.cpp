@@ -31,10 +31,10 @@ void GLWidget::initializeGL()
 //    glEnable(GL_PROGRAM_POINT_SIZE);
 //    glEnable(GL_NORMALIZE);
 
-    glEnable(GL_MULTISAMPLE);
-    if (!format().sampleBuffers())
-    {
-        cout <<"OpenGL samplebuffers: This system does not have sample buffer support." << endl;
+    //glEnable(GL_MULTISAMPLE);
+    //if (!format().sampleBuffers())
+    //{
+      //  cout <<"OpenGL samplebuffers: This system does not have sample buffer support." << endl;
 
 //        glEnable(GL_BLEND);
 //        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -42,7 +42,7 @@ void GLWidget::initializeGL()
 //        glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 //        glEnable(GL_LINE_SMOOTH);
 //        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-    }
+    //}
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
