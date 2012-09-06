@@ -19,29 +19,6 @@ GLWidget::~GLWidget()
     if(scene!=NULL) delete scene;
 }
 
-/*
-void GLWidget::initializeGL()
-{
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
-
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-
-    float lspecular[] = {0.5,0.5,0.5,1.0};
-    float lambient[] = {0.4,0.4,0.4,1.0};
-    float ldiffuse[] = {1,1,1,1.0};
-    float lposition[] = {0,0,0,1.0};
-
-    glLightfv(GL_LIGHT0, GL_SPECULAR, lspecular);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, lambient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, ldiffuse);
-    glLightfv(GL_LIGHT0, GL_POSITION, lposition);
-}*/
-
 void GLWidget::initializeGL()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -118,7 +95,7 @@ void GLWidget::paintGL()
     glRotatef(xrot,1,0,0);
     glRotatef(yrot,0,1,0);
 
-    cout << shaderProgram.bind() << endl;
+    shaderProgram.bind();
     scene->draw();
     shaderProgram.release();
 }

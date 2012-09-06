@@ -309,6 +309,8 @@ void gen_icocapsule(int div) {
     icocapsule_pole_rec(0,-1,0, 0,0,-1, 1,0,0 ,false,div);
     icocapsule_pole_rec(0,-1,0, -1,0,0, 0,0,-1 ,false,div);
     icocapsule_pole_rec(0,-1,0, 0,0,1, -1,0,0 ,false,div);
+
+	icocapsule_center_rec(1,0,0, 0,0,-1, -1,0,0, 0,0,1, )
     out << "\tglEnd();" << endl;
 
     out << "}" << endl;
