@@ -374,8 +374,8 @@ void icocylinder_rec(float x1, float y1, float z1,
         out << "\tglVertex3f(0,-l,0);" << endl;
 
         out << "\tglNormal3f(0,+1,0);" << endl;
-        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l,r*"<<z2<<");" << endl;
         out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l,r*"<<z2<<");" << endl;
         out << "\tglVertex3f(0,+l,0);" << endl;
         out << "\tglEnd();" << endl;
     }
