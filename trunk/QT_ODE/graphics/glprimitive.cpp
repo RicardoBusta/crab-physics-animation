@@ -1738,8 +1738,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*1,r*0-l,r*0);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*0.92388,r*0+l,r*-0.382683);
 	glVertex3f(r*1,r*0+l,r*0);
+	glVertex3f(r*0.92388,r*0+l,r*-0.382683);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1758,8 +1758,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*0.92388,r*0-l,r*-0.382683);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*0.707107,r*0+l,r*-0.707107);
 	glVertex3f(r*0.92388,r*0+l,r*-0.382683);
+	glVertex3f(r*0.707107,r*0+l,r*-0.707107);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1778,8 +1778,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*0.707107,r*0-l,r*-0.707107);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*0.382683,r*0+l,r*-0.92388);
 	glVertex3f(r*0.707107,r*0+l,r*-0.707107);
+	glVertex3f(r*0.382683,r*0+l,r*-0.92388);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1798,8 +1798,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*0.382683,r*0-l,r*-0.92388);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*0,r*0+l,r*-1);
 	glVertex3f(r*0.382683,r*0+l,r*-0.92388);
+	glVertex3f(r*0,r*0+l,r*-1);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1818,8 +1818,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*0,r*0-l,r*-1);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*-0.382683,r*0+l,r*-0.92388);
 	glVertex3f(r*0,r*0+l,r*-1);
+	glVertex3f(r*-0.382683,r*0+l,r*-0.92388);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1838,8 +1838,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*-0.382683,r*0-l,r*-0.92388);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*-0.707107,r*0+l,r*-0.707107);
 	glVertex3f(r*-0.382683,r*0+l,r*-0.92388);
+	glVertex3f(r*-0.707107,r*0+l,r*-0.707107);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1858,8 +1858,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*-0.707107,r*0-l,r*-0.707107);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*-0.92388,r*0+l,r*-0.382683);
 	glVertex3f(r*-0.707107,r*0+l,r*-0.707107);
+	glVertex3f(r*-0.92388,r*0+l,r*-0.382683);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1878,8 +1878,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*-0.92388,r*0-l,r*-0.382683);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*-1,r*0+l,r*0);
 	glVertex3f(r*-0.92388,r*0+l,r*-0.382683);
+	glVertex3f(r*-1,r*0+l,r*0);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1898,8 +1898,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*-1,r*0-l,r*0);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*-0.92388,r*0+l,r*0.382683);
 	glVertex3f(r*-1,r*0+l,r*0);
+	glVertex3f(r*-0.92388,r*0+l,r*0.382683);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1918,8 +1918,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*-0.92388,r*0-l,r*0.382683);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*-0.707107,r*0+l,r*0.707107);
 	glVertex3f(r*-0.92388,r*0+l,r*0.382683);
+	glVertex3f(r*-0.707107,r*0+l,r*0.707107);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1938,8 +1938,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*-0.707107,r*0-l,r*0.707107);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*-0.382683,r*0+l,r*0.92388);
 	glVertex3f(r*-0.707107,r*0+l,r*0.707107);
+	glVertex3f(r*-0.382683,r*0+l,r*0.92388);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1958,8 +1958,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*-0.382683,r*0-l,r*0.92388);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*0,r*0+l,r*1);
 	glVertex3f(r*-0.382683,r*0+l,r*0.92388);
+	glVertex3f(r*0,r*0+l,r*1);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1978,8 +1978,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*0,r*0-l,r*1);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*0.382683,r*0+l,r*0.92388);
 	glVertex3f(r*0,r*0+l,r*1);
+	glVertex3f(r*0.382683,r*0+l,r*0.92388);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -1998,8 +1998,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*0.382683,r*0-l,r*0.92388);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*0.707107,r*0+l,r*0.707107);
 	glVertex3f(r*0.382683,r*0+l,r*0.92388);
+	glVertex3f(r*0.707107,r*0+l,r*0.707107);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -2018,8 +2018,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*0.707107,r*0-l,r*0.707107);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*0.92388,r*0+l,r*0.382683);
 	glVertex3f(r*0.707107,r*0+l,r*0.707107);
+	glVertex3f(r*0.92388,r*0+l,r*0.382683);
 	glVertex3f(0,+l,0);
 	glEnd();
 	glBegin(GL_QUADS);
@@ -2038,8 +2038,8 @@ void GLPrimitive::cylinder(float r, float l, float* rot){
 	glVertex3f(r*0.92388,r*0-l,r*0.382683);
 	glVertex3f(0,-l,0);
 	glNormal3f(0,+1,0);
-	glVertex3f(r*1,r*0+l,r*0);
 	glVertex3f(r*0.92388,r*0+l,r*0.382683);
+	glVertex3f(r*1,r*0+l,r*0);
 	glVertex3f(0,+l,0);
 	glEnd();
 }
