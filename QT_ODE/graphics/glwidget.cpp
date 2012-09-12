@@ -2,16 +2,17 @@
 
 #include <QMouseEvent>
 
+#include "camera.h"
+
+#ifdef DEBUG_MODE
 #include <iostream>
 using namespace std;
+#endif
 
 GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
     scene = new Scene();
-
-    xrot = 0;
-    yrot = 0;
 }
 
 GLWidget::~GLWidget()
@@ -25,23 +26,23 @@ void GLWidget::initializeGL()
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-//    glFrontFace(GL_CW);
+    //    glFrontFace(GL_CW);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_COLOR_MATERIAL);
-//    glEnable(GL_PROGRAM_POINT_SIZE);
-//    glEnable(GL_NORMALIZE);
+    //    glEnable(GL_PROGRAM_POINT_SIZE);
+    //    glEnable(GL_NORMALIZE);
 
     //glEnable(GL_MULTISAMPLE);
     //if (!format().sampleBuffers())
     //{
-      //  cout <<"OpenGL samplebuffers: This system does not have sample buffer support." << endl;
+    //  cout <<"OpenGL samplebuffers: This system does not have sample buffer support." << endl;
 
-//        glEnable(GL_BLEND);
-//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//        glEnable(GL_POINT_SMOOTH);
-//        glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-//        glEnable(GL_LINE_SMOOTH);
-//        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    //        glEnable(GL_BLEND);
+    //        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //        glEnable(GL_POINT_SMOOTH);
+    //        glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+    //        glEnable(GL_LINE_SMOOTH);
+    //        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     //}
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
@@ -80,9 +81,10 @@ void GLWidget::initializeGL()
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
     glMateriali(GL_FRONT_AND_BACK,GL_SHININESS, 128);
 
-
-    shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/vshader.vert");
-    shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/fshader.frag");
+    shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/phong.vert");
+    shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/phong.frag");
+    //    shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/toon.vert");
+    //    shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/toon.frag");
 }
 
 void GLWidget::paintGL()
@@ -90,13 +92,17 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    glTranslatef(0,0,-500);
+//    scene->camera->updateMatrix();
+//    scene->camera->glApply();
 
+    glTranslatef(0,0,-500);
     glRotatef(xrot,1,0,0);
     glRotatef(yrot,0,1,0);
 
     shaderProgram.bind();
+    glPushMatrix();
     scene->draw();
+    glPopMatrix();
     shaderProgram.release();
 }
 
@@ -129,12 +135,14 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    int mousey = event->pos().x() - mousexy.x();
-    int mousex = event->pos().y() - mousexy.y();
+    int mousex = event->pos().x() - mousexy.x();
+    int mousey = event->pos().y() - mousexy.y();
 
     if(mouseButton==1){
-        xrot += (float)mousex/3;
-        yrot += (float)mousey/3;
+        scene->camera->moveHorz((float)mousex);
+        scene->camera->moveVert(-(float)mousey);
+        //xrot += (float)mousey/3;
+        //yrot += (float)mousex/3;
     }
 
     mousexy = event->pos();

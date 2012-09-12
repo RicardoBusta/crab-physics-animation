@@ -2,7 +2,7 @@
 #define GLFRAME_H
 
 #include <QWidget>
-#include "glwidget.h"
+#include "../graphics/glwidget.h"
 
 class GLFrame : public QWidget
 {
