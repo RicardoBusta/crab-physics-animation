@@ -14,12 +14,14 @@ public:
     explicit GLWidget(QWidget *parent = 0);
     ~GLWidget();
 
-    void initializeGL();
-    void paintGL();
-    void resizeGL(int w, int h);
+
 
 private:
     Scene *scene;
+
+    void initializeGL();
+    void paintGL();
+    void resizeGL(int w, int h);
 
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
@@ -27,9 +29,10 @@ private:
     QPoint mousexy;
     int mouseButton;
 
-    float xrot, yrot;
+    float rotx, roty;
 
     QGLShaderProgram shaderProgram;
+
 
 signals:
     

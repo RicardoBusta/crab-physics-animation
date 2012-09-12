@@ -1,5 +1,6 @@
 //FILE GENERATED AUTOMATICALLY BY GENERATE_PRIMITIVE IN EXTRAS
 #include "glprimitive.h"
+
 #include <QtOpenGL>
 
 void GLPrimitive::sphere(float r, float* rot){

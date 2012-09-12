@@ -33,6 +33,7 @@ void main(void)
 //    vec3 wo = normalize(vec3(0, 0, 1));
     vec3 Kd = gl_FrontMaterial.diffuse.xyz;
     vec3 Ks = gl_FrontMaterial.specular.xyz;
+    vec3 Ke = gl_FrontMaterial.emission.xyz;
     float shininess = gl_FrontMaterial.shininess;
 
 //    vec4 texVal = texture2D();
@@ -44,9 +45,10 @@ void main(void)
     vec3 wr2 = normalize(reflect(-wi2, normal));
     vec3 wr3 = normalize(reflect(-wi3, normal));
 
-    vec3 I = Id1 * Kd * max(0.0, dot(wi1, normal)) + Is1 * Ks * pow(max(0.0, dot(wr1, wo)), shininess);
-    I += Kd *Id2 * max(0.0, dot(wi2, normal)) + Ks *Is2 * pow(max(0.0, dot(wr2, wo)), shininess);
-    I += Kd *Id3 * max(0.0, dot(wi3, normal)) + Ks *Is3 * pow(max(0.0, dot(wr3, wo)), shininess);
+    vec3 I = Ke;
+    I += Kd * Id1 * max(0.0, dot(wi1, normal)) + Ks *Is1 * pow(max(0.0, dot(wr1, wo)), shininess);
+    I += Kd * Id2 * max(0.0, dot(wi2, normal)) + Ks *Is2 * pow(max(0.0, dot(wr2, wo)), shininess);
+    I += Kd * Id3 * max(0.0, dot(wi3, normal)) + Ks *Is3 * pow(max(0.0, dot(wr3, wo)), shininess);
 
     //added by Ricardo
 //    float intensity = dot(I,I);

@@ -4,38 +4,46 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl
+QT       += core gui opengl glu
 
 TARGET = QT_ODE
 TEMPLATE = app
 
-DEFINES += dSINGLE
+DEFINES += dSINGLE DEBUG_MODE
 
 SOURCES += \
     main.cpp \
-    physics/physics.cpp \
-    interface/glwidget.cpp \
+    physics/physics.cpp \    
     interface/glframe.cpp \
     interface/mainwindow.cpp \
+    graphics/glwidget.cpp \
     graphics/scene.cpp \
     graphics/glprimitive.cpp \
-    graphics/material.cpp
+    graphics/material.cpp \
+    graphics/camera.cpp \
+    math/vector3f.cpp \
+    math/matrix4f.cpp
 
 HEADERS  += \
     physics/physics.h \
-    interface/glwidget.h \
     interface/glframe.h \
     interface/mainwindow.h \
+    graphics/glwidget.h \
     graphics/scene.h \
     graphics/glprimitive.h \
-    graphics/material.h
+    graphics/material.h \
+    graphics/camera.h \
+    math/vector3f.h \
+    math/matrix4f.h
 
 FORMS    += \
     interface/mainwindow.ui
 
 OTHER_FILES += \
-    shaders/vshader.vert \
-    shaders/fshader.frag
+    shaders/phong.vert \
+    shaders/phong.frag \
+    shaders/toon.vert \
+    shaders/toon.frag
 
 #linux
 unix:!macx:!symbian: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lode
