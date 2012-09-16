@@ -2,11 +2,6 @@
 
 #include <cstring>
 
-#ifdef DEBUG_MODE
-#include <iostream>
-using namespace std;
-#endif
-
 Matrix4f::Matrix4f()
 {
 }
@@ -18,10 +13,23 @@ void Matrix4f::set(int position, float value)
     }
 }
 
-void Matrix4f::get(float output[])
+void Matrix4f::get(float output[]) const
 {
     memcpy(output, matrix, 16*sizeof(float));
 }
+
+float Matrix4f::get(int index) const
+{
+    if(index > 0 and index < 16){
+        return matrix[index];
+    }else{
+        return 0;
+    }
+}
+
+#ifdef DEBUG_MODE
+#include <iostream>
+using namespace std;
 
 void Matrix4f::stdPrint()
 {
@@ -31,3 +39,4 @@ void Matrix4f::stdPrint()
     }
     cout << "=========="<< endl;
 }
+#endif

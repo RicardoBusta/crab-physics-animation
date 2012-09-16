@@ -5,7 +5,6 @@ GLFrame::GLFrame(QWidget *parent)
 {
 
     glwidget = new GLWidget(this);
-    this->setAutoFillBackground(true);
 }
 
 GLFrame::~GLFrame()

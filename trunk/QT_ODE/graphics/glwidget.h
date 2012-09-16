@@ -29,10 +29,9 @@ private:
     QPoint mousexy;
     int mouseButton;
 
-    float rotx, roty;
-
+#ifdef SHADERS_ENABLED
     QGLShaderProgram shaderProgram;
-
+#endif
 
 signals:
     

@@ -14,14 +14,20 @@ public:
     void updateMatrix();
 
     void moveForward(float amount);
-    void moveBackward(float amount);
-    void moveHorz(float amount);
-    void moveVert(float amount);
+    void moveSide(float amount);
+    void moveUp(float amount);
 public:
+    //Control points
     Vector3f *posAt;
     Vector3f *lookAt;
+    Vector3f *upAt;
+
+    //Reference points
+    Vector3f *forward;
+    Vector3f *side;
     Vector3f *up;
 
+    //Data
     Matrix4f *matrix;
 };
 
