@@ -12,9 +12,14 @@ using namespace std;
 
 Camera::Camera()
 {
-    posAt = new Vector3f( 0.0, 30.0, 100.0 );
+    posAt = new Vector3f( 0.0, 30.0, 1000.0 );
     lookAt = new Vector3f( 0.0, 0.0, -1.0 );
-    up = new Vector3f( 0.0, 1.0, 0.0 );
+    upAt = new Vector3f( 0.0, 1.0, 0.0 );
+
+    forward = new Vector3f();
+    side = new Vector3f();
+    up = new Vector3f();
+
     matrix = new Matrix4f();
 
     updateMatrix();
@@ -27,9 +32,20 @@ Camera::~Camera(){
     if(lookAt!=NULL){
         delete lookAt;
     }
+    if(upAt!=NULL){
+        delete upAt;
+    }
+
+    if(forward!=NULL){
+        delete forward;
+    }
+    if(side!=NULL){
+        delete side;
+    }
     if(up!=NULL){
         delete up;
     }
+
     if(matrix!=NULL){
         delete matrix;
     }
@@ -37,44 +53,26 @@ Camera::~Camera(){
 
 void Camera::updateMatrix()
 {
-    Vector3f *forward = new Vector3f();
-    Vector3f *side = new Vector3f();
-    Vector3f *newUp = new Vector3f();
-
-    cout << "posAt ";
-    posAt->stdPrint();
-    cout << "lookAt ";
-    lookAt->stdPrint();
-    cout << "up ";
-    up->stdPrint();
-
-
     //---------------------------------
     //forward = lookAt - posAt (the direction you are looking)
     forward->set( lookAt->subtract( posAt ) );
-    forward->normalize();
-    cout << "forward ";
-    forward->stdPrint();
+    forward->normalizeSelf();
     //---------------------------------
     //side = forward x up - (a vector pointing to the side)
-    side->set( forward->crossProduct( up ) );
-    side->normalize();
-    cout << "side ";
-    side->stdPrint();
+    side->set( forward->crossProduct( upAt ) );
+    side->normalizeSelf();
     //---------------------------------
     //recompute up = side x forward (new up with the camera tilt)
-    newUp->set( side->crossProduct( forward ) );
-    cout << "newUp";
-    newUp->stdPrint();
+    up->set( side->crossProduct( forward ) );
     //---------------------------------
     matrix->set( 0, side->getX() );
     matrix->set( 4, side->getY() );
     matrix->set( 8, side->getZ() );
     matrix->set(12, 0.0);
     //------------------
-    matrix->set( 1, newUp->getX() );
-    matrix->set( 5, newUp->getY() );
-    matrix->set( 9, newUp->getZ() );
+    matrix->set( 1, up->getX() );
+    matrix->set( 5, up->getY() );
+    matrix->set( 9, up->getZ() );
     matrix->set(13, 0.0);
     //------------------
     matrix->set( 2, -forward->getX() );
@@ -87,56 +85,27 @@ void Camera::updateMatrix()
     matrix->set(11, 0.0);
     matrix->set(15, 1.0);
     //------------------
-
-    delete forward;
-    delete side;
-    delete newUp;
 }
 
 void Camera::glApply(){
     glLoadIdentity();
     float matrix4f[16];
     matrix->get(matrix4f);
-    matrix->stdPrint();
     glTranslatef(-posAt->getX(), -posAt->getY(), -posAt->getZ());
     glMultMatrixf(matrix4f);
-    //glScalef(-1,0,0);
 }
 
 void Camera::moveForward(float amount)
 {
+    posAt->addSelf( &forward->realProduct(amount) );
 }
 
-void Camera::moveBackward(float amount)
+void Camera::moveSide(float amount)
 {
-    Vector3f *forward = new Vector3f();
-
-    forward->set( lookAt->subtract( posAt ) );
-    forward->set( forward->realProduct( amount ) );
-    posAt->set ( posAt->subtract(forward) );
-    lookAt->set ( lookAt->subtract(forward) );
-
-    delete forward;
+    posAt->addSelf( &side->realProduct(amount) );
 }
 
-void Camera::moveHorz(float amount)
+void Camera::moveUp(float amount)
 {
-    Vector3f *side = new Vector3f(1,0,0);
-
-    side->set( side->realProduct( amount ) );
-    posAt->set ( posAt->subtract(side) );
-    //lookAt->set ( lookAt->subtract(side) );
-
-    delete side;
-}
-
-void Camera::moveVert(float amount)
-{
-    Vector3f *side = new Vector3f(0,1,0);
-
-    side->set( side->realProduct( amount ) );
-    posAt->set ( posAt->subtract(side) );
-    //lookAt->set ( lookAt->subtract(side) );
-
-    delete side;
+    posAt->addSelf( &up->realProduct(amount) );
 }

@@ -9,7 +9,10 @@ QT       += core gui opengl glu
 TARGET = QT_ODE
 TEMPLATE = app
 
-DEFINES += dSINGLE DEBUG_MODE
+DEFINES += \
+    SHADERS_ENABLED \
+    dSINGLE
+    #DEBUG_MODE
 
 SOURCES += \
     main.cpp \

@@ -26,24 +26,9 @@ void GLWidget::initializeGL()
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    //    glFrontFace(GL_CW);
+
     glShadeModel(GL_SMOOTH);
     glEnable(GL_COLOR_MATERIAL);
-    //    glEnable(GL_PROGRAM_POINT_SIZE);
-    //    glEnable(GL_NORMALIZE);
-
-    //glEnable(GL_MULTISAMPLE);
-    //if (!format().sampleBuffers())
-    //{
-    //  cout <<"OpenGL samplebuffers: This system does not have sample buffer support." << endl;
-
-    //        glEnable(GL_BLEND);
-    //        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //        glEnable(GL_POINT_SMOOTH);
-    //        glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-    //        glEnable(GL_LINE_SMOOTH);
-    //        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-    //}
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -77,14 +62,12 @@ void GLWidget::initializeGL()
     glLightfv(GL_LIGHT2, GL_DIFFUSE, light3diffuse);
     glLightfv(GL_LIGHT2, GL_SPECULAR, light3specular);
 
-    static GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
-    glMateriali(GL_FRONT_AND_BACK,GL_SHININESS, 128);
-
+#ifdef SHADERS_ENABLED
     shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/phong.vert");
     shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/phong.frag");
     //    shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/toon.vert");
     //    shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/toon.frag");
+#endif
 }
 
 void GLWidget::paintGL()
@@ -92,42 +75,42 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-//    scene->camera->updateMatrix();
-//    scene->camera->glApply();
+    scene->camera->glApply();
 
-    glTranslatef(0,0,-500);
-    glRotatef(xrot,1,0,0);
-    glRotatef(yrot,0,1,0);
-
+#ifdef SHADERS_ENABLED
     shaderProgram.bind();
+#endif
+
     glPushMatrix();
     scene->draw();
     glPopMatrix();
+
+#ifdef SHADERS_ENABLED
     shaderProgram.release();
+#endif
 }
 
 void GLWidget::resizeGL(int w, int h)
 {
     int size = qMax(w,h);
-    //glViewport(0,0,w,h);
     glViewport((w-size)/2, (h-size)/2, size, size);
+    //glViewport(0,0,w,h);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
     //glOrtho(0,w,0,h,1000,-1000);
-    glFrustum(-1,1,-1,1,1,1000);
+    glFrustum(-1,1,-1,1,1,2000);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
-
-
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
-
     mousexy = event->pos();
 
     if(event->button() == Qt::LeftButton){
         mouseButton = 1;
+    }else if(event->button() == Qt::RightButton){
+        mouseButton = 2;
     }else{
         mouseButton = 0;
     }
@@ -139,13 +122,15 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     int mousey = event->pos().y() - mousexy.y();
 
     if(mouseButton==1){
-        scene->camera->moveHorz((float)mousex);
-        scene->camera->moveVert(-(float)mousey);
-        //xrot += (float)mousey/3;
-        //yrot += (float)mousex/3;
+        scene->camera->moveSide(-(float)mousex);
+        scene->camera->moveUp((float)mousey);
+    }
+    if(mouseButton==2){
+        scene->camera->moveForward((float)mousex);
     }
 
     mousexy = event->pos();
 
+    scene->camera->updateMatrix();
     update();
 }
