@@ -3,6 +3,9 @@
 
 #include <ode/ode.h>
 
+#define BodyID dBodyID
+#define GeomID dGeomID
+
 namespace Physics{
     // The dynamic world properties.
     static dWorldID world;

@@ -12,7 +12,7 @@ using namespace std;
 
 Camera::Camera()
 {
-    posAt = new Vector3f( 0.0, 30.0, 1000.0 );
+    posAt = new Vector3f( 0.0, 0.0, 0.0 );
     lookAt = new Vector3f( 0.0, 0.0, -1.0 );
     upAt = new Vector3f( 0.0, 1.0, 0.0 );
 

@@ -12,9 +12,10 @@ public:
 
     void draw();
 
-    Camera *camera;
-private:
+    void addObject(/*todo, shape and properties like color, mass etc*/);
 
+public:
+    Camera *camera;
 };
 
 #endif // SCENE_H

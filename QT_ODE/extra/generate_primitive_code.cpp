@@ -49,7 +49,7 @@ int main() {
 
 
 void gen_sphere(int div) {
-    out << "void " << CLASS << "::sphere(float r, float* rot){" << endl;
+    out << "void " << CLASS << "::sphere(float r){" << endl;
     out << "\t//SPHERE DIV " << div << endl;
     out << "\t//PARAM: r : ray" << endl;
     float angi = PI_180*360.0/div;
@@ -95,7 +95,7 @@ void gen_sphere(int div) {
 //--------------------------------------------------------------------------------
 
 void gen_box() {
-    out << "void " << CLASS << "::box(float lx, float ly, float lz, float* rot){" << endl;
+    out << "void " << CLASS << "::box(float lx, float ly, float lz){" << endl;
     out << "\t//BOX" << endl;
     out << "\t//PARAM: lx : x length / ly : y length / lz : z length" << endl;
     out << "\tglBegin(GL_QUADS);" << endl;
@@ -200,7 +200,7 @@ void icosphere_rec(float x1, float y1, float z1,
 }
 
 void gen_icosphere(int div) {
-    out << "void " << CLASS << "::sphere(float r, float* rot){" << endl;
+    out << "void " << CLASS << "::sphere(float r){" << endl;
     out << "\t//SPHERE DIV " << div << endl;
     out << "\t//PARAM: r : ray" << endl;
 
@@ -311,7 +311,7 @@ void icocapsule_center_rec(float x1, float y1, float z1,
 }
 
 void gen_icocapsule(int div) {
-    out << "void " << CLASS << "::capsule(float r, float l, float* rot){" << endl;
+    out << "void " << CLASS << "::capsule(float r, float l){" << endl;
     out << "\t//SPHERE DIV " << div << endl;
     out << "\t//PARAM: r : ray / l : length" << endl;
 
@@ -382,7 +382,7 @@ void icocylinder_rec(float x1, float y1, float z1,
 }
 
 void gen_icocylinder(int div) {
-    out << "void " << CLASS << "::cylinder(float r, float l, float* rot){" << endl;
+    out << "void " << CLASS << "::cylinder(float r, float l){" << endl;
     out << "\t//CYLINDER DIV " << div << endl;
     out << "\t//PARAM: r : ray / l : length" << endl;
 
