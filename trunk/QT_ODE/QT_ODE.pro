@@ -11,8 +11,8 @@ TEMPLATE = app
 
 DEFINES += \
     SHADERS_ENABLED \
-    dSINGLE
-    #DEBUG_MODE
+    dSINGLE \
+    DEBUG_MODE
 
 SOURCES += \
     main.cpp \

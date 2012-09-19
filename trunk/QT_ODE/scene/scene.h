@@ -2,6 +2,7 @@
 #define SCENE_H
 
 class Camera;
+class Object;
 
 //The scene where the objects are placed.
 class Scene
@@ -16,6 +17,8 @@ public:
 
 public:
     Camera *camera;
+
+    Object *objectList[100];
 };
 
 #endif // SCENE_H

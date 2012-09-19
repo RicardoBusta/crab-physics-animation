@@ -1,10 +1,21 @@
 //FILE GENERATED AUTOMATICALLY BY GENERATE_PRIMITIVE IN EXTRAS
 #include "glprimitive.h"
+
 #include <QtOpenGL>
 
-void GLPrimitive::sphere(float r){
+#include "graphics/material.h"
+
+#include "math/matrix4f.h"
+
+void GLPrimitive::sphere(float r, Material *mat, Matrix4f *t){
+	glPushMatrix(); 
+	float transform[16]; 
+	t->get(transform); 
+	glMultMatrixf(transform); 
 	//SPHERE DIV 2
 	//PARAM: r : ray
+
+	mat->gl();
 	glBegin(GL_TRIANGLES);
 	glNormal3f(0.408248,0.408248,0.816497);
 	glVertex3f(r*0.408248,r*0.408248,r*0.816497);
@@ -775,11 +786,18 @@ void GLPrimitive::sphere(float r){
 	glNormal3f(-0.816497,-0.408248,0.408248);
 	glVertex3f(r*-0.816497,r*-0.408248,r*0.408248);
 	glEnd();
+	glPopMatrix(); 
 }
 
-void GLPrimitive::box(float lx, float ly, float lz){
+void GLPrimitive::box(float lx, float ly, float lz, Material *mat, Matrix4f *t){
+	glPushMatrix(); 
+	float transform[16]; 
+	t->get(transform); 
+	glMultMatrixf(transform); 
 	//BOX
 	//PARAM: lx : x length / ly : y length / lz : z length
+
+	mat->gl();
 	glBegin(GL_QUADS);
 	glNormal3f(0,0,+1);
 	glVertex3f(-lx,-ly,+lz);
@@ -812,11 +830,18 @@ void GLPrimitive::box(float lx, float ly, float lz){
 	glVertex3f(+lx,-ly,+lz);
 	glVertex3f(-lx,-ly,+lz);
 	glEnd();
+	glPopMatrix(); 
 }
 
-void GLPrimitive::capsule(float r, float l){
+void GLPrimitive::capsule(float r, float l, Material *mat, Matrix4f *t){
+	glPushMatrix(); 
+	float transform[16]; 
+	t->get(transform); 
+	glMultMatrixf(transform); 
 	//SPHERE DIV 2
 	//PARAM: r : ray / l : length
+
+	mat->gl();
 	glBegin(GL_TRIANGLES);
 	glNormal3f(0.408248,0.408248,0.816497);
 	glVertex3f(r*0.408248,r*0.408248+l,r*0.816497);
@@ -1717,11 +1742,18 @@ void GLPrimitive::capsule(float r, float l){
 	glNormal3f(0.92388,0,0.382683);
 	glVertex3f(r*0.92388,r*0+l,r*0.382683);
 	glEnd();
+	glPopMatrix(); 
 }
 
-void GLPrimitive::cylinder(float r, float l){
+void GLPrimitive::cylinder(float r, float l, Material *mat, Matrix4f *t){
+	glPushMatrix(); 
+	float transform[16]; 
+	t->get(transform); 
+	glMultMatrixf(transform); 
 	//CYLINDER DIV 2
 	//PARAM: r : ray / l : length
+
+	mat->gl();
 	glBegin(GL_QUADS);
 	glNormal3f(1,0,0);
 	glVertex3f(r*1,r*0-l,r*0);
@@ -2042,4 +2074,526 @@ void GLPrimitive::cylinder(float r, float l){
 	glVertex3f(r*1,r*0+l,r*0);
 	glVertex3f(0,+l,0);
 	glEnd();
+	glPopMatrix(); 
 }
+
+void GLPrimitive::plane(float s, Material *mat, Matrix4f *t){
+	glPushMatrix(); 
+	float transform[16]; 
+	t->get(transform); 
+	glMultMatrixf(transform); 
+	//PLANE DIV 10
+	//PARAM: s : size
+
+	mat->gl();
+	glBegin(GL_QUADS);
+	glNormal3f(0,1,0);
+	glVertex3f((0)*s,0,(0)*s);
+	glVertex3f((0)*s,0,(0.1)*s);
+	glVertex3f((0.1)*s,0,(0.1)*s);
+	glVertex3f((0.1)*s,0,(0)*s);
+
+	glVertex3f((0)*s,0,(0.2)*s);
+	glVertex3f((0)*s,0,(0.3)*s);
+	glVertex3f((0.1)*s,0,(0.3)*s);
+	glVertex3f((0.1)*s,0,(0.2)*s);
+
+	glVertex3f((0)*s,0,(0.4)*s);
+	glVertex3f((0)*s,0,(0.5)*s);
+	glVertex3f((0.1)*s,0,(0.5)*s);
+	glVertex3f((0.1)*s,0,(0.4)*s);
+
+	glVertex3f((0)*s,0,(0.6)*s);
+	glVertex3f((0)*s,0,(0.7)*s);
+	glVertex3f((0.1)*s,0,(0.7)*s);
+	glVertex3f((0.1)*s,0,(0.6)*s);
+
+	glVertex3f((0)*s,0,(0.8)*s);
+	glVertex3f((0)*s,0,(0.9)*s);
+	glVertex3f((0.1)*s,0,(0.9)*s);
+	glVertex3f((0.1)*s,0,(0.8)*s);
+
+	glVertex3f((0.1)*s,0,(0.1)*s);
+	glVertex3f((0.1)*s,0,(0.2)*s);
+	glVertex3f((0.2)*s,0,(0.2)*s);
+	glVertex3f((0.2)*s,0,(0.1)*s);
+
+	glVertex3f((0.1)*s,0,(0.3)*s);
+	glVertex3f((0.1)*s,0,(0.4)*s);
+	glVertex3f((0.2)*s,0,(0.4)*s);
+	glVertex3f((0.2)*s,0,(0.3)*s);
+
+	glVertex3f((0.1)*s,0,(0.5)*s);
+	glVertex3f((0.1)*s,0,(0.6)*s);
+	glVertex3f((0.2)*s,0,(0.6)*s);
+	glVertex3f((0.2)*s,0,(0.5)*s);
+
+	glVertex3f((0.1)*s,0,(0.7)*s);
+	glVertex3f((0.1)*s,0,(0.8)*s);
+	glVertex3f((0.2)*s,0,(0.8)*s);
+	glVertex3f((0.2)*s,0,(0.7)*s);
+
+	glVertex3f((0.1)*s,0,(0.9)*s);
+	glVertex3f((0.1)*s,0,(1)*s);
+	glVertex3f((0.2)*s,0,(1)*s);
+	glVertex3f((0.2)*s,0,(0.9)*s);
+
+	glVertex3f((0.2)*s,0,(0)*s);
+	glVertex3f((0.2)*s,0,(0.1)*s);
+	glVertex3f((0.3)*s,0,(0.1)*s);
+	glVertex3f((0.3)*s,0,(0)*s);
+
+	glVertex3f((0.2)*s,0,(0.2)*s);
+	glVertex3f((0.2)*s,0,(0.3)*s);
+	glVertex3f((0.3)*s,0,(0.3)*s);
+	glVertex3f((0.3)*s,0,(0.2)*s);
+
+	glVertex3f((0.2)*s,0,(0.4)*s);
+	glVertex3f((0.2)*s,0,(0.5)*s);
+	glVertex3f((0.3)*s,0,(0.5)*s);
+	glVertex3f((0.3)*s,0,(0.4)*s);
+
+	glVertex3f((0.2)*s,0,(0.6)*s);
+	glVertex3f((0.2)*s,0,(0.7)*s);
+	glVertex3f((0.3)*s,0,(0.7)*s);
+	glVertex3f((0.3)*s,0,(0.6)*s);
+
+	glVertex3f((0.2)*s,0,(0.8)*s);
+	glVertex3f((0.2)*s,0,(0.9)*s);
+	glVertex3f((0.3)*s,0,(0.9)*s);
+	glVertex3f((0.3)*s,0,(0.8)*s);
+
+	glVertex3f((0.3)*s,0,(0.1)*s);
+	glVertex3f((0.3)*s,0,(0.2)*s);
+	glVertex3f((0.4)*s,0,(0.2)*s);
+	glVertex3f((0.4)*s,0,(0.1)*s);
+
+	glVertex3f((0.3)*s,0,(0.3)*s);
+	glVertex3f((0.3)*s,0,(0.4)*s);
+	glVertex3f((0.4)*s,0,(0.4)*s);
+	glVertex3f((0.4)*s,0,(0.3)*s);
+
+	glVertex3f((0.3)*s,0,(0.5)*s);
+	glVertex3f((0.3)*s,0,(0.6)*s);
+	glVertex3f((0.4)*s,0,(0.6)*s);
+	glVertex3f((0.4)*s,0,(0.5)*s);
+
+	glVertex3f((0.3)*s,0,(0.7)*s);
+	glVertex3f((0.3)*s,0,(0.8)*s);
+	glVertex3f((0.4)*s,0,(0.8)*s);
+	glVertex3f((0.4)*s,0,(0.7)*s);
+
+	glVertex3f((0.3)*s,0,(0.9)*s);
+	glVertex3f((0.3)*s,0,(1)*s);
+	glVertex3f((0.4)*s,0,(1)*s);
+	glVertex3f((0.4)*s,0,(0.9)*s);
+
+	glVertex3f((0.4)*s,0,(0)*s);
+	glVertex3f((0.4)*s,0,(0.1)*s);
+	glVertex3f((0.5)*s,0,(0.1)*s);
+	glVertex3f((0.5)*s,0,(0)*s);
+
+	glVertex3f((0.4)*s,0,(0.2)*s);
+	glVertex3f((0.4)*s,0,(0.3)*s);
+	glVertex3f((0.5)*s,0,(0.3)*s);
+	glVertex3f((0.5)*s,0,(0.2)*s);
+
+	glVertex3f((0.4)*s,0,(0.4)*s);
+	glVertex3f((0.4)*s,0,(0.5)*s);
+	glVertex3f((0.5)*s,0,(0.5)*s);
+	glVertex3f((0.5)*s,0,(0.4)*s);
+
+	glVertex3f((0.4)*s,0,(0.6)*s);
+	glVertex3f((0.4)*s,0,(0.7)*s);
+	glVertex3f((0.5)*s,0,(0.7)*s);
+	glVertex3f((0.5)*s,0,(0.6)*s);
+
+	glVertex3f((0.4)*s,0,(0.8)*s);
+	glVertex3f((0.4)*s,0,(0.9)*s);
+	glVertex3f((0.5)*s,0,(0.9)*s);
+	glVertex3f((0.5)*s,0,(0.8)*s);
+
+	glVertex3f((0.5)*s,0,(0.1)*s);
+	glVertex3f((0.5)*s,0,(0.2)*s);
+	glVertex3f((0.6)*s,0,(0.2)*s);
+	glVertex3f((0.6)*s,0,(0.1)*s);
+
+	glVertex3f((0.5)*s,0,(0.3)*s);
+	glVertex3f((0.5)*s,0,(0.4)*s);
+	glVertex3f((0.6)*s,0,(0.4)*s);
+	glVertex3f((0.6)*s,0,(0.3)*s);
+
+	glVertex3f((0.5)*s,0,(0.5)*s);
+	glVertex3f((0.5)*s,0,(0.6)*s);
+	glVertex3f((0.6)*s,0,(0.6)*s);
+	glVertex3f((0.6)*s,0,(0.5)*s);
+
+	glVertex3f((0.5)*s,0,(0.7)*s);
+	glVertex3f((0.5)*s,0,(0.8)*s);
+	glVertex3f((0.6)*s,0,(0.8)*s);
+	glVertex3f((0.6)*s,0,(0.7)*s);
+
+	glVertex3f((0.5)*s,0,(0.9)*s);
+	glVertex3f((0.5)*s,0,(1)*s);
+	glVertex3f((0.6)*s,0,(1)*s);
+	glVertex3f((0.6)*s,0,(0.9)*s);
+
+	glVertex3f((0.6)*s,0,(0)*s);
+	glVertex3f((0.6)*s,0,(0.1)*s);
+	glVertex3f((0.7)*s,0,(0.1)*s);
+	glVertex3f((0.7)*s,0,(0)*s);
+
+	glVertex3f((0.6)*s,0,(0.2)*s);
+	glVertex3f((0.6)*s,0,(0.3)*s);
+	glVertex3f((0.7)*s,0,(0.3)*s);
+	glVertex3f((0.7)*s,0,(0.2)*s);
+
+	glVertex3f((0.6)*s,0,(0.4)*s);
+	glVertex3f((0.6)*s,0,(0.5)*s);
+	glVertex3f((0.7)*s,0,(0.5)*s);
+	glVertex3f((0.7)*s,0,(0.4)*s);
+
+	glVertex3f((0.6)*s,0,(0.6)*s);
+	glVertex3f((0.6)*s,0,(0.7)*s);
+	glVertex3f((0.7)*s,0,(0.7)*s);
+	glVertex3f((0.7)*s,0,(0.6)*s);
+
+	glVertex3f((0.6)*s,0,(0.8)*s);
+	glVertex3f((0.6)*s,0,(0.9)*s);
+	glVertex3f((0.7)*s,0,(0.9)*s);
+	glVertex3f((0.7)*s,0,(0.8)*s);
+
+	glVertex3f((0.7)*s,0,(0.1)*s);
+	glVertex3f((0.7)*s,0,(0.2)*s);
+	glVertex3f((0.8)*s,0,(0.2)*s);
+	glVertex3f((0.8)*s,0,(0.1)*s);
+
+	glVertex3f((0.7)*s,0,(0.3)*s);
+	glVertex3f((0.7)*s,0,(0.4)*s);
+	glVertex3f((0.8)*s,0,(0.4)*s);
+	glVertex3f((0.8)*s,0,(0.3)*s);
+
+	glVertex3f((0.7)*s,0,(0.5)*s);
+	glVertex3f((0.7)*s,0,(0.6)*s);
+	glVertex3f((0.8)*s,0,(0.6)*s);
+	glVertex3f((0.8)*s,0,(0.5)*s);
+
+	glVertex3f((0.7)*s,0,(0.7)*s);
+	glVertex3f((0.7)*s,0,(0.8)*s);
+	glVertex3f((0.8)*s,0,(0.8)*s);
+	glVertex3f((0.8)*s,0,(0.7)*s);
+
+	glVertex3f((0.7)*s,0,(0.9)*s);
+	glVertex3f((0.7)*s,0,(1)*s);
+	glVertex3f((0.8)*s,0,(1)*s);
+	glVertex3f((0.8)*s,0,(0.9)*s);
+
+	glVertex3f((0.8)*s,0,(0)*s);
+	glVertex3f((0.8)*s,0,(0.1)*s);
+	glVertex3f((0.9)*s,0,(0.1)*s);
+	glVertex3f((0.9)*s,0,(0)*s);
+
+	glVertex3f((0.8)*s,0,(0.2)*s);
+	glVertex3f((0.8)*s,0,(0.3)*s);
+	glVertex3f((0.9)*s,0,(0.3)*s);
+	glVertex3f((0.9)*s,0,(0.2)*s);
+
+	glVertex3f((0.8)*s,0,(0.4)*s);
+	glVertex3f((0.8)*s,0,(0.5)*s);
+	glVertex3f((0.9)*s,0,(0.5)*s);
+	glVertex3f((0.9)*s,0,(0.4)*s);
+
+	glVertex3f((0.8)*s,0,(0.6)*s);
+	glVertex3f((0.8)*s,0,(0.7)*s);
+	glVertex3f((0.9)*s,0,(0.7)*s);
+	glVertex3f((0.9)*s,0,(0.6)*s);
+
+	glVertex3f((0.8)*s,0,(0.8)*s);
+	glVertex3f((0.8)*s,0,(0.9)*s);
+	glVertex3f((0.9)*s,0,(0.9)*s);
+	glVertex3f((0.9)*s,0,(0.8)*s);
+
+	glVertex3f((0.9)*s,0,(0.1)*s);
+	glVertex3f((0.9)*s,0,(0.2)*s);
+	glVertex3f((1)*s,0,(0.2)*s);
+	glVertex3f((1)*s,0,(0.1)*s);
+
+	glVertex3f((0.9)*s,0,(0.3)*s);
+	glVertex3f((0.9)*s,0,(0.4)*s);
+	glVertex3f((1)*s,0,(0.4)*s);
+	glVertex3f((1)*s,0,(0.3)*s);
+
+	glVertex3f((0.9)*s,0,(0.5)*s);
+	glVertex3f((0.9)*s,0,(0.6)*s);
+	glVertex3f((1)*s,0,(0.6)*s);
+	glVertex3f((1)*s,0,(0.5)*s);
+
+	glVertex3f((0.9)*s,0,(0.7)*s);
+	glVertex3f((0.9)*s,0,(0.8)*s);
+	glVertex3f((1)*s,0,(0.8)*s);
+	glVertex3f((1)*s,0,(0.7)*s);
+
+	glVertex3f((0.9)*s,0,(0.9)*s);
+	glVertex3f((0.9)*s,0,(1)*s);
+	glVertex3f((1)*s,0,(1)*s);
+	glVertex3f((1)*s,0,(0.9)*s);
+
+	glEnd();
+
+	mat->glHalf();
+	glBegin(GL_QUADS);
+	glNormal3f(0,1,0);
+	glVertex3f((0)*s,0,(0.1)*s);
+	glVertex3f((0)*s,0,(0.2)*s);
+	glVertex3f((0.1)*s,0,(0.2)*s);
+	glVertex3f((0.1)*s,0,(0.1)*s);
+
+	glVertex3f((0)*s,0,(0.3)*s);
+	glVertex3f((0)*s,0,(0.4)*s);
+	glVertex3f((0.1)*s,0,(0.4)*s);
+	glVertex3f((0.1)*s,0,(0.3)*s);
+
+	glVertex3f((0)*s,0,(0.5)*s);
+	glVertex3f((0)*s,0,(0.6)*s);
+	glVertex3f((0.1)*s,0,(0.6)*s);
+	glVertex3f((0.1)*s,0,(0.5)*s);
+
+	glVertex3f((0)*s,0,(0.7)*s);
+	glVertex3f((0)*s,0,(0.8)*s);
+	glVertex3f((0.1)*s,0,(0.8)*s);
+	glVertex3f((0.1)*s,0,(0.7)*s);
+
+	glVertex3f((0)*s,0,(0.9)*s);
+	glVertex3f((0)*s,0,(1)*s);
+	glVertex3f((0.1)*s,0,(1)*s);
+	glVertex3f((0.1)*s,0,(0.9)*s);
+
+	glVertex3f((0.1)*s,0,(0)*s);
+	glVertex3f((0.1)*s,0,(0.1)*s);
+	glVertex3f((0.2)*s,0,(0.1)*s);
+	glVertex3f((0.2)*s,0,(0)*s);
+
+	glVertex3f((0.1)*s,0,(0.2)*s);
+	glVertex3f((0.1)*s,0,(0.3)*s);
+	glVertex3f((0.2)*s,0,(0.3)*s);
+	glVertex3f((0.2)*s,0,(0.2)*s);
+
+	glVertex3f((0.1)*s,0,(0.4)*s);
+	glVertex3f((0.1)*s,0,(0.5)*s);
+	glVertex3f((0.2)*s,0,(0.5)*s);
+	glVertex3f((0.2)*s,0,(0.4)*s);
+
+	glVertex3f((0.1)*s,0,(0.6)*s);
+	glVertex3f((0.1)*s,0,(0.7)*s);
+	glVertex3f((0.2)*s,0,(0.7)*s);
+	glVertex3f((0.2)*s,0,(0.6)*s);
+
+	glVertex3f((0.1)*s,0,(0.8)*s);
+	glVertex3f((0.1)*s,0,(0.9)*s);
+	glVertex3f((0.2)*s,0,(0.9)*s);
+	glVertex3f((0.2)*s,0,(0.8)*s);
+
+	glVertex3f((0.2)*s,0,(0.1)*s);
+	glVertex3f((0.2)*s,0,(0.2)*s);
+	glVertex3f((0.3)*s,0,(0.2)*s);
+	glVertex3f((0.3)*s,0,(0.1)*s);
+
+	glVertex3f((0.2)*s,0,(0.3)*s);
+	glVertex3f((0.2)*s,0,(0.4)*s);
+	glVertex3f((0.3)*s,0,(0.4)*s);
+	glVertex3f((0.3)*s,0,(0.3)*s);
+
+	glVertex3f((0.2)*s,0,(0.5)*s);
+	glVertex3f((0.2)*s,0,(0.6)*s);
+	glVertex3f((0.3)*s,0,(0.6)*s);
+	glVertex3f((0.3)*s,0,(0.5)*s);
+
+	glVertex3f((0.2)*s,0,(0.7)*s);
+	glVertex3f((0.2)*s,0,(0.8)*s);
+	glVertex3f((0.3)*s,0,(0.8)*s);
+	glVertex3f((0.3)*s,0,(0.7)*s);
+
+	glVertex3f((0.2)*s,0,(0.9)*s);
+	glVertex3f((0.2)*s,0,(1)*s);
+	glVertex3f((0.3)*s,0,(1)*s);
+	glVertex3f((0.3)*s,0,(0.9)*s);
+
+	glVertex3f((0.3)*s,0,(0)*s);
+	glVertex3f((0.3)*s,0,(0.1)*s);
+	glVertex3f((0.4)*s,0,(0.1)*s);
+	glVertex3f((0.4)*s,0,(0)*s);
+
+	glVertex3f((0.3)*s,0,(0.2)*s);
+	glVertex3f((0.3)*s,0,(0.3)*s);
+	glVertex3f((0.4)*s,0,(0.3)*s);
+	glVertex3f((0.4)*s,0,(0.2)*s);
+
+	glVertex3f((0.3)*s,0,(0.4)*s);
+	glVertex3f((0.3)*s,0,(0.5)*s);
+	glVertex3f((0.4)*s,0,(0.5)*s);
+	glVertex3f((0.4)*s,0,(0.4)*s);
+
+	glVertex3f((0.3)*s,0,(0.6)*s);
+	glVertex3f((0.3)*s,0,(0.7)*s);
+	glVertex3f((0.4)*s,0,(0.7)*s);
+	glVertex3f((0.4)*s,0,(0.6)*s);
+
+	glVertex3f((0.3)*s,0,(0.8)*s);
+	glVertex3f((0.3)*s,0,(0.9)*s);
+	glVertex3f((0.4)*s,0,(0.9)*s);
+	glVertex3f((0.4)*s,0,(0.8)*s);
+
+	glVertex3f((0.4)*s,0,(0.1)*s);
+	glVertex3f((0.4)*s,0,(0.2)*s);
+	glVertex3f((0.5)*s,0,(0.2)*s);
+	glVertex3f((0.5)*s,0,(0.1)*s);
+
+	glVertex3f((0.4)*s,0,(0.3)*s);
+	glVertex3f((0.4)*s,0,(0.4)*s);
+	glVertex3f((0.5)*s,0,(0.4)*s);
+	glVertex3f((0.5)*s,0,(0.3)*s);
+
+	glVertex3f((0.4)*s,0,(0.5)*s);
+	glVertex3f((0.4)*s,0,(0.6)*s);
+	glVertex3f((0.5)*s,0,(0.6)*s);
+	glVertex3f((0.5)*s,0,(0.5)*s);
+
+	glVertex3f((0.4)*s,0,(0.7)*s);
+	glVertex3f((0.4)*s,0,(0.8)*s);
+	glVertex3f((0.5)*s,0,(0.8)*s);
+	glVertex3f((0.5)*s,0,(0.7)*s);
+
+	glVertex3f((0.4)*s,0,(0.9)*s);
+	glVertex3f((0.4)*s,0,(1)*s);
+	glVertex3f((0.5)*s,0,(1)*s);
+	glVertex3f((0.5)*s,0,(0.9)*s);
+
+	glVertex3f((0.5)*s,0,(0)*s);
+	glVertex3f((0.5)*s,0,(0.1)*s);
+	glVertex3f((0.6)*s,0,(0.1)*s);
+	glVertex3f((0.6)*s,0,(0)*s);
+
+	glVertex3f((0.5)*s,0,(0.2)*s);
+	glVertex3f((0.5)*s,0,(0.3)*s);
+	glVertex3f((0.6)*s,0,(0.3)*s);
+	glVertex3f((0.6)*s,0,(0.2)*s);
+
+	glVertex3f((0.5)*s,0,(0.4)*s);
+	glVertex3f((0.5)*s,0,(0.5)*s);
+	glVertex3f((0.6)*s,0,(0.5)*s);
+	glVertex3f((0.6)*s,0,(0.4)*s);
+
+	glVertex3f((0.5)*s,0,(0.6)*s);
+	glVertex3f((0.5)*s,0,(0.7)*s);
+	glVertex3f((0.6)*s,0,(0.7)*s);
+	glVertex3f((0.6)*s,0,(0.6)*s);
+
+	glVertex3f((0.5)*s,0,(0.8)*s);
+	glVertex3f((0.5)*s,0,(0.9)*s);
+	glVertex3f((0.6)*s,0,(0.9)*s);
+	glVertex3f((0.6)*s,0,(0.8)*s);
+
+	glVertex3f((0.6)*s,0,(0.1)*s);
+	glVertex3f((0.6)*s,0,(0.2)*s);
+	glVertex3f((0.7)*s,0,(0.2)*s);
+	glVertex3f((0.7)*s,0,(0.1)*s);
+
+	glVertex3f((0.6)*s,0,(0.3)*s);
+	glVertex3f((0.6)*s,0,(0.4)*s);
+	glVertex3f((0.7)*s,0,(0.4)*s);
+	glVertex3f((0.7)*s,0,(0.3)*s);
+
+	glVertex3f((0.6)*s,0,(0.5)*s);
+	glVertex3f((0.6)*s,0,(0.6)*s);
+	glVertex3f((0.7)*s,0,(0.6)*s);
+	glVertex3f((0.7)*s,0,(0.5)*s);
+
+	glVertex3f((0.6)*s,0,(0.7)*s);
+	glVertex3f((0.6)*s,0,(0.8)*s);
+	glVertex3f((0.7)*s,0,(0.8)*s);
+	glVertex3f((0.7)*s,0,(0.7)*s);
+
+	glVertex3f((0.6)*s,0,(0.9)*s);
+	glVertex3f((0.6)*s,0,(1)*s);
+	glVertex3f((0.7)*s,0,(1)*s);
+	glVertex3f((0.7)*s,0,(0.9)*s);
+
+	glVertex3f((0.7)*s,0,(0)*s);
+	glVertex3f((0.7)*s,0,(0.1)*s);
+	glVertex3f((0.8)*s,0,(0.1)*s);
+	glVertex3f((0.8)*s,0,(0)*s);
+
+	glVertex3f((0.7)*s,0,(0.2)*s);
+	glVertex3f((0.7)*s,0,(0.3)*s);
+	glVertex3f((0.8)*s,0,(0.3)*s);
+	glVertex3f((0.8)*s,0,(0.2)*s);
+
+	glVertex3f((0.7)*s,0,(0.4)*s);
+	glVertex3f((0.7)*s,0,(0.5)*s);
+	glVertex3f((0.8)*s,0,(0.5)*s);
+	glVertex3f((0.8)*s,0,(0.4)*s);
+
+	glVertex3f((0.7)*s,0,(0.6)*s);
+	glVertex3f((0.7)*s,0,(0.7)*s);
+	glVertex3f((0.8)*s,0,(0.7)*s);
+	glVertex3f((0.8)*s,0,(0.6)*s);
+
+	glVertex3f((0.7)*s,0,(0.8)*s);
+	glVertex3f((0.7)*s,0,(0.9)*s);
+	glVertex3f((0.8)*s,0,(0.9)*s);
+	glVertex3f((0.8)*s,0,(0.8)*s);
+
+	glVertex3f((0.8)*s,0,(0.1)*s);
+	glVertex3f((0.8)*s,0,(0.2)*s);
+	glVertex3f((0.9)*s,0,(0.2)*s);
+	glVertex3f((0.9)*s,0,(0.1)*s);
+
+	glVertex3f((0.8)*s,0,(0.3)*s);
+	glVertex3f((0.8)*s,0,(0.4)*s);
+	glVertex3f((0.9)*s,0,(0.4)*s);
+	glVertex3f((0.9)*s,0,(0.3)*s);
+
+	glVertex3f((0.8)*s,0,(0.5)*s);
+	glVertex3f((0.8)*s,0,(0.6)*s);
+	glVertex3f((0.9)*s,0,(0.6)*s);
+	glVertex3f((0.9)*s,0,(0.5)*s);
+
+	glVertex3f((0.8)*s,0,(0.7)*s);
+	glVertex3f((0.8)*s,0,(0.8)*s);
+	glVertex3f((0.9)*s,0,(0.8)*s);
+	glVertex3f((0.9)*s,0,(0.7)*s);
+
+	glVertex3f((0.8)*s,0,(0.9)*s);
+	glVertex3f((0.8)*s,0,(1)*s);
+	glVertex3f((0.9)*s,0,(1)*s);
+	glVertex3f((0.9)*s,0,(0.9)*s);
+
+	glVertex3f((0.9)*s,0,(0)*s);
+	glVertex3f((0.9)*s,0,(0.1)*s);
+	glVertex3f((1)*s,0,(0.1)*s);
+	glVertex3f((1)*s,0,(0)*s);
+
+	glVertex3f((0.9)*s,0,(0.2)*s);
+	glVertex3f((0.9)*s,0,(0.3)*s);
+	glVertex3f((1)*s,0,(0.3)*s);
+	glVertex3f((1)*s,0,(0.2)*s);
+
+	glVertex3f((0.9)*s,0,(0.4)*s);
+	glVertex3f((0.9)*s,0,(0.5)*s);
+	glVertex3f((1)*s,0,(0.5)*s);
+	glVertex3f((1)*s,0,(0.4)*s);
+
+	glVertex3f((0.9)*s,0,(0.6)*s);
+	glVertex3f((0.9)*s,0,(0.7)*s);
+	glVertex3f((1)*s,0,(0.7)*s);
+	glVertex3f((1)*s,0,(0.6)*s);
+
+	glVertex3f((0.9)*s,0,(0.8)*s);
+	glVertex3f((0.9)*s,0,(0.9)*s);
+	glVertex3f((1)*s,0,(0.9)*s);
+	glVertex3f((1)*s,0,(0.8)*s);
+
+	glEnd();
+	glPopMatrix(); 
+}
+

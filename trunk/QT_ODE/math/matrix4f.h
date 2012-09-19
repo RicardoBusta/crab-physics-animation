@@ -8,8 +8,12 @@ public:
 
     void set(int position, float value);
 
+    void setIdentity();
+
     void get(float output[]) const;
     float get(int index) const;
+
+    void translate(float x, float y, float z);
 
     #ifdef DEBUG_MODE
     void stdPrint() const;

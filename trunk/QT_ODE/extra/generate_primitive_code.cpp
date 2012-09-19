@@ -16,8 +16,19 @@ void gen_box();
 void gen_icosphere(int div);
 void gen_icocapsule(int div);
 void gen_icocylinder(int div);
+void gen_chess_plane(int div);
 
 ofstream out ("../graphics/glprimitive.cpp");
+
+void transform_code_begin(){
+    out << "\tglPushMatrix(); " << endl;
+    out << "\tfloat transform[16]; " << endl;
+    out << "\tt->get(transform); " << endl;
+    out << "\tglMultMatrixf(transform); " << endl;
+}
+void transform_code_end(){
+    out << "\tglPopMatrix(); " << endl;
+}
 
 int main() {
 
@@ -25,17 +36,46 @@ int main() {
         out << "//FILE GENERATED AUTOMATICALLY BY GENERATE_PRIMITIVE IN EXTRAS" << endl;
 
         out << "#include \"glprimitive.h\"" << endl;
-        out << "#include <QtOpenGL>" << endl;
-
+        out << endl << "#include <QtOpenGL>" << endl;
+        out << endl << "#include \"graphics/material.h\"" << endl;
+        out << endl << "#include \"math/matrix4f.h\"" << endl;
         out << endl;
+
+        // SPHERE
+        out << "void " << CLASS << "::sphere(float r, Material *mat, Matrix4f *t){" << endl;
+        transform_code_begin();
         //gen_sphere(10);
         gen_icosphere(2);
-        out << endl;
+        transform_code_end();
+        out << "}" << endl << endl;
+
+        // BOX
+        out << "void " << CLASS << "::box(float lx, float ly, float lz, Material *mat, Matrix4f *t){" << endl;
+        transform_code_begin();
         gen_box();
-        out << endl;
+        transform_code_end();
+        out << "}" << endl << endl;
+
+        // CAPSULE
+        out << "void " << CLASS << "::capsule(float r, float l, Material *mat, Matrix4f *t){" << endl;
+        transform_code_begin();
         gen_icocapsule(2);
-        out << endl;
+        transform_code_end();
+        out << "}" << endl << endl;
+
+        // CYLINDER
+            out << "void " << CLASS << "::cylinder(float r, float l, Material *mat, Matrix4f *t){" << endl;
+            transform_code_begin();
         gen_icocylinder(2);
+        transform_code_end();
+        out << "}" << endl << endl;
+
+        // PLANE
+        out << "void " << CLASS << "::plane(float s, Material *mat, Matrix4f *t){" << endl;
+        transform_code_begin();
+        gen_chess_plane(10);
+        transform_code_end();
+        out << "}" << endl << endl;
 
         cout << "file generated with success!"<< endl;
     } else cout << "Unable to open file" << endl;
@@ -49,12 +89,13 @@ int main() {
 
 
 void gen_sphere(int div) {
-    out << "void " << CLASS << "::sphere(float r){" << endl;
     out << "\t//SPHERE DIV " << div << endl;
     out << "\t//PARAM: r : ray" << endl;
     float angi = PI_180*360.0/div;
     float angj = PI_180*360.0/div;
     float ai1,ai2,aj1,aj2,x,y,z;
+
+    out << endl << "\tmat->gl();" << endl;
 
     for(int i=0; i<div/2; i++) {
         ai1 = angi*i+90;
@@ -83,11 +124,8 @@ void gen_sphere(int div) {
             out << "\tglNormal3f("<<x<<","<<y<<","<<z<<");" << endl;
             out << "\tglVertex3f(r*"<<x<<",r*"<<y<<",r*"<<z<<");" << endl;
             out << "\tglEnd();" << endl;
-
         }
     }
-
-    out << "}" << endl;
 }
 
 //--------------------------------------------------------------------------------
@@ -95,9 +133,11 @@ void gen_sphere(int div) {
 //--------------------------------------------------------------------------------
 
 void gen_box() {
-    out << "void " << CLASS << "::box(float lx, float ly, float lz){" << endl;
     out << "\t//BOX" << endl;
     out << "\t//PARAM: lx : x length / ly : y length / lz : z length" << endl;
+
+    out << endl << "\tmat->gl();" << endl;
+
     out << "\tglBegin(GL_QUADS);" << endl;
     //front
     out << "\tglNormal3f(0,0,+1);" << endl;
@@ -136,7 +176,6 @@ void gen_box() {
     out << "\tglVertex3f(+lx,-ly,+lz);" << endl;
     out << "\tglVertex3f(-lx,-ly,+lz);" << endl;
     out << "\tglEnd();" << endl;
-    out << "}" << endl;
 }
 
 //--------------------------------------------------------------------------------
@@ -200,9 +239,10 @@ void icosphere_rec(float x1, float y1, float z1,
 }
 
 void gen_icosphere(int div) {
-    out << "void " << CLASS << "::sphere(float r){" << endl;
     out << "\t//SPHERE DIV " << div << endl;
     out << "\t//PARAM: r : ray" << endl;
+
+    out << endl << "\tmat->gl();" << endl;
 
     out << "\tglBegin(GL_TRIANGLES);" << endl;
     icosphere_rec(0,1,0, 0,0,1, 1,0,0 ,div);
@@ -215,8 +255,6 @@ void gen_icosphere(int div) {
     icosphere_rec(0,-1,0, -1,0,0, 0,0,-1 ,div);
     icosphere_rec(0,-1,0, 0,0,1, -1,0,0 ,div);
     out << "\tglEnd();" << endl;
-
-    out << "}" << endl;
 }
 
 //--------------------------------------------------------------------------------
@@ -311,9 +349,10 @@ void icocapsule_center_rec(float x1, float y1, float z1,
 }
 
 void gen_icocapsule(int div) {
-    out << "void " << CLASS << "::capsule(float r, float l){" << endl;
     out << "\t//SPHERE DIV " << div << endl;
     out << "\t//PARAM: r : ray / l : length" << endl;
+
+    out << endl << "\tmat->gl();" << endl;
 
     out << "\tglBegin(GL_TRIANGLES);" << endl;
     icocapsule_pole_rec(0,1,0, 0,0,1, 1,0,0 ,true,div);
@@ -333,8 +372,6 @@ void gen_icocapsule(int div) {
     icocapsule_center_rec(-1,0,0, 0,0,1, div);
     icocapsule_center_rec(0,0,1, 1,0,0, div);
     out << "\tglEnd();" << endl;
-
-    out << "}" << endl;
 }
 
 //--------------------------------------------------------------------------------
@@ -342,8 +379,8 @@ void gen_icocapsule(int div) {
 //--------------------------------------------------------------------------------
 
 void icocylinder_rec(float x1, float y1, float z1,
-                           float x2, float y2, float z2,
-                           int depth ) {
+                     float x2, float y2, float z2,
+                     int depth ) {
     if(depth>0) {
         float x12 = (x1+x2);
         float y12 = (y1+y2);
@@ -382,16 +419,58 @@ void icocylinder_rec(float x1, float y1, float z1,
 }
 
 void gen_icocylinder(int div) {
-    out << "void " << CLASS << "::cylinder(float r, float l){" << endl;
     out << "\t//CYLINDER DIV " << div << endl;
     out << "\t//PARAM: r : ray / l : length" << endl;
 
+    out << endl << "\tmat->gl();" << endl;
     icocylinder_rec(1,0,0, 0,0,-1, div);
     icocylinder_rec(0,0,-1, -1,0,0, div);
     icocylinder_rec(-1,0,0, 0,0,1, div);
     icocylinder_rec(0,0,1, 1,0,0, div);
+}
 
-    out << "}" << endl;
+//--------------------------------------------------------------------------------
+// CHESS PLANE
+//--------------------------------------------------------------------------------
+
+void gen_chess_plane(int div) {
+    out << "\t//PLANE DIV " << div << endl;
+    out << "\t//PARAM: s : size" << endl;
+
+    out << endl << "\tmat->gl();" << endl;
+
+    out << "\tglBegin(GL_QUADS);" << endl;
+    out << "\tglNormal3f(0,1,0);" << endl;
+
+    for(int x=0; x<div; x++) {
+        for(int z=0; z<div; z++) {
+            if( ((x+z)%2)==0 ) {
+                out << "\tglVertex3f(("<<((float)x)/div<<")*s,0,("<<((float)z)/div<<")*s);" << endl;
+                out << "\tglVertex3f(("<<((float)x)/div<<")*s,0,("<<((float)z+1.0)/div<<")*s);" << endl;
+                out << "\tglVertex3f(("<<((float)x+1.0)/div<<")*s,0,("<<((float)z+1.0)/div<<")*s);" << endl;
+                out << "\tglVertex3f(("<<((float)x+1.0)/div<<")*s,0,("<<((float)z)/div<<")*s);" << endl;
+                out << endl;
+            }
+        }
+    }
+    out << "\tglEnd();" << endl;
+
+    out << endl << "\tmat->glHalf();" << endl;
+    out << "\tglBegin(GL_QUADS);" << endl;
+    out << "\tglNormal3f(0,1,0);" << endl;
+
+    for(int x=0; x<div; x++) {
+        for(int z=0; z<div; z++) {
+            if( ((x+z)%2)!=0 ) {
+                out << "\tglVertex3f(("<<((float)x)/div<<")*s,0,("<<((float)z)/div<<")*s);" << endl;
+                out << "\tglVertex3f(("<<((float)x)/div<<")*s,0,("<<((float)z+1.0)/div<<")*s);" << endl;
+                out << "\tglVertex3f(("<<((float)x+1.0)/div<<")*s,0,("<<((float)z+1.0)/div<<")*s);" << endl;
+                out << "\tglVertex3f(("<<((float)x+1.0)/div<<")*s,0,("<<((float)z)/div<<")*s);" << endl;
+                out << endl;
+            }
+        }
+    }
+    out << "\tglEnd();" << endl;
 }
 
 //--------------------------------------------------------------------------------
