@@ -15,8 +15,7 @@ public:
     ~Object();
 
     void draw();
-public:
-
+public:    
     //------------------
     // Physics
 
