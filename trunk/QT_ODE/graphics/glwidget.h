@@ -2,7 +2,7 @@
 #define GLWIDGET_H
 
 #include <QGLWidget>
-#include "../graphics/scene.h"
+#include "scene/scene.h"
 
 #include <QGLShaderProgram>
 

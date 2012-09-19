@@ -1,9 +1,8 @@
 //FILE GENERATED AUTOMATICALLY BY GENERATE_PRIMITIVE IN EXTRAS
 #include "glprimitive.h"
-
 #include <QtOpenGL>
 
-void GLPrimitive::sphere(float r, float* rot){
+void GLPrimitive::sphere(float r){
 	//SPHERE DIV 2
 	//PARAM: r : ray
 	glBegin(GL_TRIANGLES);
@@ -778,7 +777,7 @@ void GLPrimitive::sphere(float r, float* rot){
 	glEnd();
 }
 
-void GLPrimitive::box(float lx, float ly, float lz, float* rot){
+void GLPrimitive::box(float lx, float ly, float lz){
 	//BOX
 	//PARAM: lx : x length / ly : y length / lz : z length
 	glBegin(GL_QUADS);
@@ -815,7 +814,7 @@ void GLPrimitive::box(float lx, float ly, float lz, float* rot){
 	glEnd();
 }
 
-void GLPrimitive::capsule(float r, float l, float* rot){
+void GLPrimitive::capsule(float r, float l){
 	//SPHERE DIV 2
 	//PARAM: r : ray / l : length
 	glBegin(GL_TRIANGLES);
@@ -1720,7 +1719,7 @@ void GLPrimitive::capsule(float r, float l, float* rot){
 	glEnd();
 }
 
-void GLPrimitive::cylinder(float r, float l, float* rot){
+void GLPrimitive::cylinder(float r, float l){
 	//CYLINDER DIV 2
 	//PARAM: r : ray / l : length
 	glBegin(GL_QUADS);

@@ -20,24 +20,26 @@ SOURCES += \
     interface/glframe.cpp \
     interface/mainwindow.cpp \
     graphics/glwidget.cpp \
-    graphics/scene.cpp \
+    scene/scene.cpp \
     graphics/glprimitive.cpp \
     graphics/material.cpp \
     graphics/camera.cpp \
     math/vector3f.cpp \
-    math/matrix4f.cpp
+    math/matrix4f.cpp \
+    scene/object.cpp
 
 HEADERS  += \
     physics/physics.h \
     interface/glframe.h \
     interface/mainwindow.h \
     graphics/glwidget.h \
-    graphics/scene.h \
+    scene/scene.h \
     graphics/glprimitive.h \
     graphics/material.h \
     graphics/camera.h \
     math/vector3f.h \
-    math/matrix4f.h
+    math/matrix4f.h \
+    scene/object.h
 
 FORMS    += \
     interface/mainwindow.ui

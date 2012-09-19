@@ -9,7 +9,7 @@ Material::Material()
         diffuse[i]=1;
         emission[i]=0;
     }
-    shininess[0]=20;
+    shininess[0]=120;
 }
 
 void Material::setColor(float component[], int color){

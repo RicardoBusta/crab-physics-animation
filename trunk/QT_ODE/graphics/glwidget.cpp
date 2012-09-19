@@ -2,7 +2,7 @@
 
 #include <QMouseEvent>
 
-#include "camera.h"
+#include "graphics/camera.h"
 
 #ifdef DEBUG_MODE
 #include <iostream>
@@ -74,8 +74,6 @@ void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-
-    scene->camera->glApply();
 
 #ifdef SHADERS_ENABLED
     shaderProgram.bind();
