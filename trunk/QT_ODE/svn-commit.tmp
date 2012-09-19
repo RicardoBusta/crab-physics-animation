@@ -1,0 +1,7 @@
+cena modificada, material modificado, primitivas modificadas.
+--Esta linha, e as abaixo, serão ignoradas--
+
+M    graphics/scene.cpp
+M    graphics/material.cpp
+M    interface/glwidget.cpp
+M    extra/generate_primitive_code.cpp

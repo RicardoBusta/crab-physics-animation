@@ -97,15 +97,21 @@ void Camera::glApply(){
 
 void Camera::moveForward(float amount)
 {
-    posAt->addSelf( &forward->realProduct(amount) );
+    Vector3f res;
+    res.set( forward->realProduct( amount ) );
+    posAt->addSelf( &res );
 }
 
 void Camera::moveSide(float amount)
 {
-    posAt->addSelf( &side->realProduct(amount) );
+    Vector3f res;
+    res.set( side->realProduct( amount ) );
+    posAt->addSelf( &res );
 }
 
 void Camera::moveUp(float amount)
 {
-    posAt->addSelf( &up->realProduct(amount) );
+    Vector3f res;
+    res.set( up->realProduct( amount ) );
+    posAt->addSelf( &res );
 }

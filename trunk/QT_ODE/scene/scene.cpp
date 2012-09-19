@@ -16,7 +16,7 @@ Scene::Scene()
     Physics::init();
     camera = new Camera();
 
-    camera->moveForward(-1000);
+    camera->moveForward(-2000);
     camera->moveUp(200);
 
     for(int i=0;i<100;i++){
@@ -77,6 +77,14 @@ Scene::Scene()
     objectList[6]->transform->translate(-500,0,100);
     objectList[6]->properties[0] = 100;
     objectList[6]->properties[1] = 200;
+
+    objectList[7] = new Object();
+    objectList[7]->shape = OBJ_CAP;
+    objectList[7]->material->setDiffuse(MAT_BLACK);
+    objectList[7]->material->setSpecular(MAT_WHITE);
+    objectList[7]->transform->translate(-700,0,100);
+    objectList[7]->properties[0] = 100;
+    objectList[7]->properties[1] = 200;
 }
 
 Scene::~Scene(){
