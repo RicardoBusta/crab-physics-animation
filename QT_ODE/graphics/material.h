@@ -13,6 +13,7 @@ public:
     Material();
 
     void gl();
+    void glHalf();
 
     void setDiffuse(int color);
     void setSpecular(int color);
@@ -23,6 +24,7 @@ private:
     float emission[4];
     float specular[4];
     float diffuse[4];
+    float diffuse_2[4];
     float shininess[1];
 
     void setColor(float component[], int color);

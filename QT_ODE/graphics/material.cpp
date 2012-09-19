@@ -129,6 +129,11 @@ void Material::setColor(float component[], int color){
 
 void Material::setDiffuse(int color){
    setColor(diffuse, color);
+
+   diffuse_2[0] = 0.5*diffuse[0];
+   diffuse_2[1] = 0.5*diffuse[1];
+   diffuse_2[2] = 0.5*diffuse[2];
+   diffuse_2[3] = diffuse[3];
 }
 
 void Material::setSpecular(int color){
@@ -143,5 +148,12 @@ void Material::gl(){
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
+}
+
+void Material::glHalf(){
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_2);
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
 }

@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "matrix4f.h"
+#include "math/matrix4f.h"
 
 Vector3f::Vector3f(float x, float y, float z)
 {
@@ -131,7 +131,7 @@ float Vector3f::dotProduct(Vector3f *op) const
 #include <iostream>
 using namespace std;
 
-void Vector3f::stdPrint(){
+void Vector3f::stdPrint() const{
     cout << "x: " << this->x << " y: " << this->y << " z: " << this->z << endl;
 }
 #endif

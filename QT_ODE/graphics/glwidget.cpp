@@ -22,7 +22,7 @@ GLWidget::~GLWidget()
 
 void GLWidget::initializeGL()
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.5f, 0.8f, 1.0f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -96,7 +96,7 @@ void GLWidget::resizeGL(int w, int h)
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
     //glOrtho(0,w,0,h,1000,-1000);
-    glFrustum(-1,1,-1,1,1,2000);
+    glFrustum(-1,1,-1,1,1,10000);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
