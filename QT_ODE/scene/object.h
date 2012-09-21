@@ -6,7 +6,7 @@ class Material;
 
 #include "physics/physics.h"
 
-enum OBJECT_SHAPE{OBJ_PLANE, OBJ_BOX, OBJ_CAP, OBJ_CYL, OBJ_SPHERE};
+enum OBJECT_SHAPE{OBJ_PLANE, OBJ_BOX, OBJ_CAPSULE, OBJ_CYLINDER, OBJ_SPHERE};
 
 class Object
 {

@@ -32,10 +32,10 @@ void Object::draw(){
     case OBJ_SPHERE:
         GLPrimitive::sphere(properties[0], material, transform);
         break;
-    case OBJ_CYL:
+    case OBJ_CYLINDER:
         GLPrimitive::cylinder(properties[0], properties[1], material, transform);
         break;
-    case OBJ_CAP:
+    case OBJ_CAPSULE:
         GLPrimitive::capsule(properties[0],properties[1], material, transform);
         break;
     default:
