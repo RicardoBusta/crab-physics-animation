@@ -4,12 +4,16 @@
 class Camera;
 class Object;
 
+#include <vector>
+
 //The scene where the objects are placed.
 class Scene
 {
 public:
     Scene();
     ~Scene();
+
+    void simulation();
 
     void draw();
 
@@ -18,7 +22,7 @@ public:
 public:
     Camera *camera;
 
-    Object *objectList[100];
+    std::vector<Object*> objList;
 };
 
 #endif // SCENE_H

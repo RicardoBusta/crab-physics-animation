@@ -19,6 +19,11 @@ void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
     }
 }
 
+void Physics::worldStep(WorldID world, float stepSize){
+    dWorldQuickStep(world, stepSize);
+}
+
+/*
 void Physics::simLoop (int pause)
 {
     const dReal *pos;
@@ -33,7 +38,7 @@ void Physics::simLoop (int pause)
     pos = dGeomGetPosition (geom);
     R = dGeomGetRotation (geom);
     //dsDrawSphere (pos,R,dGeomSphereGetRadius (geom));
-}
+}*/
 
 void Physics::init(){
     dInitODE ();
