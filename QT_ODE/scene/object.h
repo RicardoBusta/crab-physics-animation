@@ -6,27 +6,33 @@ class Material;
 
 #include "physics/physics.h"
 
+class Scene;
+
 enum OBJECT_SHAPE{OBJ_PLANE, OBJ_BOX, OBJ_CAPSULE, OBJ_CYLINDER, OBJ_SPHERE};
 
 class Object
 {
 public:
-    Object();
+    Object(Scene *scene);
     ~Object();
 
     void draw();
-public:    
+public:
+    Scene *scene;
+
     //------------------
     // Physics
 
     BodyID body;
     GeomID geometry;
+    Mass mass;
 
     //------------------
     // Graphics
 
     OBJECT_SHAPE shape;
     float properties[3];
+    float initialPosition[3];
 
     Matrix4f *transform;
 

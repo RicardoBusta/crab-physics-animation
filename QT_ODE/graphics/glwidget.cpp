@@ -13,6 +13,10 @@ GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
     scene = new Scene();
+
+    connect(&simTimer, SIGNAL(timeout()), this, SLOT(simStep()));
+
+    simTimer.start(1);
 }
 
 GLWidget::~GLWidget()
@@ -130,5 +134,11 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     mousexy = event->pos();
 
     scene->camera->updateMatrix();
+
+    update();
+}
+
+void GLWidget::simStep(){
+    scene->simulationStep();
     update();
 }
