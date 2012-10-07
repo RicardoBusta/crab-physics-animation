@@ -2,7 +2,6 @@
 
 #include <QtOpenGL>
 
-#include "physics/physics.h"
 #include "graphics/glprimitive.h"
 #include "graphics/material.h"
 #include "graphics/camera.h"
@@ -13,7 +12,7 @@
 
 Scene::Scene()
 {
-    Physics::init();
+    Physics::init(this);
     camera = new Camera();
 
     camera->moveForward(-2000);
@@ -21,89 +20,29 @@ Scene::Scene()
 
     Object *obj;
 
-    obj = new Object();
-    obj->shape = OBJ_PLANE;
-    obj->material->setDiffuse(MAT_GRAY_75);
-    obj->material->setSpecular(MAT_WHITE);
-    obj->transform->translate(-2500,-100,-2500);
-    obj->properties[0] = 5000;
-    objList.push_back(obj);
+    addObject(OBJ_PLANE, MAT_GRAY_75, MAT_WHITE,
+              5000, 0, 0,
+              -2500, 0, -2500);
 
-    obj = new Object();
-    obj->shape = OBJ_SPHERE;
-    obj->material->setDiffuse(MAT_MAGENTA);
-    obj->material->setSpecular(MAT_WHITE);
-    obj->transform->translate(200,0,100);
-    obj->properties[0] = 100;
-    objList.push_back(obj);
+    addObject(OBJ_SPHERE, MAT_MAGENTA, MAT_WHITE,
+              100, 0, 0,
+              200, 500, 100);
 
-    obj = new Object();
-    obj->shape = OBJ_BOX;
-    obj->material->setDiffuse(MAT_DARK_GREEN);
-    obj->material->setSpecular(MAT_WHITE);
-    obj->transform->translate(-200,0,100);
-    obj->properties[0] = 100;
-    obj->properties[1] = 100;
-    obj->properties[2] = 100;
-    objList.push_back(obj);
+    addObject(OBJ_BOX, MAT_DARK_GREEN, MAT_WHITE,
+              100, 100, 100,
+              -200, 700, 100);
 
-    obj = new Object();
-    obj->shape = OBJ_BOX;
-    obj->material->setDiffuse(MAT_ORANGE);
-    obj->material->setSpecular(MAT_WHITE);
-    obj->transform->translate(200,0,-300);
-    obj->properties[0] = 100;
-    obj->properties[1] = 100;
-    obj->properties[2] = 100;
-    objList.push_back(obj);
+    addObject(OBJ_BOX, MAT_ORANGE, MAT_WHITE,
+              100, 100, 100,
+              200, 1000, -300);
 
-    obj = new Object();
-    obj->shape = OBJ_SPHERE;
-    obj->material->setDiffuse(MAT_BLUE);
-    obj->material->setSpecular(MAT_WHITE);
-    obj->transform->translate(-200,0,-300);
-    obj->properties[0] = 100;
-    objList.push_back(obj);
-
-    obj = new Object();
-    obj->shape = OBJ_CYLINDER;
-    obj->material->setDiffuse(MAT_YELLOW);
-    obj->material->setSpecular(MAT_WHITE);
-    obj->transform->translate(-500,0,-300);
-    obj->properties[0] = 100;
-    obj->properties[1] = 200;
-    objList.push_back(obj);
-
-    obj = new Object();
-    obj->shape = OBJ_CYLINDER;
-    obj->material->setDiffuse(MAT_WHITE);
-    obj->material->setSpecular(MAT_WHITE);
-    obj->transform->translate(-500,0,100);
-    obj->properties[0] = 100;
-    obj->properties[1] = 200;
-    objList.push_back(obj);
-
-    obj = new Object();
-    obj->shape = OBJ_CAPSULE;
-    obj->material->setDiffuse(MAT_BLACK);
-    obj->material->setSpecular(MAT_WHITE);
-    obj->transform->translate(-700,0,100);
-    obj->properties[0] = 100;
-    obj->properties[1] = 200;
-    objList.push_back(obj);
-
-    obj = new Object();
-    obj->shape = OBJ_CAPSULE;
-    obj->material->setDiffuse(MAT_BLACK);
-    obj->material->setSpecular(MAT_WHITE);
-    obj->transform->translate(-700,0,100);
-    obj->properties[0] = 100;
-    obj->properties[1] = 200;
-    objList.push_back(obj);
+    addObject(OBJ_SPHERE, MAT_BLUE, MAT_WHITE,
+              100, 0, 0,
+              -200, 200, -300);
 }
 
 Scene::~Scene(){
-    Physics::close();
+    Physics::close(this);
     if(camera!=NULL){
         delete camera;
     }
@@ -124,8 +63,35 @@ void Scene::draw()
 
 }
 
-void Scene::simulation()
+void Scene::addObject(int shape, int diffuse, int specular, float prop0, float prop1=0, float prop2=0, float posx=0, float posy=0, float posz=0 )
 {
+    Object *obj = new Object(this);
+    obj->shape = (OBJECT_SHAPE)shape;
+    obj->material->setDiffuse(diffuse);
+    obj->material->setSpecular(specular);
+    obj->initialPosition[0] = posx;
+    obj->initialPosition[1] = posy;
+    obj->initialPosition[2] = posz;
+    obj->properties[0] = prop0;
+    obj->properties[1] = prop1;
+    obj->properties[2] = prop2;
+    objList.push_back(obj);
+
+    if(shape == OBJ_PLANE){
+        obj->transform->setIdentity();
+        obj->transform->translate(posx,posy,posz);
+    }
+
+    obj->scene = this;
+
+    Physics::createObject(obj, posx, posy, posz);
 }
 
+//Physics
 
+void Scene::simulationStep()
+{
+    for(int i=0;i<100;i++){
+        Physics::simSingleStep(this);
+    }
+}

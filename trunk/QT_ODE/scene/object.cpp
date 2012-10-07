@@ -4,8 +4,10 @@
 #include "math/matrix4f.h"
 #include "graphics/material.h"
 
-Object::Object()
+Object::Object(Scene *scene)
 {
+    this->scene = scene;
+
     transform = new Matrix4f();
     transform->setIdentity();
 
@@ -21,7 +23,11 @@ Object::~Object(){
     }
 }
 
-void Object::draw(){   
+void Object::draw(){
+    if(shape!= OBJ_PLANE){
+        Physics::getGeomTransform(geometry, transform);
+    }
+
     switch(shape){
     case OBJ_PLANE:
         GLPrimitive::plane(properties[0], material, transform);

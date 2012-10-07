@@ -5,6 +5,7 @@
 #include "scene/scene.h"
 
 #include <QGLShaderProgram>
+#include <QTimer>
 
 class GLWidget : public QGLWidget
 {
@@ -13,8 +14,6 @@ class GLWidget : public QGLWidget
 public:
     explicit GLWidget(QWidget *parent = 0);
     ~GLWidget();
-
-
 
 private:
     Scene *scene;
@@ -29,6 +28,8 @@ private:
     QPoint mousexy;
     int mouseButton;
 
+    QTimer simTimer;
+
 #ifdef SHADERS_ENABLED
     QGLShaderProgram shaderProgram;
 #endif
@@ -36,6 +37,9 @@ private:
 signals:
     
 public slots:
+
+private slots:
+    void simStep();
     
 };
 
