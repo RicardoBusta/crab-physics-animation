@@ -39,6 +39,14 @@ Scene::Scene()
     addObject(OBJ_SPHERE, MAT_BLUE, MAT_WHITE,
               100, 0, 0,
               -200, 200, -300);
+
+    addObject(OBJ_CAPSULE, MAT_GRAY_25, MAT_WHITE,
+              100, 100, 0,
+              700, 200, -300);
+
+    addObject(OBJ_CYLINDER, MAT_YELLOW, MAT_WHITE,
+              100, 100, 0,
+              -700, 200, -300);
 }
 
 Scene::~Scene(){
@@ -91,7 +99,7 @@ void Scene::addObject(int shape, int diffuse, int specular, float prop0, float p
 
 void Scene::simulationStep()
 {
-    for(int i=0;i<100;i++){
+    for(int i=0;i<1000;i++){
         Physics::simSingleStep(this);
     }
 }
