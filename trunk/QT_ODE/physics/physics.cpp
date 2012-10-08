@@ -34,7 +34,7 @@ void Physics::simSingleStep (Scene *scene)
     // find collisions and add contact joints
     dSpaceCollide (scene->space,0,&nearCallback);
     // step the simulation
-    dWorldQuickStep (scene->world,0.01);
+    dWorldQuickStep (scene->world,0.001);
     // remove all contact joints
     dJointGroupEmpty (contactGroup);
 }
@@ -46,7 +46,7 @@ void Physics::init(Scene *scene){
     scene->world = dWorldCreate ();
     scene->space = dHashSpaceCreate (0);
     dWorldSetGravity (scene->world,0,-0.2,0);
-    dWorldSetCFM (scene->world,1e-5);
+    dWorldSetCFM (scene->world,1e-3);
     dCreatePlane (scene->space,0,1,0,0);
     contactGroup = dJointGroupCreate (0);
     // create object
@@ -78,6 +78,24 @@ void Physics::createObject(Object *object, dReal posx, dReal posy, dReal posz){
         object->geometry = dCreateBox (object->scene->space,object->properties[0],object->properties[1],object->properties[2]);
         dGeomSetData(object->geometry, (void*)(object));
         dMassSetBox (&object->mass,1,object->properties[0],object->properties[1],object->properties[2]);
+        dBodySetMass (object->body,&object->mass);
+        dGeomSetBody (object->geometry,object->body);
+        dBodySetPosition (object->body,posx,posy,posz);
+        break;
+    case OBJ_CAPSULE:
+        object->body = dBodyCreate (object->scene->world);
+        object->geometry = dCreateCapsule (object->scene->space,object->properties[0],object->properties[1]);
+        dGeomSetData(object->geometry, (void*)(object));
+        dMassSetCapsule (&object->mass,1,2,object->properties[0],object->properties[1]);
+        dBodySetMass (object->body,&object->mass);
+        dGeomSetBody (object->geometry,object->body);
+        dBodySetPosition (object->body,posx,posy,posz);
+        break;
+    case OBJ_CYLINDER:
+        object->body = dBodyCreate (object->scene->world);
+        object->geometry = dCreateCylinder (object->scene->space,object->properties[0],object->properties[1]);
+        dGeomSetData(object->geometry, (void*)(object));
+        dMassSetCylinder (&object->mass,1,2,object->properties[0],object->properties[1]);
         dBodySetMass (object->body,&object->mass);
         dGeomSetBody (object->geometry,object->body);
         dBodySetPosition (object->body,posx,posy,posz);
