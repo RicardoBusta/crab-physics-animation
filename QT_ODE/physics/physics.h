@@ -25,13 +25,18 @@ namespace Physics{
 
     void nearCallback(void *data, dGeomID o1, dGeomID o2);
     void simSingleStep(Scene *scene);
-
     void worldStep(WorldID world, float stepSize);
-
     void getGeomTransform(GeomID geom, Matrix4f* transform);
-
     void createObject(Object *obj, dReal posx, dReal posy, dReal posz);
 
+    //Body Manipulation
+    void bodySetTorque(BodyID body, dReal x, dReal y, dReal z);
+    void bodyAddTorque(BodyID body, dReal x, dReal y, dReal z);
+
+    void bodySetForce(BodyID body, dReal x, dReal y, dReal z);
+    void bodyAddForce(BodyID body, dReal x, dReal y, dReal z);
+
+    //Must use
     void init(Scene *scene);
     void close(Scene *scene);
 }

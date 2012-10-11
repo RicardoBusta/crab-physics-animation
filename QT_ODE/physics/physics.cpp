@@ -9,19 +9,25 @@ void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
 
     dBodyID b1 = dGeomGetBody(o1);
     dBodyID b2 = dGeomGetBody(o2);
-    dContact contact;
-    contact.surface.mode = dContactBounce | dContactSoftCFM;
-    // friction parameter
-    contact.surface.mu = dInfinity;
-    // bounce is the amount of "bouncyness".
-    contact.surface.bounce = 0.9;
-    // bounce_vel is the minimum incoming velocity to cause a bounce
-    contact.surface.bounce_vel = 0.1;
-    // constraint force mixing parameter
-    contact.surface.soft_cfm = 0.001;
-    if (/*int numc =*/ dCollide (o1,o2,1,&contact.geom,sizeof(dContact))) {
-        dJointID c = dJointCreateContact (scene->world,contactGroup,&contact);
-        dJointAttach (c,b1,b2);
+
+    dContact contact[4];
+
+    if (int numc = dCollide (o1,o2,4,&contact[0].geom,sizeof(dContact))) {
+        for(int i=0;i<numc;i++){
+
+            contact[i].surface.mode = dContactBounce; // | dContactSoftCFM;
+            // friction parameter
+            contact[i].surface.mu = dInfinity;
+            // bounce is the amount of "bouncyness".
+            contact[i].surface.bounce = 0.1;
+            // bounce_vel is the minimum incoming velocity to cause a bounce
+            contact[i].surface.bounce_vel = 0.0;
+            // constraint force mixing parameter
+            //contact.surface.soft_cfm = 0.001;
+
+            dJointID c = dJointCreateContact (scene->world,contactGroup,&contact[i]);
+            dJointAttach (c,b1,b2);
+        }
     }
 }
 
@@ -45,10 +51,18 @@ void Physics::init(Scene *scene){
     // create world
     scene->world = dWorldCreate ();
     scene->space = dHashSpaceCreate (0);
-    dWorldSetGravity (scene->world,0,-0.2,0);
-    dWorldSetCFM (scene->world,1e-3);
-    dCreatePlane (scene->space,0,1,0,0);
+    dWorldSetGravity (scene->world,0,-9.8,0);
+    dWorldSetERP (scene->world,0.2);
+    //dWorldSetCFM (scene->world,1e-3);
+    dWorldSetCFM (scene->world,1e-009);
+    dCreatePlane (scene->space,0,1,0,0); //todo remove
     contactGroup = dJointGroupCreate (0);
+
+     //juntas ligadas - >ERP:+ligadas
+    //dWorldSetCFM (world,1e-009); //soft hard (colisao)- >CFM:+soft
+    dWorldSetAutoDisableFlag (scene->world,1);
+    dWorldSetContactMaxCorrectingVel (scene->world,0.3);
+    dWorldSetContactSurfaceLayer (scene->world,0.00001);
     // create object
     //    body = dBodyCreate (world);
     //    geom = dCreateSphere (space,0.5);
@@ -130,4 +144,20 @@ void Physics::getGeomTransform(GeomID geom, Matrix4f *transform){
     transform->set( 15, 1.0 );
 
     transform->translate(pos[0],pos[1],pos[2]);
+}
+
+void Physics::bodyAddTorque(dBodyID body, dReal x, dReal y, dReal z){
+    dBodyAddTorque(body,x,y,z);
+}
+
+void Physics::bodySetTorque(dBodyID body, dReal x, dReal y, dReal z){
+    dBodySetTorque(body,x,y,z);
+}
+
+void Physics::bodyAddForce(dBodyID body, dReal x, dReal y, dReal z){
+    dBodyAddForce(body,x,y,z);
+}
+
+void Physics::bodySetForce(dBodyID body, dReal x, dReal y, dReal z){
+    dBodySetForce(body,x,y,z);
 }

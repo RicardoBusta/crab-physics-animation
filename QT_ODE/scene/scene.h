@@ -27,7 +27,7 @@ public:
 
     //Manipulate World
 
-    void addObject(int shape, int diffuse, int specular, float prop1, float prop2, float prop3, float posx, float posy, float posz);
+    Object* addObject(int shape, int diffuse, int specular, float prop1, float prop2, float prop3, float posx, float posy, float posz);
 
     //!make private
 public:
@@ -38,6 +38,8 @@ public:
 
     Camera *camera;
     std::vector<Object*> objList;
+
+    Object *testObject;
 };
 
 #endif // SCENE_H
