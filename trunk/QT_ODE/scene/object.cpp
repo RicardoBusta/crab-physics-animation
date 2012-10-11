@@ -23,6 +23,14 @@ Object::~Object(){
     }
 }
 
+void Object::appTorque(float x, float y, float z){
+    Physics::bodyAddTorque(body,x,y,z);
+}
+
+void Object::appForce(float x, float y, float z){
+    Physics::bodyAddForce(body,x,y,z);
+}
+
 void Object::draw(){
     if(shape!= OBJ_PLANE){
         Physics::getGeomTransform(geometry, transform);

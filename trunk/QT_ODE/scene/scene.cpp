@@ -18,14 +18,12 @@ Scene::Scene()
     camera->moveForward(-2000);
     camera->moveUp(200);
 
-    Object *obj;
-
     addObject(OBJ_PLANE, MAT_GRAY_75, MAT_WHITE,
               5000, 0, 0,
               -2500, 0, -2500);
 
     addObject(OBJ_SPHERE, MAT_MAGENTA, MAT_WHITE,
-              100, 0, 0,
+              200, 0, 0,
               200, 500, 100);
 
     addObject(OBJ_BOX, MAT_DARK_GREEN, MAT_WHITE,
@@ -44,7 +42,7 @@ Scene::Scene()
               100, 100, 0,
               700, 200, -300);
 
-    addObject(OBJ_CYLINDER, MAT_YELLOW, MAT_WHITE,
+    testObject = addObject(OBJ_CYLINDER, MAT_YELLOW, MAT_WHITE,
               100, 100, 0,
               -700, 200, -300);
 }
@@ -71,7 +69,7 @@ void Scene::draw()
 
 }
 
-void Scene::addObject(int shape, int diffuse, int specular, float prop0, float prop1=0, float prop2=0, float posx=0, float posy=0, float posz=0 )
+Object* Scene::addObject(int shape, int diffuse, int specular, float prop0, float prop1=0, float prop2=0, float posx=0, float posy=0, float posz=0 )
 {
     Object *obj = new Object(this);
     obj->shape = (OBJECT_SHAPE)shape;
@@ -93,6 +91,8 @@ void Scene::addObject(int shape, int diffuse, int specular, float prop0, float p
     obj->scene = this;
 
     Physics::createObject(obj, posx, posy, posz);
+
+    return obj;
 }
 
 //Physics
@@ -100,6 +100,8 @@ void Scene::addObject(int shape, int diffuse, int specular, float prop0, float p
 void Scene::simulationStep()
 {
     for(int i=0;i<1000;i++){
+        //testObject->appForce(200000,0,0);
+        testObject->appTorque(500000000,0,0);
         Physics::simSingleStep(this);
     }
 }

@@ -118,6 +118,8 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
     }
 }
 
+#include "scene/object.h"
+
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
     int mousex = event->pos().x() - mousexy.x();

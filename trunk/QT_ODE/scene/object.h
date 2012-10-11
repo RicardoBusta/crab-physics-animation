@@ -27,6 +27,9 @@ public:
     GeomID geometry;
     Mass mass;
 
+    void appTorque(float x, float y, float z);
+    void appForce(float x, float y, float z);
+
     //------------------
     // Graphics
 
