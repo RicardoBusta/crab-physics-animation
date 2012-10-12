@@ -23,7 +23,7 @@ ParticleEngine::~ParticleEngine(){
 
 void PESignal::tick(){
     if(life == 0){
-        this->scene->addParticle(new PingParticle(this->x, this->y, this->z, 100, this->material, 0, 3, 0));
+        this->scene->addParticle(new PingParticle(this->x, this->y, this->z, 100, this->material, 0, 4, 0));
         life = timeout;
     }
     life --;

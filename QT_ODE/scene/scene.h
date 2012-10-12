@@ -6,6 +6,7 @@ class Object;
 class Particle;
 class ParticleEngine;
 class Vector3f;
+class GLWidget;
 
 #include <vector>
 #include <list>
@@ -15,7 +16,9 @@ class Vector3f;
 class Scene
 {
 public:
-    Scene();
+    GLWidget *parent;
+
+    Scene(GLWidget *parent);
     ~Scene();
 
     WorldID world;
