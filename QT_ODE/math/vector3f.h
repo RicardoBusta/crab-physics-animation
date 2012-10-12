@@ -33,6 +33,8 @@ public:
     Vector3f transform(Matrix4f *m) const;
     float dotProduct(Vector3f *op) const;
 
+    Vector3f operator=(Vector3f v);
+
 #ifdef DEBUG_MODE
     void stdPrint() const;
 #endif

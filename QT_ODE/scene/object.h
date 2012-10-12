@@ -3,10 +3,10 @@
 
 class Matrix4f;
 class Material;
+class Scene;
+class Vector3f;
 
 #include "physics/physics.h"
-
-class Scene;
 
 enum OBJECT_SHAPE{OBJ_PLANE, OBJ_BOX, OBJ_CAPSULE, OBJ_CYLINDER, OBJ_SPHERE};
 
@@ -35,8 +35,7 @@ public:
 
     OBJECT_SHAPE shape;
     float properties[3];
-    float initialPosition[3];
-
+    Vector3f *initialPosition;
     Matrix4f *transform;
 
     // Properties

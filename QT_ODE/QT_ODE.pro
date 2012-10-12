@@ -9,6 +9,9 @@ QT       += core gui opengl glu
 TARGET = QT_ODE
 TEMPLATE = app
 
+MOC_DIR = build
+DISTFILES = build
+
 DEFINES += \
     SHADERS_ENABLED \
     dSINGLE \
@@ -26,7 +29,11 @@ SOURCES += \
     math/vector3f.cpp \
     math/matrix4f.cpp \
     scene/object.cpp \
-    interface/mainwindow.cpp
+    interface/mainwindow.cpp \
+    scene/character.cpp \
+    scene/particle.cpp \
+    graphics/glutil.cpp \
+    scene/particleengine.cpp
 
 HEADERS  += \
     physics/physics.h \
@@ -39,7 +46,11 @@ HEADERS  += \
     math/vector3f.h \
     math/matrix4f.h \
     scene/object.h \
-    interface/mainwindow.h
+    interface/mainwindow.h \
+    scene/character.h \
+    scene/particle.h \
+    graphics/glutil.h \
+    scene/particleengine.h
 
 FORMS    += \
     interface/mainwindow.ui

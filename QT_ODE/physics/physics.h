@@ -10,6 +10,7 @@
 #define Mass dMass
 
 class Matrix4f;
+class Vector3f;
 class Scene;
 class Object;
 
@@ -27,7 +28,7 @@ namespace Physics{
     void simSingleStep(Scene *scene);
     void worldStep(WorldID world, float stepSize);
     void getGeomTransform(GeomID geom, Matrix4f* transform);
-    void createObject(Object *obj, dReal posx, dReal posy, dReal posz);
+    void createObject(Object *obj, Vector3f position);
 
     //Body Manipulation
     void bodySetTorque(BodyID body, dReal x, dReal y, dReal z);
