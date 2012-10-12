@@ -141,40 +141,40 @@ void gen_box() {
     out << "\tglBegin(GL_QUADS);" << endl;
     //front
     out << "\tglNormal3f(0,0,+1);" << endl;
-    out << "\tglVertex3f(-lx/2,-ly/2,+lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,-ly/2,+lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,+ly/2,+lz/2);" << endl;
-    out << "\tglVertex3f(-lx/2,+ly/2,+lz/2);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,+lz_2);" << endl;
     //back
     out << "\tglNormal3f(0,0,-1);" << endl;
-    out << "\tglVertex3f(-lx/2,-ly/2,-lz/2);" << endl;
-    out << "\tglVertex3f(-lx/2,+ly/2,-lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,+ly/2,-lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,-ly/2,-lz/2);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,-lz_2);" << endl;
     //left
     out << "\tglNormal3f(-1,0,0);" << endl;
-    out << "\tglVertex3f(-lx/2,-ly/2,-lz/2);" << endl;
-    out << "\tglVertex3f(-lx/2,-ly/2,+lz/2);" << endl;
-    out << "\tglVertex3f(-lx/2,+ly/2,+lz/2);" << endl;
-    out << "\tglVertex3f(-lx/2,+ly/2,-lz/2);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,-lz_2);" << endl;
     //right
     out << "\tglNormal3f(+1,0,0);" << endl;
-    out << "\tglVertex3f(+lx/2,-ly/2,-lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,+ly/2,-lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,+ly/2,+lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,-ly/2,+lz/2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,+lz_2);" << endl;
     //top
     out << "\tglNormal3f(0,+1,0);" << endl;
-    out << "\tglVertex3f(-lx/2,+ly/2,-lz/2);" << endl;
-    out << "\tglVertex3f(-lx/2,+ly/2,+lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,+ly/2,+lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,+ly/2,-lz/2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,-lz_2);" << endl;
     //bottom
     out << "\tglNormal3f(0,-1,0);" << endl;
-    out << "\tglVertex3f(-lx/2,-ly/2,-lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,-ly/2,-lz/2);" << endl;
-    out << "\tglVertex3f(+lx/2,-ly/2,+lz/2);" << endl;
-    out << "\tglVertex3f(-lx/2,-ly/2,+lz/2);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,+lz_2);" << endl;
     out << "\tglEnd();" << endl;
 }
 
