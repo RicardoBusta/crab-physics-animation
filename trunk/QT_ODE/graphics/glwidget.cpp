@@ -69,8 +69,8 @@ void GLWidget::initializeGL()
 #ifdef SHADERS_ENABLED
     shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/phong.vert");
     shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/phong.frag");
-    //    shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/toon.vert");
-    //    shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/toon.frag");
+//        shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/toon.vert");
+//       shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/toon.frag");
 #endif
 }
 
