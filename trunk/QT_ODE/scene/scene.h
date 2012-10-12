@@ -3,8 +3,12 @@
 
 class Camera;
 class Object;
+class Particle;
+class ParticleEngine;
+class Vector3f;
 
 #include <vector>
+#include <list>
 #include "physics/physics.h"
 
 //The scene where the objects are placed.
@@ -27,7 +31,8 @@ public:
 
     //Manipulate World
 
-    Object* addObject(int shape, int diffuse, int specular, float prop1, float prop2, float prop3, float posx, float posy, float posz);
+    Object* addObject(int shape, int diffuse, int specular, float prop1, float prop2, float prop3, Vector3f position);
+    void addParticle(Particle* particle);
 
     //!make private
 public:
@@ -37,7 +42,9 @@ public:
     //Graphics
 
     Camera *camera;
-    std::vector<Object*> objList;
+    std::vector<Object*> objects;
+    std::list<Particle*> particles;
+    std::vector<ParticleEngine*> particleEngines;
 
     Object *testObject;
 };

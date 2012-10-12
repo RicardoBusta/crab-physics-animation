@@ -20,13 +20,13 @@ void gen_chess_plane(int div);
 
 ofstream out ("../graphics/glprimitive.cpp");
 
-void transform_code_begin(){
+void transform_code_begin() {
     out << "\tglPushMatrix(); " << endl;
     out << "\tfloat transform[16]; " << endl;
     out << "\tt->get(transform); " << endl;
     out << "\tglMultMatrixf(transform); " << endl;
 }
-void transform_code_end(){
+void transform_code_end() {
     out << "\tglPopMatrix(); " << endl;
 }
 
@@ -59,13 +59,15 @@ int main() {
         // CAPSULE
         out << "void " << CLASS << "::capsule(float r, float l, Material *mat, Matrix4f *t){" << endl;
         transform_code_begin();
+        out << "glRotatef(90,1,0,0);" << endl;
         gen_icocapsule(2);
         transform_code_end();
         out << "}" << endl << endl;
 
         // CYLINDER
-            out << "void " << CLASS << "::cylinder(float r, float l, Material *mat, Matrix4f *t){" << endl;
-            transform_code_begin();
+        out << "void " << CLASS << "::cylinder(float r, float l, Material *mat, Matrix4f *t){" << endl;
+        transform_code_begin();
+        out << "glRotatef(90,1,0,0);" << endl;
         gen_icocylinder(2);
         transform_code_end();
         out << "}" << endl << endl;
@@ -137,6 +139,8 @@ void gen_box() {
     out << "\t//PARAM: lx : x length / ly : y length / lz : z length" << endl;
 
     out << endl << "\tmat->gl();" << endl;
+
+    out << "\tfloat lx_2 = lx/2, ly_2 = ly/2, lz_2 = lz/2;" << endl;
 
     out << "\tglBegin(GL_QUADS);" << endl;
     //front
@@ -312,13 +316,13 @@ void icocapsule_pole_rec(float x1, float y1, float z1,
             offset = '-';
         out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
         //out << "\tglNormal3f("<<x123<<","<<y123<<","<<z123<<");" << endl;
-        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<offset<<"l,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<offset<<"l_2,r*"<<z1<<");" << endl;
         out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
         //out << "\tglNormal3f("<<x123<<","<<y123<<","<<z123<<");" << endl;
-        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<offset<<"l,r*"<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<offset<<"l_2,r*"<<z2<<");" << endl;
         out << "\tglNormal3f("<<x3<<","<<y3<<","<<z3<<");" << endl;
         //out << "\tglNormal3f("<<x123<<","<<y123<<","<<z123<<");" << endl;
-        out << "\tglVertex3f(r*"<<x3<<",r*"<<y3<<offset<<"l,r*"<<z3<<");" << endl;
+        out << "\tglVertex3f(r*"<<x3<<",r*"<<y3<<offset<<"l_2,r*"<<z3<<");" << endl;
     }
 }
 
@@ -338,13 +342,13 @@ void icocapsule_center_rec(float x1, float y1, float z1,
         icocapsule_center_rec(x12, y12, z12, x2, y2, z2, depth-1);
     } else {
         out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
-        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"-l,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"-l_2,r*"<<z1<<");" << endl;
         out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
-        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"-l,r*"<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"-l_2,r*"<<z2<<");" << endl;
         out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
-        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l,r*"<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l_2,r*"<<z2<<");" << endl;
         out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
-        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l_2,r*"<<z1<<");" << endl;
     }
 }
 
@@ -353,6 +357,8 @@ void gen_icocapsule(int div) {
     out << "\t//PARAM: r : ray / l : length" << endl;
 
     out << endl << "\tmat->gl();" << endl;
+
+    out << "\tfloat l_2 = l/2;" << endl;
 
     out << "\tglBegin(GL_TRIANGLES);" << endl;
     icocapsule_pole_rec(0,1,0, 0,0,1, 1,0,0 ,true,div);
@@ -395,25 +401,25 @@ void icocylinder_rec(float x1, float y1, float z1,
     } else {
         out << "\tglBegin(GL_QUADS);" << endl;
         out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
-        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"-l,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"-l_2,r*"<<z1<<");" << endl;
         out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
-        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"-l,r*"<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"-l_2,r*"<<z2<<");" << endl;
         out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
-        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l,r*"<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l_2,r*"<<z2<<");" << endl;
         out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
-        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l_2,r*"<<z1<<");" << endl;
         out << "\tglEnd();" << endl;
 
         out << "\tglBegin(GL_TRIANGLES);" << endl;
         out << "\tglNormal3f(0,-1,0);" << endl;
-        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"-l,r*"<<z2<<");" << endl;
-        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"-l,r*"<<z1<<");" << endl;
-        out << "\tglVertex3f(0,-l,0);" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"-l_2,r*"<<z2<<");" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"-l_2,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(0,-l_2,0);" << endl;
 
         out << "\tglNormal3f(0,+1,0);" << endl;
-        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l,r*"<<z1<<");" << endl;
-        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l,r*"<<z2<<");" << endl;
-        out << "\tglVertex3f(0,+l,0);" << endl;
+        out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<"+l_2,r*"<<z1<<");" << endl;
+        out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<"+l_2,r*"<<z2<<");" << endl;
+        out << "\tglVertex3f(0,+l_2,0);" << endl;
         out << "\tglEnd();" << endl;
     }
 }
@@ -423,6 +429,9 @@ void gen_icocylinder(int div) {
     out << "\t//PARAM: r : ray / l : length" << endl;
 
     out << endl << "\tmat->gl();" << endl;
+
+    out << "\tfloat l_2 = l/2;" << endl;
+
     icocylinder_rec(1,0,0, 0,0,-1, div);
     icocylinder_rec(0,0,-1, -1,0,0, div);
     icocylinder_rec(-1,0,0, 0,0,1, div);

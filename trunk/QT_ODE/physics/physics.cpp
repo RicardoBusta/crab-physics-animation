@@ -3,6 +3,7 @@
 #include "scene/object.h"
 #include "scene/scene.h"
 #include "math/matrix4f.h"
+#include "math/vector3f.h"
 
 void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
     Scene *scene = ((Object*)dGeomGetData(o1))->scene;
@@ -58,7 +59,7 @@ void Physics::init(Scene *scene){
     dCreatePlane (scene->space,0,1,0,0); //todo remove
     contactGroup = dJointGroupCreate (0);
 
-     //juntas ligadas - >ERP:+ligadas
+    //juntas ligadas - >ERP:+ligadas
     //dWorldSetCFM (world,1e-009); //soft hard (colisao)- >CFM:+soft
     dWorldSetAutoDisableFlag (scene->world,1);
     dWorldSetContactMaxCorrectingVel (scene->world,0.3);
@@ -74,48 +75,48 @@ void Physics::init(Scene *scene){
     // run simulation
 }
 
-void Physics::createObject(Object *object, dReal posx, dReal posy, dReal posz){
+void Physics::createObject(Object *object, Vector3f position){
 
 
     switch(object->shape){
-    case OBJ_SPHERE:
-        object->body = dBodyCreate (object->scene->world);
-        object->geometry = dCreateSphere (object->scene->space,object->properties[0]);
-        dGeomSetData(object->geometry, (void*)(object));
-        dMassSetSphere (&object->mass,1,object->properties[0]);
-        dBodySetMass (object->body,&object->mass);
-        dGeomSetBody (object->geometry,object->body);
-        dBodySetPosition (object->body,posx,posy,posz);
-        break;
-    case OBJ_BOX:
-        object->body = dBodyCreate (object->scene->world);
-        object->geometry = dCreateBox (object->scene->space,object->properties[0],object->properties[1],object->properties[2]);
-        dGeomSetData(object->geometry, (void*)(object));
-        dMassSetBox (&object->mass,1,object->properties[0],object->properties[1],object->properties[2]);
-        dBodySetMass (object->body,&object->mass);
-        dGeomSetBody (object->geometry,object->body);
-        dBodySetPosition (object->body,posx,posy,posz);
-        break;
-    case OBJ_CAPSULE:
-        object->body = dBodyCreate (object->scene->world);
-        object->geometry = dCreateCapsule (object->scene->space,object->properties[0],object->properties[1]);
-        dGeomSetData(object->geometry, (void*)(object));
-        dMassSetCapsule (&object->mass,1,2,object->properties[0],object->properties[1]);
-        dBodySetMass (object->body,&object->mass);
-        dGeomSetBody (object->geometry,object->body);
-        dBodySetPosition (object->body,posx,posy,posz);
-        break;
-    case OBJ_CYLINDER:
-        object->body = dBodyCreate (object->scene->world);
-        object->geometry = dCreateCylinder (object->scene->space,object->properties[0],object->properties[1]);
-        dGeomSetData(object->geometry, (void*)(object));
-        dMassSetCylinder (&object->mass,1,2,object->properties[0],object->properties[1]);
-        dBodySetMass (object->body,&object->mass);
-        dGeomSetBody (object->geometry,object->body);
-        dBodySetPosition (object->body,posx,posy,posz);
-        break;
-    default:
-        break;
+        case OBJ_SPHERE:
+            object->body = dBodyCreate (object->scene->world);
+            object->geometry = dCreateSphere (object->scene->space,object->properties[0]);
+            dGeomSetData(object->geometry, (void*)(object));
+            dMassSetSphere (&object->mass,1,object->properties[0]);
+            dBodySetMass (object->body,&object->mass);
+            dGeomSetBody (object->geometry,object->body);
+            dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
+            break;
+        case OBJ_BOX:
+            object->body = dBodyCreate (object->scene->world);
+            object->geometry = dCreateBox (object->scene->space,object->properties[0],object->properties[1],object->properties[2]);
+            dGeomSetData(object->geometry, (void*)(object));
+            dMassSetBox (&object->mass,1,object->properties[0],object->properties[1],object->properties[2]);
+            dBodySetMass (object->body,&object->mass);
+            dGeomSetBody (object->geometry,object->body);
+            dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
+            break;
+        case OBJ_CAPSULE:
+            object->body = dBodyCreate (object->scene->world);
+            object->geometry = dCreateCapsule (object->scene->space,object->properties[0],object->properties[1]);
+            dGeomSetData(object->geometry, (void*)(object));
+            dMassSetCapsule (&object->mass,1,3,object->properties[0],object->properties[1]);
+            dBodySetMass (object->body,&object->mass);
+            dGeomSetBody (object->geometry,object->body);
+            dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
+            break;
+        case OBJ_CYLINDER:
+            object->body = dBodyCreate (object->scene->world);
+            object->geometry = dCreateCylinder (object->scene->space,object->properties[0],object->properties[1]);
+            dGeomSetData(object->geometry, (void*)(object));
+            dMassSetCylinder (&object->mass,1,3,object->properties[0],object->properties[1]);
+            dBodySetMass (object->body,&object->mass);
+            dGeomSetBody (object->geometry,object->body);
+            dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
+            break;
+        default:
+            break;
     }
 }
 
@@ -135,9 +136,21 @@ void Physics::getGeomTransform(GeomID geom, Matrix4f *transform){
     pos = dGeomGetPosition (geom);
     rot = dGeomGetRotation (geom);
 
+    /*
+    0 4 8
+    1 5 9
+    2 6 10
+    3 7 11
+    */
+
     for(int i=0;i<12;i++){
-        transform->set( i,rot[i] );
+        if(i != 6 and i!=9 and i!=2 and i!=8){
+            transform->set( i,rot[i] );
+        }else{
+            transform->set( i,-rot[i] );
+        }
     }
+
     transform->set( 12, 0.0 );
     transform->set( 13, 0.0 );
     transform->set( 14, 0.0 );

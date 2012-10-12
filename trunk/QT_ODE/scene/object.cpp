@@ -2,6 +2,7 @@
 
 #include "graphics/glprimitive.h"
 #include "math/matrix4f.h"
+#include "math/vector3f.h"
 #include "graphics/material.h"
 
 Object::Object(Scene *scene)
@@ -10,6 +11,8 @@ Object::Object(Scene *scene)
 
     transform = new Matrix4f();
     transform->setIdentity();
+
+    initialPosition = new Vector3f();
 
     material = new Material();
 }
@@ -20,6 +23,9 @@ Object::~Object(){
     }
     if(material!=NULL){
         delete material;
+    }
+    if(initialPosition!=NULL){
+        delete initialPosition;
     }
 }
 

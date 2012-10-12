@@ -85,6 +85,8 @@ void Camera::updateMatrix()
     matrix->set(11, 0.0);
     matrix->set(15, 1.0);
     //------------------
+//    tMatrix->set( matrix );
+//    tMatrix->transpose();
 }
 
 void Camera::glApply(){

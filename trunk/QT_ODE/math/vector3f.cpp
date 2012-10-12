@@ -84,6 +84,10 @@ void Vector3f::transformSelf(Matrix4f *m)
     for(int i=0;i<3;i++){
         r[i] = ( this->x * m->get( 0+(i*4) ) ) + ( this->y * m->get( 1+(i*4) ) ) + ( this->y * m->get( 2+(i*4) ) );
     }
+
+    this->x = r[0];
+    this->y = r[1];
+    this->z = r[2];
 }
 
 Vector3f Vector3f::crossProduct(Vector3f *op) const
@@ -125,6 +129,14 @@ Vector3f Vector3f::add(Vector3f *op) const
 float Vector3f::dotProduct(Vector3f *op) const
 {
     return ( x*op->x + y*op->y + z*op->z );
+}
+
+Vector3f Vector3f::operator =(Vector3f v)
+{
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    return *this;
 }
 
 #ifdef DEBUG_MODE
