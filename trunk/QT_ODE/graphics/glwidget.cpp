@@ -12,7 +12,7 @@ using namespace std;
 GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
-    scene = new Scene();
+    scene = new Scene(this);
 
     connect(&simTimer, SIGNAL(timeout()), this, SLOT(simStep()));
 
@@ -22,6 +22,18 @@ GLWidget::GLWidget(QWidget *parent) :
 GLWidget::~GLWidget()
 {
     if(scene!=NULL) delete scene;
+}
+
+void GLWidget::bindShader(){
+#ifdef SHADERS_ENABLED
+    shaderProgram.bind();
+#endif
+}
+
+void GLWidget::releaseShader(){
+#ifdef SHADERS_ENABLED
+    shaderProgram.release();
+#endif
 }
 
 void GLWidget::initializeGL()
@@ -69,8 +81,8 @@ void GLWidget::initializeGL()
 #ifdef SHADERS_ENABLED
     shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/phong.vert");
     shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/phong.frag");
-//        shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/toon.vert");
-//       shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/toon.frag");
+    //        shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/toon.vert");
+    //       shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/toon.frag");
 #endif
 }
 
@@ -79,17 +91,13 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-#ifdef SHADERS_ENABLED
-    shaderProgram.bind();
-#endif
+    bindShader();
 
     glPushMatrix();
     scene->draw();
     glPopMatrix();
 
-#ifdef SHADERS_ENABLED
-    shaderProgram.release();
-#endif
+    releaseShader();
 }
 
 void GLWidget::resizeGL(int w, int h)

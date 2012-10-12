@@ -12,6 +12,9 @@ class GLWidget : public QGLWidget
     Q_OBJECT
 
 public:
+    void bindShader();
+    void releaseShader();
+
     explicit GLWidget(QWidget *parent = 0);
     ~GLWidget();
 

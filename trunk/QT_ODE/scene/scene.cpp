@@ -8,11 +8,14 @@
 #include "scene/object.h"
 #include "scene/particle.h"
 #include "scene/particleengine.h"
+#include "graphics/glwidget.h"
 
 //TODO remove QtOpenGL include, and everything else as necessary.
 
-Scene::Scene()
+Scene::Scene(GLWidget *parent)
 {
+    this->parent = parent;
+
     Physics::init(this);
     camera = new Camera();
 
@@ -55,12 +58,12 @@ Scene::Scene()
               );
 
     ParticleEngine *PE;
-    particleEngines.push_back( PE = new PESignal(0,0,0,60,this) );
-    PE->material->setDiffuse(MAT_RED);
-    particleEngines.push_back( PE = new PESignal(500,0,0,30,this) );
-    PE->material->setDiffuse(MAT_GREEN);
-    particleEngines.push_back( PE = new PESignal(-500,0,0,10,this) );
-    PE->material->setDiffuse(MAT_BLUE);
+    particleEngines.push_back( PE = new PESignal(0,0,0,30,this) );
+    PE->material->setDiffuse(MAT_WHITE);
+    particleEngines.push_back( PE = new PESignal(100,-100,0,30,this) );
+    PE->material->setDiffuse(MAT_GRAY_50);
+    particleEngines.push_back( PE = new PESignal(-100,-100,0,30,this) );
+    PE->material->setDiffuse(MAT_GRAY_25);
 }
 
 Scene::~Scene(){
@@ -83,9 +86,11 @@ void Scene::draw()
 
     camera->glApply();
 
+    parent->bindShader();
     for(std::vector<Object*>::iterator it = objects.begin(); it!= objects.end(); it++){
         (*it)->draw();
     }
+    parent->releaseShader();
 
     for(std::list<Particle*>::iterator it = particles.begin(); it!= particles.end(); it++){
         if((*it)->alive){
