@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl glu
+QT       += core gui opengl
 
 TARGET = QT_ODE
 TEMPLATE = app
