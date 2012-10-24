@@ -22,13 +22,6 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QRadioButton" name="radioButton">
-      <property name="text">
-       <string>RadioButton</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="GLFrame" name="widget" native="true"/>
     </item>
    </layout>
@@ -48,12 +41,54 @@
     </property>
     <addaction name="actionOpen"/>
    </widget>
+   <widget class="QMenu" name="menuMouse_Function">
+    <property name="title">
+     <string>Mouse Function</string>
+    </property>
+    <addaction name="actionMouseCamera"/>
+    <addaction name="actionApply_Forces"/>
+    <addaction name="actionApply_Torques"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuMouse_Function"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
+   </property>
+  </action>
+  <action name="actionMouseCamera">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Camera</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionApply_Forces">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Apply Forces</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionApply_Torques">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Apply Torques</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
    </property>
   </action>
  </widget>

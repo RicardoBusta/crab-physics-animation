@@ -8,6 +8,8 @@
 #define WorldID dWorldID
 #define SpaceID dSpaceID
 #define Mass dMass
+#define JointID dJointID
+#define JointGroupID dJointGroupID
 
 class Matrix4f;
 class Vector3f;
@@ -28,7 +30,7 @@ namespace Physics{
     void simSingleStep(Scene *scene);
     void worldStep(WorldID world, float stepSize);
     void getGeomTransform(GeomID geom, Matrix4f* transform);
-    void createObject(Object *obj, Vector3f position);
+    void createObject(Object *obj, dSpaceID space, Vector3f position);
 
     //Body Manipulation
     void bodySetTorque(BodyID body, dReal x, dReal y, dReal z);

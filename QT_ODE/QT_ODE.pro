@@ -33,7 +33,9 @@ SOURCES += \
     scene/character.cpp \
     scene/particle.cpp \
     graphics/glutil.cpp \
-    scene/particleengine.cpp
+    scene/particleengine.cpp \
+    scene/contact.cpp \
+    scene/joint.cpp
 
 HEADERS  += \
     physics/physics.h \
@@ -50,7 +52,9 @@ HEADERS  += \
     scene/character.h \
     scene/particle.h \
     graphics/glutil.h \
-    scene/particleengine.h
+    scene/particleengine.h \
+    scene/contact.h \
+    scene/joint.h
 
 FORMS    += \
     interface/mainwindow.ui

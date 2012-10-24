@@ -6,28 +6,34 @@
 #include "math/vector3f.h"
 
 void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
-    Scene *scene = ((Object*)dGeomGetData(o1))->scene;
+    if (dGeomIsSpace (o1) || dGeomIsSpace (o2)) {
+        // Collide a space with everything else
+        dSpaceCollide2 (o1, o2, data,&nearCallback);
 
-    dBodyID b1 = dGeomGetBody(o1);
-    dBodyID b2 = dGeomGetBody(o2);
+    }else{
+        Scene *scene = ((Object*)dGeomGetData(o1))->scene;
 
-    dContact contact[4];
+        dBodyID b1 = dGeomGetBody(o1);
+        dBodyID b2 = dGeomGetBody(o2);
 
-    if (int numc = dCollide (o1,o2,4,&contact[0].geom,sizeof(dContact))) {
-        for(int i=0;i<numc;i++){
+        dContact contact[4];
 
-            contact[i].surface.mode = dContactBounce; // | dContactSoftCFM;
-            // friction parameter
-            contact[i].surface.mu = dInfinity;
-            // bounce is the amount of "bouncyness".
-            contact[i].surface.bounce = 0.1;
-            // bounce_vel is the minimum incoming velocity to cause a bounce
-            contact[i].surface.bounce_vel = 0.0;
-            // constraint force mixing parameter
-            //contact.surface.soft_cfm = 0.001;
+        if (int numc = dCollide (o1,o2,4,&contact[0].geom,sizeof(dContact))) {
+            for(int i=0;i<numc;i++){
 
-            dJointID c = dJointCreateContact (scene->world,contactGroup,&contact[i]);
-            dJointAttach (c,b1,b2);
+                contact[i].surface.mode = dContactBounce; // | dContactSoftCFM;
+                // friction parameter
+                contact[i].surface.mu = dInfinity;
+                // bounce is the amount of "bouncyness".
+                contact[i].surface.bounce = 0.1;
+                // bounce_vel is the minimum incoming velocity to cause a bounce
+                contact[i].surface.bounce_vel = 0.0;
+                // constraint force mixing parameter
+                //contact.surface.soft_cfm = 0.001;
+
+                dJointID c = dJointCreateContact (scene->world,contactGroup,&contact[i]);
+                dJointAttach (c,b1,b2);
+            }
         }
     }
 }
@@ -75,13 +81,13 @@ void Physics::init(Scene *scene){
     // run simulation
 }
 
-void Physics::createObject(Object *object, Vector3f position){
+void Physics::createObject(Object *object, SpaceID space, Vector3f position){
 
 
     switch(object->shape){
         case OBJ_SPHERE:
             object->body = dBodyCreate (object->scene->world);
-            object->geometry = dCreateSphere (object->scene->space,object->properties[0]);
+            object->geometry = dCreateSphere (space,object->properties[0]);
             dGeomSetData(object->geometry, (void*)(object));
             dMassSetSphere (&object->mass,1,object->properties[0]);
             dBodySetMass (object->body,&object->mass);
@@ -90,7 +96,7 @@ void Physics::createObject(Object *object, Vector3f position){
             break;
         case OBJ_BOX:
             object->body = dBodyCreate (object->scene->world);
-            object->geometry = dCreateBox (object->scene->space,object->properties[0],object->properties[1],object->properties[2]);
+            object->geometry = dCreateBox (space,object->properties[0],object->properties[1],object->properties[2]);
             dGeomSetData(object->geometry, (void*)(object));
             dMassSetBox (&object->mass,1,object->properties[0],object->properties[1],object->properties[2]);
             dBodySetMass (object->body,&object->mass);
@@ -99,7 +105,7 @@ void Physics::createObject(Object *object, Vector3f position){
             break;
         case OBJ_CAPSULE:
             object->body = dBodyCreate (object->scene->world);
-            object->geometry = dCreateCapsule (object->scene->space,object->properties[0],object->properties[1]);
+            object->geometry = dCreateCapsule (space,object->properties[0],object->properties[1]);
             dGeomSetData(object->geometry, (void*)(object));
             dMassSetCapsule (&object->mass,1,3,object->properties[0],object->properties[1]);
             dBodySetMass (object->body,&object->mass);
@@ -108,7 +114,7 @@ void Physics::createObject(Object *object, Vector3f position){
             break;
         case OBJ_CYLINDER:
             object->body = dBodyCreate (object->scene->world);
-            object->geometry = dCreateCylinder (object->scene->space,object->properties[0],object->properties[1]);
+            object->geometry = dCreateCylinder (space,object->properties[0],object->properties[1]);
             dGeomSetData(object->geometry, (void*)(object));
             dMassSetCylinder (&object->mass,1,3,object->properties[0],object->properties[1]);
             dBodySetMass (object->body,&object->mass);
