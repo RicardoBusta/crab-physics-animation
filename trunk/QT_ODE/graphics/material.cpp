@@ -5,11 +5,11 @@
 Material::Material()
 {
     for(int i=0;i<4;i++){
-        specular[i]=0.1;
+        specular[i]=1;
         diffuse[i]=1;
         emission[i]=0;
     }
-    shininess[0]=10;
+    shininess[0]=30;
 }
 
 void Material::setColor(float component[], int color){

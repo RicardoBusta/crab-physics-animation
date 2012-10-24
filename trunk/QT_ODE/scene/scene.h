@@ -7,6 +7,7 @@ class Particle;
 class ParticleEngine;
 class Vector3f;
 class GLWidget;
+class Character;
 
 #include <vector>
 #include <list>
@@ -22,6 +23,7 @@ public:
     ~Scene();
 
     WorldID world;
+    //TopLevelSpace
     SpaceID space;
 
     //Physics
@@ -34,7 +36,7 @@ public:
 
     //Manipulate World
 
-    Object* addObject(int shape, int diffuse, int specular, float prop1, float prop2, float prop3, Vector3f position);
+    Object* addObject(int shape, int diffuse, Character* character, Vector3f properties, Vector3f position);
     void addParticle(Particle* particle);
 
     //!make private
@@ -46,6 +48,8 @@ public:
 
     Camera *camera;
     std::vector<Object*> objects;
+    std::vector<Character*> characters;
+    //std::vector<Contact*> contacts;
     std::list<Particle*> particles;
     std::vector<ParticleEngine*> particleEngines;
 

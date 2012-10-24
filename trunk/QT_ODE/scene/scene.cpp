@@ -6,6 +6,7 @@
 #include "math/matrix4f.h"
 #include "math/vector3f.h"
 #include "scene/object.h"
+#include "scene/character.h"
 #include "scene/particle.h"
 #include "scene/particleengine.h"
 #include "graphics/glwidget.h"
@@ -22,41 +23,43 @@ Scene::Scene(GLWidget *parent)
     camera->moveForward(-2000);
     camera->moveUp(200);
 
-    addObject(OBJ_PLANE, MAT_GRAY_75, MAT_WHITE,
-              5000, 0, 0,
+    addObject(OBJ_PLANE, MAT_GRAY_75, 0,
+              Vector3f(5000, 0, 0),
               Vector3f(-2500, 0, -2500)
               );
 
-    addObject(OBJ_SPHERE, MAT_MAGENTA, MAT_WHITE,
-              200, 0, 0,
+
+    addObject(OBJ_SPHERE, MAT_MAGENTA, 0,
+              Vector3f(200, 0, 0),
               Vector3f(200, 500, -1000)
               );
 
-    testObject = addObject(OBJ_BOX, MAT_DARK_GREEN, MAT_WHITE,
-                           100, 100, 100,
+    testObject = addObject(OBJ_BOX, MAT_DARK_GREEN, 0,
+                           Vector3f(100, 100, 100),
                            Vector3f(-200, 700, 100)
                            );
 
-    addObject(OBJ_BOX, MAT_ORANGE, MAT_WHITE,
-              100, 100, 100,
+    addObject(OBJ_BOX, MAT_ORANGE, 0,
+              Vector3f(100, 100, 100),
               Vector3f(200, 1000, -300)
               );
 
-    addObject(OBJ_SPHERE, MAT_BLUE, MAT_WHITE,
-              100, 0, 0,
+    addObject(OBJ_SPHERE, MAT_BLUE, 0,
+              Vector3f(100, 0, 0),
               Vector3f(-200, 200, -300)
               );
 
-    addObject(OBJ_CAPSULE, MAT_GRAY_25, MAT_WHITE,
-              100, 100, 0,
+    addObject(OBJ_CAPSULE, MAT_GRAY_25, 0,
+              Vector3f(100, 100, 0),
               Vector3f(700, 200, -300)
               );
 
-    addObject(OBJ_CYLINDER, MAT_YELLOW, MAT_WHITE,
-              100, 200, 0,
+    addObject(OBJ_CYLINDER, MAT_YELLOW, 0,
+              Vector3f(100, 200, 0),
               Vector3f(-700, 200, -300)
               );
 
+    /*
     ParticleEngine *PE;
     particleEngines.push_back( PE = new PESignal(0,0,0,30,this) );
     PE->material->setDiffuse(MAT_WHITE);
@@ -64,6 +67,7 @@ Scene::Scene(GLWidget *parent)
     PE->material->setDiffuse(MAT_GRAY_50);
     particleEngines.push_back( PE = new PESignal(-100,-100,0,30,this) );
     PE->material->setDiffuse(MAT_GRAY_25);
+*/
 }
 
 Scene::~Scene(){
@@ -72,9 +76,9 @@ Scene::~Scene(){
         delete camera;
     }
 
-    while(!objects.empty()){
-        delete objects.back();
-        objects.pop_back();
+    while(!characters.empty()){
+        delete characters.back();
+        characters.pop_back();
     }
 }
 
@@ -87,6 +91,9 @@ void Scene::draw()
     camera->glApply();
 
     parent->bindShader();
+    for(std::vector<Character*>::iterator it = characters.begin(); it!= characters.end(); it++){
+        (*it)->draw();
+    }
     for(std::vector<Object*>::iterator it = objects.begin(); it!= objects.end(); it++){
         (*it)->draw();
     }
@@ -104,16 +111,15 @@ void Scene::draw()
     }
 }
 
-Object* Scene::addObject(int shape, int diffuse, int specular, float prop0, float prop1=0, float prop2=0, Vector3f position = Vector3f(0,0,0) )
+Object* Scene::addObject(int shape, int diffuse, Character *character = 0, Vector3f properties = Vector3f(0,0,0), Vector3f position = Vector3f(0,0,0) )
 {
     Object *obj = new Object(this);
     obj->shape = (OBJECT_SHAPE)shape;
     obj->material->setDiffuse(diffuse);
-    obj->material->setSpecular(specular);
     *obj->initialPosition = position;
-    obj->properties[0] = prop0;
-    obj->properties[1] = prop1;
-    obj->properties[2] = prop2;
+    obj->properties[0] = properties.getX();
+    obj->properties[1] = properties.getY();
+    obj->properties[2] = properties.getZ();
     objects.push_back(obj);
 
     if(shape == OBJ_PLANE){
@@ -123,7 +129,7 @@ Object* Scene::addObject(int shape, int diffuse, int specular, float prop0, floa
 
     obj->scene = this;
 
-    Physics::createObject(obj, position);
+    Physics::createObject(obj, space, position);
 
     return obj;
 }
@@ -139,9 +145,10 @@ void Scene::addParticle(Particle *particle)
 
 void Scene::simulationStep()
 {
-    for(int i=0;i<1000;i++){
-        //testObject->appForce(0,61700000,0);
-        //                testObject->appTorque(3700000000,0,0);
+    for(int i=0;i<100;i++){
+//        testObject->appForce(0,61700000,0);
+
+//        testObject->appTorque(3700000000,0,0);
         //        testObject->appTorque(0,37000000,0);
         //                testObject->appTorque(0,0,3700000000);
 //        testObject->appTorque(300000000,0,30000000);
