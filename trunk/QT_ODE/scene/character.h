@@ -12,10 +12,10 @@ class Scene;
 class Character
 {
 public:
-    Character(Scene *parent);
+    Character(Scene *scene);
     ~Character();
 
-    Scene *parent;
+    Scene *scene;
 
     SpaceID space;
     JointGroupID jointGroup;

@@ -10,6 +10,7 @@
 #include "scene/particle.h"
 #include "scene/particleengine.h"
 #include "graphics/glwidget.h"
+#include "scene/joint.h"
 
 //TODO remove QtOpenGL include, and everything else as necessary.
 
@@ -26,22 +27,27 @@ Scene::Scene(GLWidget *parent)
     Character *chara = new Character(this);
     this->characters.push_back(chara);
 
+    Joint *joint = new Joint(chara);
+
+
     addObject(OBJ_PLANE, MAT_GRAY_75, 0,
               Vector3f(50000, 0, 0),
               Vector3f(-25000, 0, -25000)
               );
 
-    addObject(OBJ_SPHERE, MAT_MAGENTA, chara,
-              Vector3f(200, 0, 0),
+    joint->parent = addObject(OBJ_BOX, MAT_MAGENTA, chara,
+              Vector3f(200, 50, 300),
               Vector3f(200, 500, -1000)
               );
 
-    addObject(OBJ_BOX, MAT_YELLOW, chara,
-              Vector3f(200, 200, 200),
+    testObject = joint->child = addObject(OBJ_BOX, MAT_YELLOW, chara,
+              Vector3f(100, 100, 100),
               Vector3f(220, 1000, -910)
               );
 
-    testObject = addObject(OBJ_BOX, MAT_DARK_GREEN, 0,
+    joint->init(200,750,-1000);
+
+    addObject(OBJ_BOX, MAT_DARK_GREEN, 0,
                            Vector3f(100, 100, 100),
                            Vector3f(-200, 700, 100)
                            );
@@ -61,7 +67,7 @@ Scene::Scene(GLWidget *parent)
               Vector3f(-210, 600, -290)
               );
 
-    addObject(OBJ_BOX, MAT_GRAY_25, 0,
+    addObject(OBJ_BOX, MAT_GRAY_50, 0,
               Vector3f(100, 100, 10),
               Vector3f(700, 200, -300)
               );
@@ -124,14 +130,12 @@ void Scene::draw()
 
     camera->glApply();
 
-    parent->bindShader();
     for(std::vector<Character*>::iterator it = characters.begin(); it!= characters.end(); it++){
         (*it)->draw();
     }
     for(std::vector<Object*>::iterator it = objects.begin(); it!= objects.end(); it++){
         (*it)->draw();
     }
-    parent->releaseShader();
 
     for(std::list<Particle*>::iterator it = particles.begin(); it!= particles.end(); it++){
         if((*it)->alive){
@@ -184,9 +188,9 @@ void Scene::addParticle(Particle *particle)
 void Scene::simulationStep()
 {
     for(int i=0;i<100;i++){
-        //        testObject->appForce(0,61700000,0);
+                testObject->appForce(0,6170,0);
 
-        //        testObject->appTorque(3700000000,0,0);
+                testObject->appTorque(0,370000000,0);
         //        testObject->appTorque(0,37000000,0);
         //                testObject->appTorque(0,0,3700000000);
         //        testObject->appTorque(300000000,0,30000000);

@@ -19,7 +19,7 @@ DEFINES += \
 
 SOURCES += \
     main.cpp \
-    physics/physics.cpp \    
+    physics/physics.cpp \
     interface/glframe.cpp \
     graphics/glwidget.cpp \
     scene/scene.cpp \
