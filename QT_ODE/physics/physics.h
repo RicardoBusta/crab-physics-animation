@@ -16,6 +16,7 @@ class Vector3f;
 class Scene;
 class Object;
 class Character;
+class Joint;
 
 namespace Physics{
     // The dynamic world properties.
@@ -39,6 +40,9 @@ namespace Physics{
 
     void bodySetForce(BodyID body, dReal x, dReal y, dReal z);
     void bodyAddForce(BodyID body, dReal x, dReal y, dReal z);
+
+    void initJointBall(Joint* joint, Vector3f anchor);
+    void closeJoint(Joint* joint);
 
     //
     void initCharacter(Character *chara);

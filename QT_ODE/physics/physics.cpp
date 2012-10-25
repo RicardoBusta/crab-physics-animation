@@ -5,6 +5,7 @@
 #include "math/matrix4f.h"
 #include "math/vector3f.h"
 #include "scene/character.h"
+#include "scene/joint.h"
 
 void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
     if (dGeomIsSpace (o1) || dGeomIsSpace (o2)) {
@@ -54,7 +55,7 @@ void Physics::simSingleStep (Scene *scene)
 }
 
 void Physics::initCharacter(Character *chara){
-    chara->space = dHashSpaceCreate (chara->parent->space);
+    chara->space = dHashSpaceCreate (chara->scene->space);
     chara->jointGroup = dJointGroupCreate(0);
 }
 
@@ -161,12 +162,18 @@ void Physics::getGeomTransform(GeomID geom, Matrix4f *transform){
     */
 
     //TODO FIX THIS
+    /*
     int j[] = {+1,-1,+1,+1,
                -1,+1,-1,+1,
                +1,-1,+1,+1};
+               */
 
     for(int i=0;i<12;i++){
-            transform->set( i, j[i]*rot[i] );
+        if(i!=1 and i!=4 and i!=6 and i!=9){
+            transform->set( i, rot[i] );
+        }else{
+            transform->set( i, -rot[i] );
+        }
     }
 
     transform->set( 12, 0.0 );
@@ -175,6 +182,16 @@ void Physics::getGeomTransform(GeomID geom, Matrix4f *transform){
     transform->set( 15, 1.0 );
 
     transform->translate(pos[0],pos[1],pos[2]);
+}
+
+void Physics::initJointBall(Joint* joint, Vector3f anchor){
+    joint->joint = dJointCreateBall(joint->character->scene->world, joint->character->jointGroup);
+    dJointAttach(joint->joint, joint->parent->body, joint->child->body);
+    dJointSetBallAnchor(joint->joint, anchor.getX(), anchor.getY(), anchor.getZ());
+}
+
+void Physics::closeJoint(Joint* joint){
+    dJointDestroy(joint->joint);
 }
 
 void Physics::bodyAddTorque(dBodyID body, dReal x, dReal y, dReal z){

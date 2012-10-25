@@ -5,7 +5,7 @@
 
 Character::Character(Scene *parent)
 {
-    this->parent = parent;
+    this->scene = parent;
     Physics::initCharacter(this);
 }
 

@@ -16,6 +16,9 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <widget class="QTreeView" name="treeView"/>
+    </item>
+    <item>
      <widget class="GLFrame" name="widget" native="true"/>
     </item>
     <item>
@@ -33,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

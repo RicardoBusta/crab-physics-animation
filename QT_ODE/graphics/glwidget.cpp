@@ -44,7 +44,7 @@ void GLWidget::initializeGL()
     glEnable(GL_CULL_FACE);
 
     glShadeModel(GL_SMOOTH);
-    glEnable(GL_COLOR_MATERIAL);
+    //glEnable(GL_COLOR_MATERIAL);
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -91,13 +91,17 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
+    #ifdef SHADERS_ENABLED
     bindShader();
+    #endif
 
     glPushMatrix();
     scene->draw();
     glPopMatrix();
 
+    #ifdef SHADERS_ENABLED
     releaseShader();
+    #endif
 }
 
 void GLWidget::resizeGL(int w, int h)
