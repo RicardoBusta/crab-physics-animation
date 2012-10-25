@@ -4,6 +4,7 @@
 #include "scene/scene.h"
 #include "math/matrix4f.h"
 #include "math/vector3f.h"
+#include "scene/character.h"
 
 void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
     if (dGeomIsSpace (o1) || dGeomIsSpace (o2)) {
@@ -52,7 +53,17 @@ void Physics::simSingleStep (Scene *scene)
     dJointGroupEmpty (contactGroup);
 }
 
-void Physics::init(Scene *scene){
+void Physics::initCharacter(Character *chara){
+    chara->space = dHashSpaceCreate (chara->parent->space);
+    chara->jointGroup = dJointGroupCreate(0);
+}
+
+void Physics::closeCharacter(Character *chara){
+    dSpaceDestroy(chara->space);
+    dJointGroupDestroy(chara->jointGroup);
+}
+
+void Physics::initScene(Scene *scene){
     //!This might have to change place when many scenes are initing...
     dInitODE ();
     // create world
@@ -107,7 +118,7 @@ void Physics::createObject(Object *object, SpaceID space, Vector3f position){
             object->body = dBodyCreate (object->scene->world);
             object->geometry = dCreateCapsule (space,object->properties[0],object->properties[1]);
             dGeomSetData(object->geometry, (void*)(object));
-            dMassSetCapsule (&object->mass,1,3,object->properties[0],object->properties[1]);
+            dMassSetCapsule (&object->mass,1,1,object->properties[0],object->properties[1]);
             dBodySetMass (object->body,&object->mass);
             dGeomSetBody (object->geometry,object->body);
             dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
@@ -116,7 +127,7 @@ void Physics::createObject(Object *object, SpaceID space, Vector3f position){
             object->body = dBodyCreate (object->scene->world);
             object->geometry = dCreateCylinder (space,object->properties[0],object->properties[1]);
             dGeomSetData(object->geometry, (void*)(object));
-            dMassSetCylinder (&object->mass,1,3,object->properties[0],object->properties[1]);
+            dMassSetCylinder (&object->mass,1,1,object->properties[0],object->properties[1]);
             dBodySetMass (object->body,&object->mass);
             dGeomSetBody (object->geometry,object->body);
             dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
@@ -126,7 +137,7 @@ void Physics::createObject(Object *object, SpaceID space, Vector3f position){
     }
 }
 
-void Physics::close(Scene *scene){
+void Physics::closeScene(Scene *scene){
     // clean up
     dJointGroupDestroy (contactGroup);
     dSpaceDestroy (scene->space);
@@ -149,12 +160,13 @@ void Physics::getGeomTransform(GeomID geom, Matrix4f *transform){
     3 7 11
     */
 
+    //TODO FIX THIS
+    int j[] = {+1,-1,+1,+1,
+               -1,+1,-1,+1,
+               +1,-1,+1,+1};
+
     for(int i=0;i<12;i++){
-        if(i != 6 and i!=9 and i!=2 and i!=8){
-            transform->set( i,rot[i] );
-        }else{
-            transform->set( i,-rot[i] );
-        }
+            transform->set( i, j[i]*rot[i] );
     }
 
     transform->set( 12, 0.0 );
