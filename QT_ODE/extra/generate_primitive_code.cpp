@@ -45,7 +45,7 @@ int main() {
         out << "void " << CLASS << "::sphere(float r, Material *mat, Matrix4f *t){" << endl;
         transform_code_begin();
         //gen_sphere(10);
-        gen_icosphere(2);
+        gen_icosphere(4);
         transform_code_end();
         out << "}" << endl << endl;
 
@@ -60,7 +60,7 @@ int main() {
         out << "void " << CLASS << "::capsule(float r, float l, Material *mat, Matrix4f *t){" << endl;
         transform_code_begin();
         out << "glRotatef(90,1,0,0);" << endl;
-        gen_icocapsule(2);
+        gen_icocapsule(4);
         transform_code_end();
         out << "}" << endl << endl;
 
@@ -68,14 +68,14 @@ int main() {
         out << "void " << CLASS << "::cylinder(float r, float l, Material *mat, Matrix4f *t){" << endl;
         transform_code_begin();
         out << "glRotatef(90,1,0,0);" << endl;
-        gen_icocylinder(2);
+        gen_icocylinder(4);
         transform_code_end();
         out << "}" << endl << endl;
 
         // PLANE
         out << "void " << CLASS << "::plane(float s, Material *mat, Matrix4f *t){" << endl;
         transform_code_begin();
-        gen_chess_plane(10);
+        gen_chess_plane(100);
         transform_code_end();
         out << "}" << endl << endl;
 

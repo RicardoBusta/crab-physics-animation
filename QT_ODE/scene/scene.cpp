@@ -17,21 +17,28 @@ Scene::Scene(GLWidget *parent)
 {
     this->parent = parent;
 
-    Physics::init(this);
+    Physics::initScene(this);
     camera = new Camera();
 
     camera->moveForward(-2000);
     camera->moveUp(200);
 
+    Character *chara = new Character(this);
+    this->characters.push_back(chara);
+
     addObject(OBJ_PLANE, MAT_GRAY_75, 0,
-              Vector3f(5000, 0, 0),
-              Vector3f(-2500, 0, -2500)
+              Vector3f(50000, 0, 0),
+              Vector3f(-25000, 0, -25000)
               );
 
-
-    addObject(OBJ_SPHERE, MAT_MAGENTA, 0,
+    addObject(OBJ_SPHERE, MAT_MAGENTA, chara,
               Vector3f(200, 0, 0),
               Vector3f(200, 500, -1000)
+              );
+
+    addObject(OBJ_BOX, MAT_YELLOW, chara,
+              Vector3f(200, 200, 200),
+              Vector3f(220, 1000, -910)
               );
 
     testObject = addObject(OBJ_BOX, MAT_DARK_GREEN, 0,
@@ -49,13 +56,18 @@ Scene::Scene(GLWidget *parent)
               Vector3f(-200, 200, -300)
               );
 
-    addObject(OBJ_CAPSULE, MAT_GRAY_25, 0,
-              Vector3f(100, 100, 0),
+    addObject(OBJ_BOX, MAT_DARK_BLUE, 0,
+              Vector3f(300, 100, 100),
+              Vector3f(-210, 600, -290)
+              );
+
+    addObject(OBJ_BOX, MAT_GRAY_25, 0,
+              Vector3f(100, 100, 10),
               Vector3f(700, 200, -300)
               );
 
-    addObject(OBJ_CYLINDER, MAT_YELLOW, 0,
-              Vector3f(100, 200, 0),
+    addObject(OBJ_SPHERE, MAT_YELLOW, 0,
+              Vector3f(100, 200, 10),
               Vector3f(-700, 200, -300)
               );
 
@@ -71,9 +83,31 @@ Scene::Scene(GLWidget *parent)
 }
 
 Scene::~Scene(){
-    Physics::close(this);
+    Physics::closeScene(this);
     if(camera!=NULL){
         delete camera;
+    }
+
+    Camera *camera;
+    std::vector<Object*> objects;
+    std::vector<Character*> characters;
+    //std::vector<Contact*> contacts;
+    std::list<Particle*> particles;
+    std::vector<ParticleEngine*> particleEngines;
+
+    while(!objects.empty()){
+        delete objects.back();
+        objects.pop_back();
+    }
+
+    while(!particles.empty()){
+        delete particles.back();
+        particles.pop_back();
+    }
+
+    while(!particleEngines.empty()){
+        delete particleEngines.back();
+        particleEngines.pop_back();
     }
 
     while(!characters.empty()){
@@ -120,16 +154,20 @@ Object* Scene::addObject(int shape, int diffuse, Character *character = 0, Vecto
     obj->properties[0] = properties.getX();
     obj->properties[1] = properties.getY();
     obj->properties[2] = properties.getZ();
-    objects.push_back(obj);
+    obj->scene = this;
 
     if(shape == OBJ_PLANE){
         obj->transform->setIdentity();
         obj->transform->translate(position);
     }
 
-    obj->scene = this;
-
-    Physics::createObject(obj, space, position);
+    if(character == 0){
+        objects.push_back(obj);
+        Physics::createObject(obj, space, position);
+    }else{
+        character->objects.push_back(obj);
+        Physics::createObject(obj, character->space, position);
+    }
 
     return obj;
 }
@@ -146,12 +184,12 @@ void Scene::addParticle(Particle *particle)
 void Scene::simulationStep()
 {
     for(int i=0;i<100;i++){
-//        testObject->appForce(0,61700000,0);
+        //        testObject->appForce(0,61700000,0);
 
-//        testObject->appTorque(3700000000,0,0);
+        //        testObject->appTorque(3700000000,0,0);
         //        testObject->appTorque(0,37000000,0);
         //                testObject->appTorque(0,0,3700000000);
-//        testObject->appTorque(300000000,0,30000000);
+        //        testObject->appTorque(300000000,0,30000000);
         Physics::simSingleStep(this);
     }
 }

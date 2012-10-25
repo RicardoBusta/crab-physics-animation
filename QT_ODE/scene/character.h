@@ -7,11 +7,15 @@
 
 class Object;
 class Joint;
+class Scene;
 
 class Character
 {
 public:
-    Character();
+    Character(Scene *parent);
+    ~Character();
+
+    Scene *parent;
 
     SpaceID space;
     JointGroupID jointGroup;

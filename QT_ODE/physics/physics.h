@@ -15,6 +15,7 @@ class Matrix4f;
 class Vector3f;
 class Scene;
 class Object;
+class Character;
 
 namespace Physics{
     // The dynamic world properties.
@@ -39,9 +40,13 @@ namespace Physics{
     void bodySetForce(BodyID body, dReal x, dReal y, dReal z);
     void bodyAddForce(BodyID body, dReal x, dReal y, dReal z);
 
+    //
+    void initCharacter(Character *chara);
+    void closeCharacter(Character *chara);
+
     //Must use
-    void init(Scene *scene);
-    void close(Scene *scene);
+    void initScene(Scene *scene);
+    void closeScene(Scene *scene);
 }
 
 #endif // PHYSICS_H
