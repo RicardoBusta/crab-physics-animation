@@ -27,15 +27,54 @@ Scene::Scene(GLWidget *parent)
     Character *chara = new Character(this);
     this->characters.push_back(chara);
 
-    Joint *joint = new Joint(chara);
-
-
     addObject(OBJ_PLANE, MAT_GRAY_75, 0,
               Vector3f(50000, 0, 0),
               Vector3f(-25000, 0, -25000)
               );
 
-    joint->parent = addObject(OBJ_BOX, MAT_MAGENTA, chara,
+    Object *leg1 = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                             Vector3f(50, 150, 50),
+                             Vector3f(-50, 75, 0)
+                             );
+
+    Object *leg2 = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                             Vector3f(50, 150, 50),
+                             Vector3f(50, 75, 0)
+                             );
+
+    Object *body = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                             Vector3f(50, 150, 50),
+                             Vector3f(0, 225, 0)
+                             );
+
+    Object *arm1 = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                             Vector3f(50, 150, 50),
+                             Vector3f(50, 225, 0)
+                             );
+
+    Joint *joint = new Joint(chara);
+    joint->parent = body;
+    joint->child = leg1;
+    joint->init(-25,150,0);
+
+    joint = new Joint(chara);
+    joint->parent = body;
+    joint->child = leg2;
+    joint->init(25,150,0);
+
+    joint = new Joint(chara);
+    joint->parent = body;
+    joint->child = arm1;
+    joint->init(25,300,0);
+
+    testObject = body;
+
+    ParticleEngine *PE;
+    particleEngines.push_back( PE = new PESignal(25,300,0,30,this) );
+    PE->material->setDiffuse(MAT_WHITE);
+
+
+    /*joint->parent = addObject(OBJ_BOX, MAT_MAGENTA, chara,
               Vector3f(200, 50, 300),
               Vector3f(200, 500, -1000)
               );
@@ -46,13 +85,14 @@ Scene::Scene(GLWidget *parent)
               );
 
     joint->init(200,750,-1000);
-
-    addObject(OBJ_BOX, MAT_DARK_GREEN, 0,
+*/
+/*
+    addObject(OBJ_BOX, MAT_DARK_GREEN, chara,
                            Vector3f(100, 100, 100),
                            Vector3f(-200, 700, 100)
                            );
 
-    addObject(OBJ_BOX, MAT_ORANGE, 0,
+    addObject(OBJ_CYLINDER, MAT_ORANGE, 0,
               Vector3f(100, 100, 100),
               Vector3f(200, 1000, -300)
               );
@@ -67,7 +107,7 @@ Scene::Scene(GLWidget *parent)
               Vector3f(-210, 600, -290)
               );
 
-    addObject(OBJ_BOX, MAT_GRAY_50, 0,
+    addObject(OBJ_CAPSULE, MAT_GRAY_50, 0,
               Vector3f(100, 100, 10),
               Vector3f(700, 200, -300)
               );
@@ -76,6 +116,8 @@ Scene::Scene(GLWidget *parent)
               Vector3f(100, 200, 10),
               Vector3f(-700, 200, -300)
               );
+
+              //*/
 
     /*
     ParticleEngine *PE;
@@ -188,12 +230,14 @@ void Scene::addParticle(Particle *particle)
 void Scene::simulationStep()
 {
     for(int i=0;i<100;i++){
-                testObject->appForce(0,6170,0);
+        if(testObject!=NULL){
+            testObject->appForce(0,0,1000000);
 
-                testObject->appTorque(0,370000000,0);
-        //        testObject->appTorque(0,37000000,0);
-        //                testObject->appTorque(0,0,3700000000);
-        //        testObject->appTorque(300000000,0,30000000);
+            //testObject->appTorque(0,370000000,0);
+            //        testObject->appTorque(0,37000000,0);
+            //                testObject->appTorque(0,0,3700000000);
+            //        testObject->appTorque(300000000,0,30000000);
+        }
         Physics::simSingleStep(this);
     }
 }
