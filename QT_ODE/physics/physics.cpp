@@ -18,9 +18,10 @@ void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
         dBodyID b1 = dGeomGetBody(o1);
         dBodyID b2 = dGeomGetBody(o2);
 
-        dContact contact[4];
+        int numcont = 4;
+        dContact contact[numcont];
 
-        if (int numc = dCollide (o1,o2,4,&contact[0].geom,sizeof(dContact))) {
+        if (int numc = dCollide (o1,o2,numcont,&contact[0].geom,sizeof(dContact))) {
             for(int i=0;i<numc;i++){
 
                 contact[i].surface.mode = dContactBounce; // | dContactSoftCFM;
@@ -168,13 +169,40 @@ void Physics::getGeomTransform(GeomID geom, Matrix4f *transform){
                +1,-1,+1,+1};
                */
 
+
+    transform->set( 0, rot[0] );
+//    matrix[0]=R[0];
+    transform->set( 1, rot[4] );
+//    matrix[1]=R[4];
+    transform->set( 2, rot[8] );
+//    matrix[2]=R[8];
+    transform->set( 3, 0 );
+//    matrix[3]=0;
+    transform->set( 4, rot[1] );
+//    matrix[4]=R[1];
+    transform->set( 5, rot[5] );
+//    matrix[5]=R[5];
+    transform->set( 6, rot[9] );
+//    matrix[6]=R[9];
+    transform->set( 7, 0 );
+//    matrix[7]=0;
+    transform->set( 8, rot[2] );
+//    matrix[8]=R[2];
+    transform->set( 9, rot[6] );
+//    matrix[9]=R[6];
+    transform->set( 10, rot[10] );
+//    matrix[10]=R[10];
+    transform->set( 11, 0 );
+//    matrix[11]=0;
+
+    /*
     for(int i=0;i<12;i++){
         if(i!=1 and i!=4 and i!=6 and i!=9){
             transform->set( i, rot[i] );
         }else{
             transform->set( i, -rot[i] );
         }
-    }
+    }*/
 
     transform->set( 12, 0.0 );
     transform->set( 13, 0.0 );
@@ -188,6 +216,7 @@ void Physics::initJointBall(Joint* joint, Vector3f anchor){
     joint->joint = dJointCreateBall(joint->character->scene->world, joint->character->jointGroup);
     dJointAttach(joint->joint, joint->parent->body, joint->child->body);
     dJointSetBallAnchor(joint->joint, anchor.getX(), anchor.getY(), anchor.getZ());
+    //dJointSetBallAnchor2(joint->joint, anchor.getX(), anchor.getY(), anchor.getZ());
 }
 
 void Physics::closeJoint(Joint* joint){
