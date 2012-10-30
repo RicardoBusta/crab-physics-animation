@@ -10,6 +10,10 @@ Joint::Joint(Character *chara)
     chara->joints.push_back(this);
 }
 
+Joint::~Joint(){
+    Physics::closeJoint(this);
+}
+
 void Joint::init(int x, int y, int z)
 {
     Physics::initJointBall(this, Vector3f(x,y,z));

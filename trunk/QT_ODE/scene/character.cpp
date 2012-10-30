@@ -9,7 +9,9 @@ Character::Character(Scene *parent)
     Physics::initCharacter(this);
 }
 
-Character::~Character(){
+Character::~Character(){   
+    Physics::closeCharacter(this);
+
     while(!objects.empty()){
         delete objects.back();
         objects.pop_back();
@@ -19,8 +21,6 @@ Character::~Character(){
         delete joints.back();
         joints.pop_back();
     }
-
-    Physics::closeCharacter(this);
 }
 
 void Character::draw()

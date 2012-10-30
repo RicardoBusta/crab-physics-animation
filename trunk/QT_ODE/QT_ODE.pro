@@ -29,13 +29,13 @@ SOURCES += \
     math/vector3f.cpp \
     math/matrix4f.cpp \
     scene/object.cpp \
-    interface/mainwindow.cpp \
     scene/character.cpp \
     scene/particle.cpp \
     graphics/glutil.cpp \
     scene/particleengine.cpp \
     scene/contact.cpp \
-    scene/joint.cpp
+    scene/joint.cpp \
+    mainwindow.cpp
 
 HEADERS  += \
     physics/physics.h \
@@ -48,16 +48,16 @@ HEADERS  += \
     math/vector3f.h \
     math/matrix4f.h \
     scene/object.h \
-    interface/mainwindow.h \
     scene/character.h \
     scene/particle.h \
     graphics/glutil.h \
     scene/particleengine.h \
     scene/contact.h \
-    scene/joint.h
+    scene/joint.h \
+    mainwindow.h
 
 FORMS    += \
-    interface/mainwindow.ui
+    mainwindow.ui
 
 OTHER_FILES += \
     shaders/phong.vert \

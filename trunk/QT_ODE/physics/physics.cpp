@@ -7,6 +7,11 @@
 #include "scene/character.h"
 #include "scene/joint.h"
 
+#ifdef DEBUG_MODE
+#include <iostream>
+using namespace std;
+#endif
+
 void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
     if (dGeomIsSpace (o1) || dGeomIsSpace (o2)) {
         // Collide a space with everything else
@@ -61,8 +66,8 @@ void Physics::initCharacter(Character *chara){
 }
 
 void Physics::closeCharacter(Character *chara){
-    dSpaceDestroy(chara->space);
     dJointGroupDestroy(chara->jointGroup);
+    dSpaceDestroy(chara->space);
 }
 
 void Physics::initScene(Scene *scene){
@@ -144,6 +149,7 @@ void Physics::closeScene(Scene *scene){
     dJointGroupDestroy (contactGroup);
     dSpaceDestroy (scene->space);
     dWorldDestroy (scene->world);
+
     //!Same with close
     dCloseODE();
 }
