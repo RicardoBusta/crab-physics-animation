@@ -44,7 +44,9 @@ void GLWidget::initializeGL()
     glEnable(GL_CULL_FACE);
 
     glShadeModel(GL_SMOOTH);
+#ifndef DEF_LINUX
     glEnable(GL_COLOR_MATERIAL);
+#endif
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);

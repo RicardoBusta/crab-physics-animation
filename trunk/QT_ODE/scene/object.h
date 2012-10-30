@@ -8,7 +8,7 @@ class Vector3f;
 
 #include "physics/physics.h"
 
-enum OBJECT_SHAPE{OBJ_PLANE, OBJ_BOX, OBJ_CAPSULE, OBJ_CYLINDER, OBJ_SPHERE};
+enum OBJECT_SHAPE{OBJ_BOX, OBJ_CAPSULE, OBJ_CYLINDER, OBJ_SPHERE};
 
 class Object
 {

@@ -14,9 +14,16 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="GLFrame" name="widget" native="true"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>PushButton</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -26,11 +33,48 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuMouse">
+    <property name="title">
+     <string>Mouse</string>
+    </property>
+    <addaction name="actionCamera_FPS"/>
+    <addaction name="actionCamera_Orbit"/>
+    <addaction name="separator"/>
+    <addaction name="actionForce"/>
+    <addaction name="actionTorque"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuMouse"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionCamera_FPS">
+   <property name="text">
+    <string>Camera FPS</string>
+   </property>
+  </action>
+  <action name="actionCamera_Orbit">
+   <property name="text">
+    <string>Camera Orbit</string>
+   </property>
+  </action>
+  <action name="actionForce">
+   <property name="text">
+    <string>Force</string>
+   </property>
+  </action>
+  <action name="actionTorque">
+   <property name="text">
+    <string>Torque</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

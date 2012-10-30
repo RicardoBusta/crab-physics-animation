@@ -38,14 +38,9 @@ void Object::appForce(float x, float y, float z){
 }
 
 void Object::draw(){
-    if(shape!= OBJ_PLANE){
-        Physics::getGeomTransform(geometry, transform);
-    }
+     Physics::getGeomTransform(geometry, transform);
 
     switch(shape){
-    case OBJ_PLANE:
-        GLPrimitive::plane(properties[0], material, transform);
-        break;
     case OBJ_BOX:
         GLPrimitive::box(properties[0],properties[1],properties[2], material, transform);
         break;

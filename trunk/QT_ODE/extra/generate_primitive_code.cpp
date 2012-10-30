@@ -17,6 +17,7 @@ void gen_icosphere(int div);
 void gen_icocapsule(int div);
 void gen_icocylinder(int div);
 void gen_chess_plane(int div);
+void gen_chess_floor();
 
 ofstream out ("../graphics/glprimitive.cpp");
 
@@ -77,6 +78,13 @@ int main() {
         transform_code_begin();
         gen_chess_plane(10);
         transform_code_end();
+        out << "}" << endl << endl;
+
+        // FLOOR
+        out << "void " << CLASS << "::floor(float s, Material *mat){" << endl;
+        //transform_code_begin();
+        gen_chess_floor();
+        //transform_code_end();
         out << "}" << endl << endl;
 
         cout << "file generated with success!"<< endl;
@@ -479,6 +487,51 @@ void gen_chess_plane(int div) {
             }
         }
     }
+    out << "\tglEnd();" << endl;
+}
+
+//--------------------------------------------------------------------------------
+//FLOOR
+//--------------------------------------------------------------------------------
+
+void gen_chess_floor() {
+    out << "\t//PARAM: s : size" << endl;
+
+    out << endl << "\tmat->gl();" << endl;
+    out << "\tglBegin(GL_QUADS);" << endl;
+    out << "\tglNormal3f(0,1,0);" << endl;
+
+    float a = 10.0;
+    float b = 10.0;
+
+    for(int i=0;i<a;i++){
+        for(int j=0;j<b;j++){
+            if( (i+j)%2 == 0 ){
+                out << "\tglVertex3f(s*("<<(2*((i)/a))-1<<"),0,s*("<<(2*((j)/b))-1<<"));" << endl;
+                out << "\tglVertex3f(s*("<<(2*((i)/a))-1<<"),0,s*("<<(2*((j+1)/b))-1<<"));" << endl;
+                out << "\tglVertex3f(s*("<<(2*((i+1)/a))-1<<"),0,s*("<<(2*((j+1)/b))-1<<"));" << endl;
+                out << "\tglVertex3f(s*("<<(2*((i+1)/a))-1<<"),0,s*("<<(2*((j)/b))-1<<"));" << endl;
+            }
+        }
+    }
+
+    out << "\tglEnd();" << endl;
+
+    out << endl << "\tmat->glHalf();" << endl;
+    out << "\tglBegin(GL_QUADS);" << endl;
+    out << "\tglNormal3f(0,1,0);" << endl;
+
+    for(int i=0;i<a;i++){
+        for(int j=0;j<b;j++){
+            if( (i+j)%2 != 0 ){
+                out << "\tglVertex3f(s*("<<(2*((i)/a))-1<<"),0,s*("<<(2*((j)/b))-1<<"));" << endl;
+                out << "\tglVertex3f(s*("<<(2*((i)/a))-1<<"),0,s*("<<(2*((j+1)/b))-1<<"));" << endl;
+                out << "\tglVertex3f(s*("<<(2*((i+1)/a))-1<<"),0,s*("<<(2*((j+1)/b))-1<<"));" << endl;
+                out << "\tglVertex3f(s*("<<(2*((i+1)/a))-1<<"),0,s*("<<(2*((j)/b))-1<<"));" << endl;
+            }
+        }
+    }
+
     out << "\tglEnd();" << endl;
 }
 

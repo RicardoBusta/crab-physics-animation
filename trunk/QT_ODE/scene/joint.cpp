@@ -14,7 +14,7 @@ Joint::~Joint(){
     Physics::closeJoint(this);
 }
 
-void Joint::init(int x, int y, int z)
+void Joint::init(Vector3f anchor)
 {
-    Physics::initJointBall(this, Vector3f(x,y,z));
+    Physics::initJointBall(this, anchor);
 }
