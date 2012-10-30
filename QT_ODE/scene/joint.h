@@ -18,7 +18,7 @@ public:
 
     Joint(Character *chara);
 
-    void init(int x, int y, int z);
+    void init(Vector3f anchor);
 
     ~Joint();
 };

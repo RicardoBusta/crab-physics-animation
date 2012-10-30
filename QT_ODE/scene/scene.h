@@ -8,6 +8,7 @@ class ParticleEngine;
 class Vector3f;
 class GLWidget;
 class Character;
+class Prop;
 
 #include <vector>
 #include <list>
@@ -34,9 +35,12 @@ public:
 
     void draw();
 
+    Prop *floor;
+
     //Manipulate World
 
     Object* addObject(int shape, int diffuse, Character* character, Vector3f properties, Vector3f position);
+    Joint * addJointBall(Vector3f anchor, Object *parent, Object *child, Character *chara);
     void addParticle(Particle* particle);
 
     //!make private

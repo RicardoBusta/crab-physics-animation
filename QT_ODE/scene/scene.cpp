@@ -11,6 +11,7 @@
 #include "scene/particleengine.h"
 #include "graphics/glwidget.h"
 #include "scene/joint.h"
+#include "scene/prop.h"
 
 //TODO remove QtOpenGL include, and everything else as necessary.
 
@@ -21,125 +22,59 @@ Scene::Scene(GLWidget *parent)
     Physics::initScene(this);
     camera = new Camera();
 
+    floor = new Prop(this,PROP_PLANE);
+
     camera->moveForward(-200.0);
     camera->moveUp(20.0);
 
     Character *chara = new Character(this);
     this->characters.push_back(chara);
 
-    addObject(OBJ_PLANE, MAT_GRAY_75, 0,
-              Vector3f(50000, 0, 0),
-              Vector3f(-25000, 0, -25000)
-              );
-
-    Object *leg_right = addObject(OBJ_BOX, MAT_YELLOW, chara,
-                             Vector3f(5.0, 15.0, 5.0),
-                             Vector3f(-5.0, 7.5, 0)
-                             );
+    Object *leg_right = addObject(OBJ_BOX, MAT_CYAN, chara,
+                                  Vector3f(5.0, 15.0, 5.0),
+                                  Vector3f(-2.5, 7.5, 0)
+                                  );
 
     Object *leg_left = addObject(OBJ_BOX, MAT_YELLOW, chara,
-                             Vector3f(5.0, 15.0, 5.0),
-                             Vector3f(5.0, 7.5, 0)
-                             );
+                                 Vector3f(5.0, 15.0, 5.0),
+                                 Vector3f(2.5, 7.5, 0)
+                                 );
 
-    Object *body = addObject(OBJ_BOX, MAT_YELLOW, chara,
+    Object *body = addObject(OBJ_BOX, MAT_WHITE, chara,
                              Vector3f(5.0, 15.0, 5.0),
                              Vector3f(0, 22.5, 0)
                              );
 
     Object *arm_left = addObject(OBJ_BOX, MAT_YELLOW, chara,
-                             Vector3f(5.0, 15.0, 5.0),
-                             Vector3f(5.0, 22.5, 0)
+                                 Vector3f(5.0, 15.0, 5.0),
+                                 Vector3f(5.0, 22.5, 0)
+                                 );
+
+    Object *arm_right = addObject(OBJ_BOX, MAT_CYAN, chara,
+                                  Vector3f(5.0, 15.0, 5.0),
+                                  Vector3f(-5.0, 22.5, 0)
+                                  );
+
+    Object *head = addObject(OBJ_BOX, MAT_ORANGE, chara,
+                             Vector3f(7.0, 7.0, 7.0),
+                             Vector3f(0, 33.5, 0)
                              );
 
-    Object *arm_right = addObject(OBJ_BOX, MAT_YELLOW, chara,
-                             Vector3f(5.0, 15.0, 5.0),
-                             Vector3f(-5.0, 22.5, 0)
-                             );
+    addJointBall(Vector3f(-2.5,15.0,0), body, leg_right, chara);
 
-    Joint *joint;
+    addJointBall(Vector3f(2.5,15.0,0), body, leg_left, chara);
 
-    joint = new Joint(chara);
-    joint->parent = body;
-    joint->child = leg_right;
-    joint->init(-2.5,15.0,0);
+    addJointBall(Vector3f(-2.5,30.0,0), body, arm_right, chara);
 
-    joint = new Joint(chara);
-    joint->parent = body;
-    joint->child = leg_left;
-    joint->init(2.5,15.0,0);
+    addJointBall(Vector3f(2.5,30.0,0), body, arm_left, chara);
 
-    joint = new Joint(chara);
-    joint->parent = body;
-    joint->child = arm_left;
-    joint->init(2.5,30.0,0);
+    addJointBall(Vector3f(0,30.0,0), body, head, chara);
 
-    joint = new Joint(chara);
-    joint->parent = body;
-    joint->child = arm_right;
-    joint->init(-2.5,30.0,0);
+    testObject = head;
 
-    testObject = body;
-
-    ParticleEngine *PE;
+  /*  ParticleEngine *PE;
     particleEngines.push_back( PE = new PESignal(2.5,30.0,0,15,this) );
-    PE->material->setDiffuse(MAT_WHITE);
-
-
-    /*joint->parent = addObject(OBJ_BOX, MAT_MAGENTA, chara,
-              Vector3f(200, 50, 300),
-              Vector3f(200, 500, -1000)
-              );
-
-    testObject = joint->child = addObject(OBJ_BOX, MAT_YELLOW, chara,
-              Vector3f(100, 100, 100),
-              Vector3f(220, 1000, -910)
-              );
-
-    joint->init(200,750,-1000);
-*/
-/*
-    addObject(OBJ_BOX, MAT_DARK_GREEN, chara,
-                           Vector3f(100, 100, 100),
-                           Vector3f(-200, 700, 100)
-                           );
-
-    addObject(OBJ_CYLINDER, MAT_ORANGE, 0,
-              Vector3f(100, 100, 100),
-              Vector3f(200, 1000, -300)
-              );
-
-    addObject(OBJ_SPHERE, MAT_BLUE, 0,
-              Vector3f(100, 0, 0),
-              Vector3f(-200, 200, -300)
-              );
-
-    addObject(OBJ_BOX, MAT_DARK_BLUE, 0,
-              Vector3f(300, 100, 100),
-              Vector3f(-210, 600, -290)
-              );
-
-    addObject(OBJ_CAPSULE, MAT_GRAY_50, 0,
-              Vector3f(100, 100, 10),
-              Vector3f(700, 200, -300)
-              );
-
-    addObject(OBJ_SPHERE, MAT_YELLOW, 0,
-              Vector3f(100, 200, 10),
-              Vector3f(-700, 200, -300)
-              );
-
-              //*/
-
-    /*
-    ParticleEngine *PE;
-    particleEngines.push_back( PE = new PESignal(0,0,0,30,this) );
-    PE->material->setDiffuse(MAT_WHITE);
-    particleEngines.push_back( PE = new PESignal(100,-100,0,30,this) );
-    PE->material->setDiffuse(MAT_GRAY_50);
-    particleEngines.push_back( PE = new PESignal(-100,-100,0,30,this) );
-    PE->material->setDiffuse(MAT_GRAY_25);
-*/
+    PE->material->setDiffuse(MAT_BLACK);*/
 }
 
 Scene::~Scene(){
@@ -181,6 +116,8 @@ void Scene::draw()
 
     camera->glApply();
 
+    floor->draw();
+
     for(std::vector<Character*>::iterator it = characters.begin(); it!= characters.end(); it++){
         (*it)->draw();
     }
@@ -211,11 +148,6 @@ Object* Scene::addObject(int shape, int diffuse, Character *character = 0, Vecto
     obj->properties[2] = properties.getZ();
     obj->scene = this;
 
-    if(shape == OBJ_PLANE){
-        obj->transform->setIdentity();
-        obj->transform->translate(position);
-    }
-
     if(character == 0){
         objects.push_back(obj);
         Physics::createObject(obj, space, position);
@@ -225,6 +157,17 @@ Object* Scene::addObject(int shape, int diffuse, Character *character = 0, Vecto
     }
 
     return obj;
+}
+
+Joint *Scene::addJointBall(Vector3f anchor, Object *parent, Object *child, Character *chara){
+    Joint *joint = NULL;
+    if(chara != NULL){
+        joint = new Joint(chara);
+        joint->parent = parent;
+        joint->child = child;
+        joint->init(anchor);
+    }
+    return joint;
 }
 
 void Scene::addParticle(Particle *particle)
@@ -240,7 +183,7 @@ void Scene::simulationStep()
 {
     for(int i=0;i<10;i++){
         if(testObject!=NULL){
-            //testObject->appForce(0,0,1000000);
+            testObject->appForce(0,0,10000);
 
             //testObject->appTorque(0,370000000,0);
             //        testObject->appTorque(0,37000000,0);

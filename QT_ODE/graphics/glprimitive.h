@@ -20,6 +20,7 @@ namespace GLPrimitive
     //part of the static world
     //void plane(float a, float b, float c, float d);
     void plane(float s, Material *mat, Matrix4f *t);
+    void floor(float s, Material *mat);
 
     //don't represent a solid object
     //start at the object center and go to z direction
