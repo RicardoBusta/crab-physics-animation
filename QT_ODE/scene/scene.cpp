@@ -21,8 +21,8 @@ Scene::Scene(GLWidget *parent)
     Physics::initScene(this);
     camera = new Camera();
 
-    camera->moveForward(-2000);
-    camera->moveUp(200);
+    camera->moveForward(-200.0);
+    camera->moveUp(20.0);
 
     Character *chara = new Character(this);
     this->characters.push_back(chara);
@@ -32,45 +32,57 @@ Scene::Scene(GLWidget *parent)
               Vector3f(-25000, 0, -25000)
               );
 
-    Object *leg1 = addObject(OBJ_BOX, MAT_YELLOW, chara,
-                             Vector3f(50, 150, 50),
-                             Vector3f(-50, 75, 0)
+    Object *leg_right = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                             Vector3f(5.0, 15.0, 5.0),
+                             Vector3f(-5.0, 7.5, 0)
                              );
 
-    Object *leg2 = addObject(OBJ_BOX, MAT_YELLOW, chara,
-                             Vector3f(50, 150, 50),
-                             Vector3f(50, 75, 0)
+    Object *leg_left = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                             Vector3f(5.0, 15.0, 5.0),
+                             Vector3f(5.0, 7.5, 0)
                              );
 
     Object *body = addObject(OBJ_BOX, MAT_YELLOW, chara,
-                             Vector3f(50, 150, 50),
-                             Vector3f(0, 225, 0)
+                             Vector3f(5.0, 15.0, 5.0),
+                             Vector3f(0, 22.5, 0)
                              );
 
-    Object *arm1 = addObject(OBJ_BOX, MAT_YELLOW, chara,
-                             Vector3f(50, 150, 50),
-                             Vector3f(50, 225, 0)
+    Object *arm_left = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                             Vector3f(5.0, 15.0, 5.0),
+                             Vector3f(5.0, 22.5, 0)
                              );
 
-    Joint *joint = new Joint(chara);
-    joint->parent = body;
-    joint->child = leg1;
-    joint->init(-25,150,0);
+    Object *arm_right = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                             Vector3f(5.0, 15.0, 5.0),
+                             Vector3f(-5.0, 22.5, 0)
+                             );
+
+    Joint *joint;
 
     joint = new Joint(chara);
     joint->parent = body;
-    joint->child = leg2;
-    joint->init(25,150,0);
+    joint->child = leg_right;
+    joint->init(-2.5,15.0,0);
 
     joint = new Joint(chara);
     joint->parent = body;
-    joint->child = arm1;
-    joint->init(25,300,0);
+    joint->child = leg_left;
+    joint->init(2.5,15.0,0);
+
+    joint = new Joint(chara);
+    joint->parent = body;
+    joint->child = arm_left;
+    joint->init(2.5,30.0,0);
+
+    joint = new Joint(chara);
+    joint->parent = body;
+    joint->child = arm_right;
+    joint->init(-2.5,30.0,0);
 
     testObject = body;
 
     ParticleEngine *PE;
-    particleEngines.push_back( PE = new PESignal(25,300,0,30,this) );
+    particleEngines.push_back( PE = new PESignal(2.5,30.0,0,15,this) );
     PE->material->setDiffuse(MAT_WHITE);
 
 
@@ -132,16 +144,13 @@ Scene::Scene(GLWidget *parent)
 
 Scene::~Scene(){
     Physics::closeScene(this);
+
     if(camera!=NULL){
         delete camera;
     }
 
-    Camera *camera;
-    std::vector<Object*> objects;
     std::vector<Character*> characters;
     //std::vector<Contact*> contacts;
-    std::list<Particle*> particles;
-    std::vector<ParticleEngine*> particleEngines;
 
     while(!objects.empty()){
         delete objects.back();
@@ -229,9 +238,9 @@ void Scene::addParticle(Particle *particle)
 
 void Scene::simulationStep()
 {
-    for(int i=0;i<100;i++){
+    for(int i=0;i<10;i++){
         if(testObject!=NULL){
-            testObject->appForce(0,0,1000000);
+            //testObject->appForce(0,0,1000000);
 
             //testObject->appTorque(0,370000000,0);
             //        testObject->appTorque(0,37000000,0);

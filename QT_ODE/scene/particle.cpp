@@ -34,10 +34,10 @@ PingParticle::PingParticle(float x, float y, float z, int life, Material *materi
 void PingParticle::particleLoop(){
         glBegin(GL_LINE_LOOP);
         for(int i=0;i<36;i++){
-            glVertex3f(2*life*cos(i*M_PI/18), 2*life*sin(i*M_PI/18), 0 );
+            glVertex3f(life*cos(i*M_PI/18)/5, life*sin(i*M_PI/18)/5, 0 );
 
         }
-        glVertex3f(2*life*cos( (0)*M_PI/18), 2*life*sin( (0)*M_PI/18), 0 );
+        glVertex3f(life*cos( (0)*M_PI/18)/5, life*sin( (0)*M_PI/18)/5, 0 );
         glEnd();
     this->x += sx;
     this->y += sy;
