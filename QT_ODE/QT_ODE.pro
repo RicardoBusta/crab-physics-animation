@@ -37,7 +37,8 @@ SOURCES += \
     scene/contact.cpp \
     scene/joint.cpp \
     mainwindow.cpp \
-    scene/prop.cpp
+    scene/prop.cpp \
+    scene/interaction.cpp
 
 HEADERS  += \
     physics/physics.h \
@@ -57,7 +58,8 @@ HEADERS  += \
     scene/contact.h \
     scene/joint.h \
     mainwindow.h \
-    scene/prop.h
+    scene/prop.h \
+    scene/interaction.h
 
 FORMS    += \
     mainwindow.ui

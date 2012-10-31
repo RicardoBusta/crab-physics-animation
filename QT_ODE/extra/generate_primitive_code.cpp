@@ -501,8 +501,8 @@ void gen_chess_floor() {
     out << "\tglBegin(GL_QUADS);" << endl;
     out << "\tglNormal3f(0,1,0);" << endl;
 
-    float a = 10.0;
-    float b = 10.0;
+    float a = 20.0;
+    float b = 20.0;
 
     for(int i=0;i<a;i++){
         for(int j=0;j<b;j++){
