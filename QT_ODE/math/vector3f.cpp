@@ -46,6 +46,21 @@ void Vector3f::set(Vector3f op){
     this->z = op.z;
 }
 
+void Vector3f::setX(float x)
+{
+    this->x = x;
+}
+
+void Vector3f::setY(float y)
+{
+    this->y = y;
+}
+
+void Vector3f::setZ(float z)
+{
+    this->z = z;
+}
+
 void Vector3f::crossProductSelf(Vector3f *op)
 {
     float x=this->x;
@@ -88,6 +103,48 @@ void Vector3f::transformSelf(Matrix4f *m)
     this->x = r[0];
     this->y = r[1];
     this->z = r[2];
+}
+
+void Vector3f::addSelfX(float x)
+{
+    this->x += x;
+}
+
+void Vector3f::addSelfY(float y)
+{
+    this->y += y;
+}
+
+void Vector3f::addSelfZ(float z)
+{
+    this->z += z;
+}
+
+Vector3f Vector3f::addX(float x)
+{
+    Vector3f result;
+    result.x = this->x + x;
+    result.y = this->y;
+    result.z = this->z;
+    return result;
+}
+
+Vector3f Vector3f::addY(float y)
+{
+    Vector3f result;
+    result.x = this->x;
+    result.y = this->y + y;
+    result.z = this->z;
+    return result;
+}
+
+Vector3f Vector3f::addZ(float z)
+{
+    Vector3f result;
+    result.x = this->x;
+    result.y = this->y;
+    result.z = this->z + z;
+    return result;
 }
 
 Vector3f Vector3f::crossProduct(Vector3f *op) const

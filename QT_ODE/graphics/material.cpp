@@ -122,6 +122,12 @@ void Material::setColor(float component[], int color){
             component[2] = 0;
             component[3] = 1;
             break;
+        case MAT_DARK_ORANGE:
+            component[0] = 0.5;
+            component[1] = 0.2;
+            component[2] = 0;
+            component[3] = 1;
+            break;
         default:
             break;
     }

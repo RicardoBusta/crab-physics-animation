@@ -136,15 +136,16 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    int mousex = event->pos().x() - mousexy.x();
-    int mousey = event->pos().y() - mousexy.y();
+    float mousex = (float) ( event->pos().x() - mousexy.x() );
+    float mousey = (float) ( event->pos().y() - mousexy.y() );
 
     if(mouseButton==1){
-        scene->camera->moveSide(-(float)mousex);
-        scene->camera->moveUp((float)mousey);
+        scene->camera->rotateSide(mousex/100.0);
+        scene->camera->rotateUp(-mousey/100.0);
     }
     if(mouseButton==2){
-        scene->camera->moveForward((float)mousex);
+        scene->camera->moveSide(-mousex/10.0);
+        scene->camera->moveUp(mousey/10.0);
     }
 
     mousexy = event->pos();

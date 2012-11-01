@@ -225,6 +225,21 @@ void Physics::initJointBall(Joint* joint, Vector3f anchor){
     //dJointSetBallAnchor2(joint->joint, anchor.getX(), anchor.getY(), anchor.getZ());
 }
 
+Vector3f Physics::getJointBallAnchor( Joint* joint ){
+    Vector3f result;
+
+    dVector3 res;
+
+    dJointGetBallAnchor( joint->joint, res );
+
+    float r = res[0];
+    result.setX( r );
+    result.setY( (float)res[1] );
+    result.setZ( (float)res[2] );
+
+    return result;
+}
+
 void Physics::closeJoint(Joint* joint){
     dJointDestroy(joint->joint);
 }
