@@ -26,6 +26,14 @@ public:
     void transformSelf(Matrix4f *m);
     void normalizeSelf();
 
+    void addSelfX(float x);
+    void addSelfY(float y);
+    void addSelfZ(float z);
+
+    Vector3f addX(float x);
+    Vector3f addY(float y);
+    Vector3f addZ(float z);
+
     Vector3f crossProduct(Vector3f *op) const;
     Vector3f realProduct(float op) const;
     Vector3f subtract(Vector3f *op) const;

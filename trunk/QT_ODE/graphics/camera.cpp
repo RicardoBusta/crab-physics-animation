@@ -12,8 +12,8 @@ using namespace std;
 
 Camera::Camera()
 {
-    posAt = new Vector3f( 0.0, 0.0, 0.0 );
-    lookAt = new Vector3f( 0.0, 0.0, -1.0 );
+    posAt = new Vector3f( 0.0, 0.0, 1.0 );
+    lookAt = new Vector3f( 0.0, 0.0, 0.0 );
     upAt = new Vector3f( 0.0, 1.0, 0.0 );
 
     forward = new Vector3f();
@@ -68,17 +68,17 @@ void Camera::updateMatrix()
     matrix->set( 0, side->getX() );
     matrix->set( 4, side->getY() );
     matrix->set( 8, side->getZ() );
-    matrix->set(12, 0.0);
+    matrix->set(12, -posAt->getX());
     //------------------
     matrix->set( 1, up->getX() );
     matrix->set( 5, up->getY() );
     matrix->set( 9, up->getZ() );
-    matrix->set(13, 0.0);
+    matrix->set(13, -posAt->getY());
     //------------------
     matrix->set( 2, -forward->getX() );
     matrix->set( 6, -forward->getY() );
     matrix->set(10, -forward->getZ() );
-    matrix->set(14, 0.0);
+    matrix->set(14, -posAt->getZ());
     //------------------
     matrix->set( 3, 0.0);
     matrix->set( 7, 0.0);
@@ -86,34 +86,61 @@ void Camera::updateMatrix()
     matrix->set(15, 1.0);
     //------------------
 //    tMatrix->set( matrix );
-//    tMatrix->transpose();
+    //    tMatrix->transpose();
 }
 
 void Camera::glApply(){
     glLoadIdentity();
     float matrix4f[16];
     matrix->get(matrix4f);
-    glTranslatef(-posAt->getX(), -posAt->getY(), -posAt->getZ());
     glMultMatrixf(matrix4f);
+}
+
+
+void Camera::rotateSide(float amount)
+{
+    Vector3f res;
+    res.set( side->realProduct( amount ) );
+    lookAt->addSelf( &res );
+
+    updateMatrix();
+}
+
+void Camera::rotateUp(float amount)
+{
+    Vector3f res;
+    res.set( up->realProduct( amount ) );
+    lookAt->addSelf( &res );
+
+    updateMatrix();
 }
 
 void Camera::moveForward(float amount)
 {
     Vector3f res;
     res.set( forward->realProduct( amount ) );
+    lookAt->addSelf( &res );
     posAt->addSelf( &res );
+
+    updateMatrix();
 }
 
 void Camera::moveSide(float amount)
 {
     Vector3f res;
     res.set( side->realProduct( amount ) );
+    lookAt->addSelf( &res );
     posAt->addSelf( &res );
+
+    updateMatrix();
 }
 
 void Camera::moveUp(float amount)
 {
     Vector3f res;
     res.set( up->realProduct( amount ) );
+    lookAt->addSelf( &res );
     posAt->addSelf( &res );
+
+    updateMatrix();
 }

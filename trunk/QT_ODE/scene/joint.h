@@ -17,10 +17,11 @@ public:
     Character *character;
 
     Joint(Character *chara);
+    ~Joint();
 
     void init(Vector3f anchor);
 
-    ~Joint();
+    void draw();
 };
 
 #endif // JOINT_H

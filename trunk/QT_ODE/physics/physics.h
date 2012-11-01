@@ -42,6 +42,7 @@ namespace Physics{
     void bodyAddForce(BodyID body, dReal x, dReal y, dReal z);
 
     void initJointBall(Joint* joint, Vector3f anchor);
+    Vector3f getJointBallAnchor( Joint* joint );
     void closeJoint(Joint* joint);
 
     //

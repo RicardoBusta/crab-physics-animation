@@ -13,6 +13,9 @@ public:
     void glApply();
     void updateMatrix();
 
+    void rotateSide(float amount);
+    void rotateUp(float amount);
+
     void moveForward(float amount);
     void moveSide(float amount);
     void moveUp(float amount);
