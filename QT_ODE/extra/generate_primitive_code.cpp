@@ -104,6 +104,13 @@ int main() {
         transform_code_end();
         out << "}" << endl << endl;
 
+        // BB CIRCLE
+        out << "void " << CLASS << "::bb_circle(float r, Material *mat){" << endl;
+        //transform_code_begin();
+        gen_circle();
+        //transform_code_end();
+        out << "}" << endl << endl;
+
         cout << "file generated with success!"<< endl;
     } else cout << "Unable to open file" << endl;
 
