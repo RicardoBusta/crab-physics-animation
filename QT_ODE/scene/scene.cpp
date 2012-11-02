@@ -64,9 +64,14 @@ Scene::Scene(GLWidget *parent)
                                   );
 
 
-    Object *body = addObject(OBJ_BOX, MAT_WHITE, chara,
-                             bodyDimension,
-                             Vector3f(0, (bodyDimension.getY()/2) + footDimension.getY() + (2*legDimension.getY()), 0)
+    Object *body_bot = addObject(OBJ_BOX, MAT_WHITE, chara,
+                             bodyDimension.addY(-bodyDimension.getY()/2),
+                             Vector3f(0, (bodyDimension.getY()/4) + footDimension.getY() + (2*legDimension.getY()), 0)
+                             );
+
+    Object *body_top = addObject(OBJ_BOX, MAT_WHITE, chara,
+                             bodyDimension.addY(-bodyDimension.getY()/2),
+                             Vector3f(0, (bodyDimension.getY()*3/4) + footDimension.getY() + (2*legDimension.getY()), 0)
                              );
 
     Object *arm2_left = addObject(OBJ_BOX, MAT_YELLOW, chara,
@@ -105,29 +110,31 @@ Scene::Scene(GLWidget *parent)
 
     Joint *joint;
 
-    joint = addJointBall(leg2_left->initialPosition->addY( legDimension.getY()/2 ), body, leg2_left, chara);
+    joint = addJointBall(leg2_left->initialPosition->addY( legDimension.getY()/2 ), body_bot, leg2_left, chara);
     joint->setColor(MAT_GREEN);
     joint = addJointBall(leg1_left->initialPosition->addY( legDimension.getY()/2 ), leg2_left, leg1_left, chara);
     joint->setColor(MAT_GREEN);
     joint = addJointBall(foot_left->initialPosition->addY( footDimension.getY()/2 ).addZ((legDimension.getZ()-footDimension.getZ())/2), leg1_left, foot_left, chara);
     joint->setColor(MAT_GREEN);
 
-    joint = addJointBall(arm2_left->initialPosition->addY( armDimension.getY()/2 ).addX( -armDimension.getX()/2 ), body, arm2_left, chara);
+    joint = addJointBall(arm2_left->initialPosition->addY( armDimension.getY()/2 ).addX( -armDimension.getX()/2 ), body_top, arm2_left, chara);
     joint->setColor(MAT_GREEN);
     joint = addJointBall(arm1_left->initialPosition->addY( armDimension.getY()/2 ), arm2_left, arm1_left, chara);
     joint->setColor(MAT_GREEN);
     joint = addJointBall(hand_left->initialPosition->addY( handDimension.getY()/2 ), arm1_left, hand_left, chara);
     joint->setColor(MAT_GREEN);
 
-    joint = addJointBall(leg2_right->initialPosition->addY( legDimension.getY()/2 ), body, leg2_right, chara);
+    joint = addJointBall(leg2_right->initialPosition->addY( legDimension.getY()/2 ), body_bot, leg2_right, chara);
     joint = addJointBall(leg1_right->initialPosition->addY( legDimension.getY()/2 ), leg2_right, leg1_right, chara);
     joint = addJointBall(foot_right->initialPosition->addY( footDimension.getY()/2 ).addZ((legDimension.getZ()-footDimension.getZ())/2), leg1_right, foot_right, chara);
 
-    joint = addJointBall(arm2_right->initialPosition->addY( armDimension.getY()/2 ).addX( armDimension.getX()/2 ), body, arm2_right, chara);
+    joint = addJointBall(arm2_right->initialPosition->addY( armDimension.getY()/2 ).addX( armDimension.getX()/2 ), body_top, arm2_right, chara);
     joint = addJointBall(arm1_right->initialPosition->addY( armDimension.getY()/2 ), arm2_right, arm1_right, chara);
     joint = addJointBall(hand_right->initialPosition->addY( handDimension.getY()/2 ), arm1_right, hand_right, chara);
 
-    joint = addJointBall(head->initialPosition->addY( -headDimension.getY()/2 ), body, head, chara);
+    joint = addJointBall(head->initialPosition->addY( -headDimension.getY()/2 ), body_top, head, chara);
+    joint->setColor(MAT_CYAN);
+    joint = addJointBall(body_bot->initialPosition->addY( +bodyDimension.getY()/4 ), body_bot, body_top, chara);
     joint->setColor(MAT_CYAN);
 
     testObject = head;
@@ -175,6 +182,12 @@ void Scene::draw()
     }
 
     camera->glApply();
+
+    Material mat;
+    mat.setDiffuse(MAT_MAGENTA);
+    GLPrimitive::vector( Vector3f( 0,30,9 ), Physics::getObjectPosition(testObject), &mat);
+    //GLPrimitive::vector( Vector3f( 10,,0 ), Vector3f( 10, 10, 0 ), &mat);
+    //GLPrimitive::vector( Vector3f( -1,-20,0 ), Vector3f( 10, 10, 0 ), &mat);
 
     floor->draw();
 

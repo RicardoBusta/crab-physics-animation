@@ -19,6 +19,8 @@ public:
     void setPos(float x, float y, float z);
     void setPos( Vector3f pos );
 
+    void setRotation( Vector3f dir, Vector3f up );
+
     void translate(float x, float y, float z);
     void translate( Vector3f vector );
 

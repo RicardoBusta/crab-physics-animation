@@ -35,6 +35,8 @@ namespace Physics{
     void createObject(Object *obj, dSpaceID space, Vector3f position);
 
     //Body Manipulation
+    Vector3f getObjectPosition(Object *obj);
+
     void bodySetTorque(BodyID body, dReal x, dReal y, dReal z);
     void bodyAddTorque(BodyID body, dReal x, dReal y, dReal z);
 

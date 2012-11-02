@@ -38,7 +38,9 @@ SOURCES += \
     scene/joint.cpp \
     mainwindow.cpp \
     scene/prop.cpp \
-    scene/interaction.cpp
+    scene/interaction.cpp \
+    control/control.cpp \
+    math/quaternion4f.cpp
 
 HEADERS  += \
     physics/physics.h \
@@ -59,7 +61,9 @@ HEADERS  += \
     scene/joint.h \
     mainwindow.h \
     scene/prop.h \
-    scene/interaction.h
+    scene/interaction.h \
+    control/control.h \
+    math/quaternion4f.h
 
 FORMS    += \
     mainwindow.ui

@@ -15,6 +15,10 @@ Vector3f::~Vector3f()
 {
 }
 
+float Vector3f::size(){
+    return sqrt(x*x + y*y + z*z);
+}
+
 void Vector3f::normalizeSelf()
 {
     float d = sqrt(x*x + y*y + z*z);
@@ -194,6 +198,18 @@ Vector3f Vector3f::operator =(Vector3f v)
     this->y = v.y;
     this->z = v.z;
     return *this;
+}
+
+bool Vector3f::operator ==(Vector3f v)
+{
+    if(this->x != v.x)
+        return false;
+    if(this->y != v.y)
+        return false;
+    if(this->z != v.z)
+        return false;
+
+    return true;
 }
 
 #ifdef DEBUG_MODE

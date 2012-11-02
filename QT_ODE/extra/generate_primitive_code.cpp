@@ -20,6 +20,7 @@ void gen_icocylinder(int div);
 void gen_chess_plane(int div);
 void gen_chess_floor();
 void gen_circle();
+void gen_vector();
 
 ofstream out ("../graphics/glprimitive.cpp");
 
@@ -42,6 +43,7 @@ int main() {
         out << endl << "#include <QtOpenGL>" << endl;
         out << endl << "#include \"graphics/material.h\"" << endl;
         out << endl << "#include \"math/matrix4f.h\"" << endl;
+        out << endl << "#include \"math/vector3f.h\"" << endl;
         out << endl;
 
         // SPHERE
@@ -102,6 +104,13 @@ int main() {
         transform_code_begin();
         gen_circle();
         transform_code_end();
+        out << "}" << endl << endl;
+
+        // VECTOR
+        out << "void " << CLASS << "::vector( Vector3f vector, Vector3f pos, Material *mat){" << endl;
+        //transform_code_begin();
+        gen_vector();
+        //transform_code_end();
         out << "}" << endl << endl;
 
         // BB CIRCLE
@@ -219,9 +228,9 @@ void gen_box() {
 //--------------------------------------------------------------------------------
 
 void icosphere_wire_rec(float x1, float y1, float z1,
-                   float x2, float y2, float z2,
-                   float x3, float y3, float z3,
-                   int depth) {
+                        float x2, float y2, float z2,
+                        float x3, float y3, float z3,
+                        int depth) {
 
     float x123 = (x1+x2+x3);
     float y123 = (y1+y2+y3);
@@ -351,7 +360,7 @@ void icosphere_rec(float x1, float y1, float z1,
         out << "\tglNormal3f("<<x3<<","<<y3<<","<<z3<<");" << endl;
         //out << "\tglNormal3f("<<x123<<","<<y123<<","<<z123<<");" << endl;
         out << "\tglVertex3f(r*"<<x3<<",r*"<<y3<<",r*"<<z3<<");" << endl;
-            out << "\tglEnd();" << endl;
+        out << "\tglEnd();" << endl;
     }
 }
 
@@ -608,9 +617,9 @@ void gen_chess_floor() {
     float a = 20.0;
     float b = 20.0;
 
-    for(int i=0;i<a;i++){
-        for(int j=0;j<b;j++){
-            if( (i+j)%2 == 0 ){
+    for(int i=0; i<a; i++) {
+        for(int j=0; j<b; j++) {
+            if( (i+j)%2 == 0 ) {
                 out << "\tglVertex3f(s*("<<(2*((i)/a))-1<<"),0,s*("<<(2*((j)/b))-1<<"));" << endl;
                 out << "\tglVertex3f(s*("<<(2*((i)/a))-1<<"),0,s*("<<(2*((j+1)/b))-1<<"));" << endl;
                 out << "\tglVertex3f(s*("<<(2*((i+1)/a))-1<<"),0,s*("<<(2*((j+1)/b))-1<<"));" << endl;
@@ -625,9 +634,9 @@ void gen_chess_floor() {
     out << "\tglBegin(GL_QUADS);" << endl;
     out << "\tglNormal3f(0,1,0);" << endl;
 
-    for(int i=0;i<a;i++){
-        for(int j=0;j<b;j++){
-            if( (i+j)%2 != 0 ){
+    for(int i=0; i<a; i++) {
+        for(int j=0; j<b; j++) {
+            if( (i+j)%2 != 0 ) {
                 out << "\tglVertex3f(s*("<<(2*((i)/a))-1<<"),0,s*("<<(2*((j)/b))-1<<"));" << endl;
                 out << "\tglVertex3f(s*("<<(2*((i)/a))-1<<"),0,s*("<<(2*((j+1)/b))-1<<"));" << endl;
                 out << "\tglVertex3f(s*("<<(2*((i+1)/a))-1<<"),0,s*("<<(2*((j+1)/b))-1<<"));" << endl;
@@ -651,14 +660,74 @@ void gen_circle() {
     out << "\tglNormal3f(0,0,1);" << endl;
 
 
-        for(int i=0;i<36;i++){
-            out << "\tglVertex3f(r*("<<cos(i*M_PI/18)<<"),r*("<<sin(i*M_PI/18)<<"),0);" << endl;
-        }
-        out << "\tglVertex3f(r*("<<cos(0*M_PI/18)<<"),r*("<<sin(0*M_PI/18)<<"),0);" << endl;
+    for(int i=0; i<36; i++) {
+        out << "\tglVertex3f(r*("<<cos(i*M_PI/18)<<"),r*("<<sin(i*M_PI/18)<<"),0);" << endl;
+    }
+    out << "\tglVertex3f(r*("<<cos(0*M_PI/18)<<"),r*("<<sin(0*M_PI/18)<<"),0);" << endl;
 
     out << "\tglEnd();" << endl;
 }
 
+//--------------------------------------------------------------------------------
+// VECTOR
+//--------------------------------------------------------------------------------
+
+void gen_vector() {
+
+    out << "\tglPushMatrix(); " << endl;
+
+    out << "\tMatrix4f tt;" << endl;
+    out << "\ttt.setRotation( vector , Vector3f(0,1,0) );" << endl;
+    out << "\ttt.translate( pos );" << endl;
+
+    out << "\tfloat transform[16]; " << endl;
+    out << "\ttt.get(transform); " << endl;
+
+    out << "\tglMultMatrixf(transform); " << endl;
+    out << endl << "\tmat->gl();" << endl;
+
+    out << "\tfloat r = vector.size();" << endl;
+
+    out << "\tglBegin(GL_TRIANGLES);" << endl;
+
+    int div = 18;
+
+    for(int i=0;i<360/div;i++){
+    out << "\tglNormal3f( ("<< sin( div*(i+0.5)*(M_PI/180)) <<") , ("<< cos( div*(i+0.5)*(M_PI/180)) <<"), 0);" << endl;
+    out << "\tglVertex3f(0,0,0);" << endl;
+
+    out << "\tglNormal3f( ("<< sin(div*(i+1)*(M_PI/180)) <<") , ("<< cos( div*(i+1)*(M_PI/180)) <<"), 0);" << endl;
+    out << "\tglVertex3f(r*("<< 0.05*sin( div*(i+1)*(M_PI/180) ) <<"),r*("<< 0.05*cos( div*(i+1)*(M_PI/180) ) <<"),-r*("<< 0.8 <<"));" << endl;
+
+    out << "\tglNormal3f( ("<< sin(div*(i)*(M_PI/180)) <<") , ("<< cos( div*(i)*(M_PI/180)) <<"), 0);" << endl;
+    out << "\tglVertex3f(r*("<< 0.05*sin( div*(i)*(M_PI/180) ) <<"),r*("<< 0.05*cos( div*(i)*(M_PI/180) ) <<"),-r*("<< 0.8 <<"));" << endl;
+
+
+    out << "\tglNormal3f( ("<< sin(div*(i+0.5)*(M_PI/180)) <<") , ("<< cos( div*(i+0.5)*(M_PI/180)) <<"), 0);" << endl;
+    out << "\tglVertex3f(0,0,-r);" << endl;
+
+    out << "\tglNormal3f( ("<< sin( div*(i)*(M_PI/180)) <<") , ("<< cos( div*(i)*(M_PI/180)) <<"), 0);" << endl;
+    out << "\tglVertex3f(r*("<< 0.1*sin( div*(i)*(M_PI/180) ) <<"),r*("<< 0.1*cos( div*(i)*(M_PI/180) ) <<"),-r*("<< 0.8 <<"));" << endl;
+
+    out << "\tglNormal3f( ("<< sin( div*(i+1)*(M_PI/180)) <<") , ("<< cos( div*(i+1)*(M_PI/180)) <<"), 0);" << endl;
+    out << "\tglVertex3f(r*("<< 0.1*sin( div*(i+1)*(M_PI/180) ) <<"),r*("<< 0.1*cos( div*(i+1)*(M_PI/180) ) <<"),-r*("<< 0.8 <<"));" << endl;
+    }
+
+    out << "\tglEnd();" << endl;
+
+    out << "\tglBegin(GL_QUADS);" << endl;
+    out << "\tglNormal3f( 0, 0, 1);" << endl;
+    for(int i=0;i<360/div;i++){
+    out << "\tglVertex3f(r*("<< 0.05*sin( div*(i+1)*(M_PI/180) ) <<"),r*("<< 0.05*cos( div*(i+1)*(M_PI/180) ) <<"),-r*("<< 0.8 <<"));" << endl;
+    out << "\tglVertex3f(r*("<< 0.1*sin( div*(i+1)*(M_PI/180) ) <<"),r*("<< 0.1*cos( div*(i+1)*(M_PI/180) ) <<"),-r*("<< 0.8 <<"));" << endl;
+    out << "\tglVertex3f(r*("<< 0.1*sin( div*(i)*(M_PI/180) ) <<"),r*("<< 0.1*cos( div*(i)*(M_PI/180) ) <<"),-r*("<< 0.8 <<"));" << endl;
+    out << "\tglVertex3f(r*("<< 0.05*sin( div*(i)*(M_PI/180) ) <<"),r*("<< 0.05*cos( div*(i)*(M_PI/180) ) <<"),-r*("<< 0.8 <<"));" << endl;
+
+    }
+    out << "\tglEnd();" << endl;
+
+    out << "\tglPopMatrix(); " << endl;
+}
 
 //--------------------------------------------------------------------------------
 //SHAPE
