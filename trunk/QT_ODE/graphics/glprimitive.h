@@ -26,6 +26,9 @@ namespace GLPrimitive
     void floor(float s, Material *mat);
     void circle(float r, Material *mat, Matrix4f *t);
 
+    //Billboard
+    void bb_circle(float r, Material *mat);
+
     //don't represent a solid object
     //start at the object center and go to z direction
     void ray(float length);

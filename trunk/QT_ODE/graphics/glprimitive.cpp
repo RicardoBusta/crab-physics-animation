@@ -4471,7 +4471,7 @@ void GLPrimitive::circle(float r, Material *mat, Matrix4f *t){
 	glVertex3f(r*(0.5),r*(0.866025),0);
 	glVertex3f(r*(0.34202),r*(0.939693),0);
 	glVertex3f(r*(0.173648),r*(0.984808),0);
-	glVertex3f(r*(6.12323e-17),r*(1),0);
+	glVertex3f(r*(6.12303e-017),r*(1),0);
 	glVertex3f(r*(-0.173648),r*(0.984808),0);
 	glVertex3f(r*(-0.34202),r*(0.939693),0);
 	glVertex3f(r*(-0.5),r*(0.866025),0);
@@ -4480,7 +4480,7 @@ void GLPrimitive::circle(float r, Material *mat, Matrix4f *t){
 	glVertex3f(r*(-0.866025),r*(0.5),0);
 	glVertex3f(r*(-0.939693),r*(0.34202),0);
 	glVertex3f(r*(-0.984808),r*(0.173648),0);
-	glVertex3f(r*(-1),r*(1.22465e-16),0);
+	glVertex3f(r*(-1),r*(1.22461e-016),0);
 	glVertex3f(r*(-0.984808),r*(-0.173648),0);
 	glVertex3f(r*(-0.939693),r*(-0.34202),0);
 	glVertex3f(r*(-0.866025),r*(-0.5),0);
@@ -4489,7 +4489,7 @@ void GLPrimitive::circle(float r, Material *mat, Matrix4f *t){
 	glVertex3f(r*(-0.5),r*(-0.866025),0);
 	glVertex3f(r*(-0.34202),r*(-0.939693),0);
 	glVertex3f(r*(-0.173648),r*(-0.984808),0);
-	glVertex3f(r*(-1.83697e-16),r*(-1),0);
+	glVertex3f(r*(-1.83691e-016),r*(-1),0);
 	glVertex3f(r*(0.173648),r*(-0.984808),0);
 	glVertex3f(r*(0.34202),r*(-0.939693),0);
 	glVertex3f(r*(0.5),r*(-0.866025),0);
@@ -4501,5 +4501,51 @@ void GLPrimitive::circle(float r, Material *mat, Matrix4f *t){
 	glVertex3f(r*(1),r*(0),0);
 	glEnd();
 	glPopMatrix(); 
+}
+
+void GLPrimitive::bb_circle(float r, Material *mat){
+	//PARAM: r : ray
+
+	mat->gl();
+	glBegin(GL_LINE_LOOP);
+	glNormal3f(0,0,1);
+	glVertex3f(r*(1),r*(0),0);
+	glVertex3f(r*(0.984808),r*(0.173648),0);
+	glVertex3f(r*(0.939693),r*(0.34202),0);
+	glVertex3f(r*(0.866025),r*(0.5),0);
+	glVertex3f(r*(0.766044),r*(0.642788),0);
+	glVertex3f(r*(0.642788),r*(0.766044),0);
+	glVertex3f(r*(0.5),r*(0.866025),0);
+	glVertex3f(r*(0.34202),r*(0.939693),0);
+	glVertex3f(r*(0.173648),r*(0.984808),0);
+	glVertex3f(r*(6.12303e-017),r*(1),0);
+	glVertex3f(r*(-0.173648),r*(0.984808),0);
+	glVertex3f(r*(-0.34202),r*(0.939693),0);
+	glVertex3f(r*(-0.5),r*(0.866025),0);
+	glVertex3f(r*(-0.642788),r*(0.766044),0);
+	glVertex3f(r*(-0.766044),r*(0.642788),0);
+	glVertex3f(r*(-0.866025),r*(0.5),0);
+	glVertex3f(r*(-0.939693),r*(0.34202),0);
+	glVertex3f(r*(-0.984808),r*(0.173648),0);
+	glVertex3f(r*(-1),r*(1.22461e-016),0);
+	glVertex3f(r*(-0.984808),r*(-0.173648),0);
+	glVertex3f(r*(-0.939693),r*(-0.34202),0);
+	glVertex3f(r*(-0.866025),r*(-0.5),0);
+	glVertex3f(r*(-0.766044),r*(-0.642788),0);
+	glVertex3f(r*(-0.642788),r*(-0.766044),0);
+	glVertex3f(r*(-0.5),r*(-0.866025),0);
+	glVertex3f(r*(-0.34202),r*(-0.939693),0);
+	glVertex3f(r*(-0.173648),r*(-0.984808),0);
+	glVertex3f(r*(-1.83691e-016),r*(-1),0);
+	glVertex3f(r*(0.173648),r*(-0.984808),0);
+	glVertex3f(r*(0.34202),r*(-0.939693),0);
+	glVertex3f(r*(0.5),r*(-0.866025),0);
+	glVertex3f(r*(0.642788),r*(-0.766044),0);
+	glVertex3f(r*(0.766044),r*(-0.642788),0);
+	glVertex3f(r*(0.866025),r*(-0.5),0);
+	glVertex3f(r*(0.939693),r*(-0.34202),0);
+	glVertex3f(r*(0.984808),r*(-0.173648),0);
+	glVertex3f(r*(1),r*(0),0);
+	glEnd();
 }
 

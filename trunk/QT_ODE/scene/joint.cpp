@@ -8,6 +8,8 @@
 #include "math/matrix4f.h"
 #include "graphics/glutil.h"
 
+#include <QtOpenGL>
+
 Joint::Joint(Character *chara)
 {
     this->character = chara;
@@ -46,10 +48,13 @@ void Joint::draw()
 
     transform->setPos( pos );
 
-    GLPrimitive::sphere( 0.5, material, transform );
+    GLPrimitive::sphere( 1, material, transform );
 
-    GLUtil::push();
+    glDisable(GL_DEPTH_TEST);
+    glPushMatrix();
+    glTranslatef(pos.getX(), pos.getY(), pos.getZ());
     GLUtil::glSphereBillBoard();
-    GLPrimitive::circle( 2, material, transform );
-    GLUtil::pop();
+    GLPrimitive::bb_circle( 2, material );
+    glPopMatrix();
+    glEnable(GL_DEPTH_TEST);
 }
