@@ -5,6 +5,7 @@
 
 class Object;
 class Character;
+class Material;
 
 class Joint
 {
@@ -13,6 +14,8 @@ public:
     JointID joint;
     Object *parent;
     Object *child;
+    Material *material;
+    Matrix4f *transform;
 
     Character *character;
 
@@ -20,6 +23,7 @@ public:
     ~Joint();
 
     void init(Vector3f anchor);
+    void setColor(int color);
 
     void draw();
 };

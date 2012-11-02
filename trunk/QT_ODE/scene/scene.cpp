@@ -43,11 +43,11 @@ Scene::Scene(GLWidget *parent)
                                   );
     Object *leg1_right = addObject(OBJ_BOX, MAT_ORANGE, chara,
                                   legDimension,
-                                  Vector3f(-legDimension.getX()/2, (legDimension.getY()/2) + footDimension.getY(), 0)
+                                  Vector3f(-bodyDimension.getX()/4, (legDimension.getY()/2) + footDimension.getY(), 0)
                                   );
     Object *leg2_right = addObject(OBJ_BOX, MAT_ORANGE, chara,
                                   legDimension,
-                                  Vector3f(-legDimension.getX()/2, (legDimension.getY()/2) + legDimension.getY() + footDimension.getY(), 0)
+                                  Vector3f(-bodyDimension.getX()/4, (legDimension.getY()/2) + legDimension.getY() + footDimension.getY(), 0)
                                   );
 
     Object *foot_left = addObject(OBJ_BOX, MAT_DARK_YELLOW, chara,
@@ -56,11 +56,11 @@ Scene::Scene(GLWidget *parent)
                                   );
     Object *leg1_left = addObject(OBJ_BOX, MAT_YELLOW, chara,
                                   legDimension,
-                                  Vector3f(legDimension.getX()/2, (legDimension.getY()/2) + footDimension.getY(), 0)
+                                  Vector3f(bodyDimension.getX()/4, (legDimension.getY()/2) + footDimension.getY(), 0)
                                   );
     Object *leg2_left = addObject(OBJ_BOX, MAT_YELLOW, chara,
                                   legDimension,
-                                  Vector3f(legDimension.getX()/2, (legDimension.getY()/2) + legDimension.getY() + footDimension.getY(), 0)
+                                  Vector3f(bodyDimension.getX()/4, (legDimension.getY()/2) + legDimension.getY() + footDimension.getY(), 0)
                                   );
 
 
@@ -103,31 +103,32 @@ Scene::Scene(GLWidget *parent)
                              Vector3f(0, footDimension.getY()+2*legDimension.getY()+bodyDimension.getY()+(headDimension.getY()/2), 0)
                              );
 
-    addJointBall(leg2_left->initialPosition->addY( legDimension.getY()/2 ), body, leg2_left, chara);
-    addJointBall(leg1_left->initialPosition->addY( legDimension.getY()/2 ), leg2_left, leg1_left, chara);
-    addJointBall(foot_left->initialPosition->addY( footDimension.getY()/2 ), leg1_left, foot_left, chara);
+    Joint *joint;
 
-    addJointBall(arm2_left->initialPosition->addY( armDimension.getY()/2 ).addX( -armDimension.getX()/2 ), body, arm2_left, chara);
-    addJointBall(arm1_left->initialPosition->addY( armDimension.getY()/2 ), arm2_left, arm1_left, chara);
-    addJointBall(hand_left->initialPosition->addY( handDimension.getY()/2 ), arm1_left, hand_left, chara);
+    joint = addJointBall(leg2_left->initialPosition->addY( legDimension.getY()/2 ), body, leg2_left, chara);
+    joint->setColor(MAT_GREEN);
+    joint = addJointBall(leg1_left->initialPosition->addY( legDimension.getY()/2 ), leg2_left, leg1_left, chara);
+    joint->setColor(MAT_GREEN);
+    joint = addJointBall(foot_left->initialPosition->addY( footDimension.getY()/2 ).addZ((legDimension.getZ()-footDimension.getZ())/2), leg1_left, foot_left, chara);
+    joint->setColor(MAT_GREEN);
 
-    addJointBall(leg2_right->initialPosition->addY( legDimension.getY()/2 ), body, leg2_right, chara);
-    addJointBall(leg1_right->initialPosition->addY( legDimension.getY()/2 ), leg2_right, leg1_right, chara);
-    addJointBall(foot_right->initialPosition->addY( footDimension.getY()/2 ), leg1_right, foot_right, chara);
+    joint = addJointBall(arm2_left->initialPosition->addY( armDimension.getY()/2 ).addX( -armDimension.getX()/2 ), body, arm2_left, chara);
+    joint->setColor(MAT_GREEN);
+    joint = addJointBall(arm1_left->initialPosition->addY( armDimension.getY()/2 ), arm2_left, arm1_left, chara);
+    joint->setColor(MAT_GREEN);
+    joint = addJointBall(hand_left->initialPosition->addY( handDimension.getY()/2 ), arm1_left, hand_left, chara);
+    joint->setColor(MAT_GREEN);
 
-    addJointBall(arm2_right->initialPosition->addY( armDimension.getY()/2 ).addX( armDimension.getX()/2 ), body, arm2_right, chara);
-    addJointBall(arm1_right->initialPosition->addY( armDimension.getY()/2 ), arm2_right, arm1_right, chara);
-    addJointBall(hand_right->initialPosition->addY( handDimension.getY()/2 ), arm1_right, hand_right, chara);
+    joint = addJointBall(leg2_right->initialPosition->addY( legDimension.getY()/2 ), body, leg2_right, chara);
+    joint = addJointBall(leg1_right->initialPosition->addY( legDimension.getY()/2 ), leg2_right, leg1_right, chara);
+    joint = addJointBall(foot_right->initialPosition->addY( footDimension.getY()/2 ).addZ((legDimension.getZ()-footDimension.getZ())/2), leg1_right, foot_right, chara);
 
-    addJointBall(head->initialPosition->addY( -headDimension.getY()/2 ), body, head, chara);
+    joint = addJointBall(arm2_right->initialPosition->addY( armDimension.getY()/2 ).addX( armDimension.getX()/2 ), body, arm2_right, chara);
+    joint = addJointBall(arm1_right->initialPosition->addY( armDimension.getY()/2 ), arm2_right, arm1_right, chara);
+    joint = addJointBall(hand_right->initialPosition->addY( handDimension.getY()/2 ), arm1_right, hand_right, chara);
 
-//    addJointBall(Vector3f(2.5,15.0,0), body, leg1_left, chara);
-
-//    addJointBall(Vector3f(-2.5,30.0,0), body, arm_right, chara);
-
-//    addJointBall(Vector3f(2.5,30.0,0), body, arm_left, chara);
-
-//    addJointBall(Vector3f(0,30.0,0), body, head, chara);
+    joint = addJointBall(head->initialPosition->addY( -headDimension.getY()/2 ), body, head, chara);
+    joint->setColor(MAT_CYAN);
 
     testObject = head;
 
@@ -242,7 +243,7 @@ void Scene::simulationStep()
 {
     for(int i=0;i<10;i++){
         if(testObject!=NULL){
-//            testObject->appForce(0,30000,9000);
+            testObject->appForce(0,30000,9000);
 
             //testObject->appTorque(0,370000000,0);
             //        testObject->appTorque(0,37000000,0);

@@ -24,16 +24,16 @@ Character::~Character(){
     }
 }
 
-//#include <QtOpenGL>
+#include <QtOpenGL>
 
 void Character::draw()
 {
     for(std::vector<Object*>::iterator it=objects.begin(); it!=objects.end(); it++){
         (*it)->draw();
     }
-//    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
     for(std::vector<Joint*>::iterator it=joints.begin(); it!=joints.end(); it++){
         (*it)->draw();
     }
-//    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 }

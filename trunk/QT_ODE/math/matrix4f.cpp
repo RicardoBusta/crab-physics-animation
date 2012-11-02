@@ -45,6 +45,20 @@ float Matrix4f::get(int index) const
     }
 }
 
+void Matrix4f::setPos(float x, float y, float z)
+{
+    matrix[12] = x;
+    matrix[13] = y;
+    matrix[14] = z;
+}
+
+void Matrix4f::setPos( Vector3f pos )
+{
+    matrix[12] = pos.getX();
+    matrix[13] = pos.getY();
+    matrix[14] = pos.getZ();
+}
+
 void Matrix4f::translate(float x, float y, float z)
 {
     matrix[12] += x;

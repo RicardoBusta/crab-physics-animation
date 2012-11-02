@@ -12,6 +12,8 @@ namespace GLPrimitive
     void cylinder(float r, float l, Material *mat, Matrix4f *t);
     void capsule(float r, float l, Material *mat, Matrix4f *t);
 
+    void wire_sphere(float r, Material *mat, Matrix4f *t);
+
     //future implementation
     //void triMesh();
     //void convexHull();
@@ -19,8 +21,10 @@ namespace GLPrimitive
     //not tied to any object
     //part of the static world
     //void plane(float a, float b, float c, float d);
+
     void plane(float s, Material *mat, Matrix4f *t);
     void floor(float s, Material *mat);
+    void circle(float r, Material *mat, Matrix4f *t);
 
     //don't represent a solid object
     //start at the object center and go to z direction
