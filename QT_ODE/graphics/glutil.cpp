@@ -16,3 +16,11 @@ void GLUtil::glSphereBillBoard(){
     }
     glLoadMatrixf(matrix4f);
 }
+
+void GLUtil::push(){
+    glPushMatrix();
+}
+
+void GLUtil::pop(){
+    glPopMatrix();
+}

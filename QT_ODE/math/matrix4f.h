@@ -16,6 +16,9 @@ public:
     void get(float output[]) const;
     float get(int index) const;
 
+    void setPos(float x, float y, float z);
+    void setPos( Vector3f pos );
+
     void translate(float x, float y, float z);
     void translate( Vector3f vector );
 

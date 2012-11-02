@@ -6,15 +6,28 @@
 #include "graphics/glprimitive.h"
 #include "graphics/material.h"
 #include "math/matrix4f.h"
+#include "graphics/glutil.h"
 
 Joint::Joint(Character *chara)
 {
     this->character = chara;
     chara->joints.push_back(this);
+
+    material = new Material();
+    material->setDiffuse(MAT_RED);
+    transform = new Matrix4f();
+    transform->setIdentity();
 }
 
 Joint::~Joint(){
     Physics::closeJoint(this);
+
+    if(material!=0){
+        delete material;
+    }
+    if(transform!=0){
+        delete transform;
+    }
 }
 
 void Joint::init(Vector3f anchor)
@@ -22,15 +35,21 @@ void Joint::init(Vector3f anchor)
     Physics::initJointBall(this, anchor);
 }
 
+void Joint::setColor(int color)
+{
+    material->setDiffuse(color);
+}
+
 void Joint::draw()
 {
     Vector3f pos = Physics::getJointBallAnchor( this );
 
-    Material mat;
-    mat.setDiffuse(MAT_RED);
-    Matrix4f tra;
-    tra.setIdentity();
-    tra.translate( pos );
+    transform->setPos( pos );
 
-    GLPrimitive::sphere( 1, &mat, &tra );
+    GLPrimitive::sphere( 0.5, material, transform );
+
+    GLUtil::push();
+    GLUtil::glSphereBillBoard();
+    GLPrimitive::circle( 2, material, transform );
+    GLUtil::pop();
 }

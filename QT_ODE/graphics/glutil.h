@@ -5,6 +5,9 @@ namespace GLUtil
 {
     void glSphereBillBoard();
 
+    void push();
+    void pop();
+
 }
 
 #endif // GLUTIL_H
