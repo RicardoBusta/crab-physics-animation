@@ -3,6 +3,7 @@
 #include <QMouseEvent>
 
 #include "graphics/camera.h"
+#include "control/control.h"
 
 #ifdef DEBUG_MODE
 #include <iostream>
@@ -13,6 +14,7 @@ GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
     scene = new Scene(this);
+    control = new Control(scene);
 
     connect(&simTimer, SIGNAL(timeout()), this, SLOT(simStep()));
 
@@ -22,6 +24,7 @@ GLWidget::GLWidget(QWidget *parent) :
 GLWidget::~GLWidget()
 {
     if(scene!=NULL) delete scene;
+    if(control!=NULL) delete control;
 }
 
 void GLWidget::bindShader(){
@@ -140,12 +143,10 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     float mousey = (float) ( event->pos().y() - mousexy.y() );
 
     if(mouseButton==1){
-        scene->camera->rotateSide(mousex/100.0);
-        scene->camera->rotateUp(-mousey/100.0);
+        control->rotateCamera(mousex/100.0,mousey/100.0);
     }
     if(mouseButton==2){
-        scene->camera->moveSide(-mousex/10.0);
-        scene->camera->moveUp(mousey/10.0);
+        control->moveCamera(mousex/10.0,mousey/10.0);
     }
 
     mousexy = event->pos();

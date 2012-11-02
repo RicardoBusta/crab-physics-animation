@@ -15,6 +15,8 @@ public:
     void setY(float y);
     void setZ(float z);
 
+    float size();
+
     float getX() const;
     float getY() const;
     float getZ() const;
@@ -42,6 +44,8 @@ public:
     float dotProduct(Vector3f *op) const;
 
     Vector3f operator=(Vector3f v);
+
+    bool operator==(Vector3f v);
 
 #ifdef DEBUG_MODE
     void stdPrint() const;

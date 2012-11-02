@@ -3,6 +3,7 @@
 
 #include <QGLWidget>
 #include "scene/scene.h"
+#include "control/control.h"
 
 #include <QGLShaderProgram>
 #include <QTimer>
@@ -20,6 +21,7 @@ public:
 
 private:
     Scene *scene;
+    Control *control;
 
     void initializeGL();
     void paintGL();

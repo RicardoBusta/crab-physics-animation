@@ -3,6 +3,7 @@
 
 class Material;
 class Matrix4f;
+class Vector3f;
 
 //Draws the primitives using opengl commands.
 namespace GLPrimitive
@@ -25,6 +26,7 @@ namespace GLPrimitive
     void plane(float s, Material *mat, Matrix4f *t);
     void floor(float s, Material *mat);
     void circle(float r, Material *mat, Matrix4f *t);
+    void vector( Vector3f vector, Vector3f pos, Material *mat);
 
     //Billboard
     void bb_circle(float r, Material *mat);

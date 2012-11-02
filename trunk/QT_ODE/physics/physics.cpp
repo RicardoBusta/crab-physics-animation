@@ -39,7 +39,7 @@ void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
                 // constraint force mixing parameter
                 //contact.surface.soft_cfm = 0.001;
 
-                dJointID c = dJointCreateContact (scene->world,contactGroup,&contact[i]);
+                dJointID c = dJointCreateContact (scene->world,Physics::contactGroup,&contact[i]);
                 dJointAttach (c,b1,b2);
             }
         }
@@ -57,7 +57,7 @@ void Physics::simSingleStep (Scene *scene)
     // step the simulation
     dWorldQuickStep (scene->world,0.001);
     // remove all contact joints
-    dJointGroupEmpty (contactGroup);
+    dJointGroupEmpty (Physics::contactGroup);
 }
 
 void Physics::initCharacter(Character *chara){
@@ -81,7 +81,7 @@ void Physics::initScene(Scene *scene){
     //dWorldSetCFM (scene->world,1e-3);
     dWorldSetCFM (scene->world,1e-009);
     dCreatePlane (scene->space,0,1,0,0); //todo remove
-    contactGroup = dJointGroupCreate (0);
+    Physics::contactGroup = dJointGroupCreate (0);
 
     //juntas ligadas - >ERP:+ligadas
     //dWorldSetCFM (world,1e-009); //soft hard (colisao)- >CFM:+soft
@@ -144,9 +144,22 @@ void Physics::createObject(Object *object, SpaceID space, Vector3f position){
     }
 }
 
+Vector3f Physics::getObjectPosition(Object *obj){
+    Vector3f res;
+
+    const dReal *pos;
+    pos = dGeomGetPosition(obj->geometry);
+
+    res.setX(pos[0]);
+    res.setY(pos[1]);
+    res.setZ(pos[2]);
+
+    return res;
+}
+
 void Physics::closeScene(Scene *scene){
     // clean up
-    dJointGroupDestroy (contactGroup);
+    dJointGroupDestroy (Physics::contactGroup);
     dSpaceDestroy (scene->space);
     dWorldDestroy (scene->world);
 

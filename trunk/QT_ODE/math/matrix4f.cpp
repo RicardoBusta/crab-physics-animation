@@ -59,6 +59,44 @@ void Matrix4f::setPos( Vector3f pos )
     matrix[14] = pos.getZ();
 }
 
+void Matrix4f::setRotation(Vector3f dir, Vector3f up)
+{
+    //---------------------------------
+    Vector3f forward;
+    forward.set( dir );
+    forward.normalizeSelf();
+    //---------------------------------
+    Vector3f side;
+    if(forward == up){
+        up.addSelfX(1);
+    }
+    side.set( forward.crossProduct( &up ) );
+    side.normalizeSelf();
+    //---------------------------------
+    Vector3f rup;
+    rup.set( side.crossProduct( &forward ) );
+    //---------------------------------
+    set( 0, side.getX() );
+    set( 1, side.getY() );
+    set( 2, side.getZ() );
+    set( 3, 0 );
+    //------------------
+    set( 4, rup.getX() );
+    set( 5, rup.getY() );
+    set( 6, rup.getZ() );
+    set( 7, 0 );
+    //------------------
+    set( 8, -forward.getX() );
+    set( 9, -forward.getY() );
+    set(10, -forward.getZ() );
+    set(11, 0 );
+    //------------------
+    set(12, 0 );
+    set(13, 0 );
+    set(14, 0 );
+    set(15, 1 );
+}
+
 void Matrix4f::translate(float x, float y, float z)
 {
     matrix[12] += x;
