@@ -187,6 +187,15 @@ Vector3f Vector3f::add(Vector3f *op) const
     return result;
 }
 
+Vector3f Vector3f::add(Vector3f op) const
+{
+    Vector3f result;
+    result.x = ( this->x + op.x );
+    result.y = ( this->y + op.y );
+    result.z = ( this->z + op.z );
+    return result;
+}
+
 float Vector3f::dotProduct(Vector3f *op) const
 {
     return ( x*op->x + y*op->y + z*op->z );

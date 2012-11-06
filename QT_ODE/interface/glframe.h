@@ -10,15 +10,16 @@ class GLFrame : public QWidget
 public:
     explicit GLFrame(QWidget *parent = 0);
     ~GLFrame();
-    
+
+    GLWidget *glwidget;
+
 private:
     void resizeEvent(QResizeEvent *);
 
-    GLWidget *glwidget;
 signals:
-    
+
 public slots:
-    
+
 };
 
 #endif // GLFRAME_H

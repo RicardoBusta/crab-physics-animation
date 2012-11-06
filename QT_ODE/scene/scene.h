@@ -37,6 +37,9 @@ public:
 
     Prop *floor;
 
+    Vector3f *externalForce;
+    Vector3f *externalTorque;
+
     //Manipulate World
 
     Object* addObject(int shape, int diffuse, Character* character, Vector3f properties, Vector3f position);
@@ -56,8 +59,7 @@ public:
     //std::vector<Contact*> contacts;
     std::list<Particle*> particles;
     std::vector<ParticleEngine*> particleEngines;
-
-    Object *testObject;
+    std::list<Object*> selectedObjects;
 };
 
 #endif // SCENE_H
