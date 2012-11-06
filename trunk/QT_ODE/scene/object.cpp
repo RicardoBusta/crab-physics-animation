@@ -33,8 +33,18 @@ void Object::appTorque(float x, float y, float z){
     Physics::bodyAddTorque(body,x,y,z);
 }
 
+void Object::appTorque(Vector3f *torque)
+{
+    Physics::bodyAddTorque(body, torque->getX(), torque->getY(), torque->getZ());
+}
+
 void Object::appForce(float x, float y, float z){
     Physics::bodyAddForce(body,x,y,z);
+}
+
+void Object::appForce(Vector3f *force)
+{
+    Physics::bodyAddForce(body, force->getX(), force->getY(), force->getZ());
 }
 
 void Object::draw(){

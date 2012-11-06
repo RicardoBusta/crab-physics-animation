@@ -28,7 +28,9 @@ public:
     Mass mass;
 
     void appTorque(float x, float y, float z);
+    void appTorque(Vector3f *torque);
     void appForce(float x, float y, float z);
+    void appForce(Vector3f *force);
 
     //------------------
     // Graphics

@@ -96,17 +96,17 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    #ifdef SHADERS_ENABLED
+#ifdef SHADERS_ENABLED
     bindShader();
-    #endif
+#endif
 
     glPushMatrix();
     scene->draw();
     glPopMatrix();
 
-    #ifdef SHADERS_ENABLED
+#ifdef SHADERS_ENABLED
     releaseShader();
-    #endif
+#endif
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -137,13 +137,31 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
 #include "scene/object.h"
 
+void GLWidget::setMouseFunction(MOUSE_FUNCTION mouse){
+    control->mouse = mouse;
+}
+
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
     float mousex = (float) ( event->pos().x() - mousexy.x() );
     float mousey = (float) ( event->pos().y() - mousexy.y() );
+    float mouserx = -((float) (this->width()/2) - mousexy.x());
+    float mousery = (float) (this->height()/2) - mousexy.y();
 
     if(mouseButton==1){
-        control->rotateCamera(mousex/100.0,mousey/100.0);
+        switch(control->mouse){
+            case MOUSE_FPS:
+                control->rotateCamera(mousex/100.0,mousey/100.0);
+                break;
+            case MOUSE_ORBIT:
+                break;
+            case MOUSE_FORCE:
+                control->applyForce(mouserx*1000,mousery*1000);
+                break;
+            case MOUSE_TORQUE:
+                control->applyTorque(mouserx*1000,mousery*1000);
+                break;
+        }
     }
     if(mouseButton==2){
         control->moveCamera(mousex/10.0,mousey/10.0);
@@ -153,7 +171,13 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 
     scene->camera->updateMatrix();
 
-    update();
+    //update();
+}
+
+void GLWidget::mouseReleaseEvent(QMouseEvent *)
+{
+    control->applyForce(0,0);
+    control->applyTorque(0,0);
 }
 
 void GLWidget::simStep(){

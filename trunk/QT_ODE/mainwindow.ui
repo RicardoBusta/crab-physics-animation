@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="GLFrame" name="widget" native="true"/>
+     <widget class="GLFrame" name="glframe" native="true"/>
     </item>
     <item>
      <widget class="QPushButton" name="pushButton">
@@ -56,23 +56,50 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionCamera_FPS">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Camera FPS</string>
    </property>
+   <property name="shortcut">
+    <string>C</string>
+   </property>
   </action>
   <action name="actionCamera_Orbit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Camera Orbit</string>
    </property>
+   <property name="shortcut">
+    <string>V</string>
+   </property>
   </action>
   <action name="actionForce">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Force</string>
    </property>
+   <property name="shortcut">
+    <string>F</string>
+   </property>
   </action>
   <action name="actionTorque">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Torque</string>
+   </property>
+   <property name="shortcut">
+    <string>T</string>
    </property>
   </action>
  </widget>

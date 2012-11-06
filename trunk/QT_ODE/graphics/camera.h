@@ -19,7 +19,7 @@ public:
     void moveForward(float amount);
     void moveSide(float amount);
     void moveUp(float amount);
-private:
+public:
     //Control points
     Vector3f *posAt;
     Vector3f *lookAt;

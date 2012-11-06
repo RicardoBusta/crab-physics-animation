@@ -37,11 +37,16 @@ public:
     Vector3f addZ(float z);
 
     Vector3f crossProduct(Vector3f *op) const;
+    Vector3f crossProduct(Vector3f op) const;
     Vector3f realProduct(float op) const;
     Vector3f subtract(Vector3f *op) const;
+    Vector3f subtract(Vector3f op) const;
     Vector3f add(Vector3f *op) const;
+    Vector3f add(Vector3f op) const;
     Vector3f transform(Matrix4f *m) const;
+    Vector3f transform(Matrix4f m) const;
     float dotProduct(Vector3f *op) const;
+    float dotProduct(Vector3f op) const;
 
     Vector3f operator=(Vector3f v);
 

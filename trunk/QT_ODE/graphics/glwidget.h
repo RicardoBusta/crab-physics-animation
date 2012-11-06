@@ -16,6 +16,8 @@ public:
     void bindShader();
     void releaseShader();
 
+    void setMouseFunction(MOUSE_FUNCTION mouse);
+
     explicit GLWidget(QWidget *parent = 0);
     ~GLWidget();
 
@@ -29,6 +31,7 @@ private:
 
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
 
     QPoint mousexy;
     int mouseButton;
@@ -40,12 +43,12 @@ private:
 #endif
 
 signals:
-    
+
 public slots:
 
 private slots:
     void simStep();
-    
+
 };
 
 #endif // GLWIDGET_H
