@@ -11,24 +11,24 @@ Control::Control(Scene *scene){
 
 void Control::rotateCamera(float rx, float ry){
     if(scene != 0){
-        scene->camera->rotateSide(rx);
-        scene->camera->rotateUp(-ry);
+        scene->camera->rotateSide(rx*0.01);
+        scene->camera->rotateUp(-ry*0.01);
     }
 }
 
 void Control::moveCamera(float mx, float my){
     if(scene != 0){
-        scene->camera->moveSide(-mx);
-        scene->camera->moveUp(my);
+        scene->camera->moveSide(-mx*0.01);
+        scene->camera->moveUp(my*0.01);
     }
 }
 
 void Control::applyForce(float x, float y)
 {
-    *scene->externalForce = scene->camera->side->realProduct(x).add( scene->camera->up->realProduct(y) );
+    *scene->externalForce = scene->camera->side->realProduct(x*100).add( scene->camera->up->realProduct(y*100) );
 }
 
 void Control::applyTorque(float x, float y)
 {
-    *scene->externalTorque = scene->camera->side->realProduct(x).add( scene->camera->up->realProduct(y) );
+    *scene->externalTorque = scene->camera->side->realProduct(x*100).add( scene->camera->up->realProduct(y*100) );
 }

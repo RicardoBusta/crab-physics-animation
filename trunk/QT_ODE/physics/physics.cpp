@@ -77,6 +77,7 @@ void Physics::initScene(Scene *scene){
     scene->world = dWorldCreate ();
     scene->space = dHashSpaceCreate (0);
     dWorldSetGravity (scene->world,0,-9.8,0);
+    //dWorldSetGravity (scene->world,0,0.1,0);
     dWorldSetERP (scene->world,0.2);
     //dWorldSetCFM (scene->world,1e-3);
     dWorldSetCFM (scene->world,1e-009);
@@ -99,49 +100,40 @@ void Physics::initScene(Scene *scene){
     // run simulation
 }
 
-void Physics::createObject(Object *object, SpaceID space, Vector3f position){
+void Physics::createObject(Object *object, SpaceID space, float density, Vector3f position, Vector3f rotation){
 
 
     switch(object->shape){
         case OBJ_SPHERE:
             object->body = dBodyCreate (object->scene->world);
             object->geometry = dCreateSphere (space,object->properties[0]);
-            dGeomSetData(object->geometry, (void*)(object));
-            dMassSetSphere (&object->mass,1,object->properties[0]);
-            dBodySetMass (object->body,&object->mass);
-            dGeomSetBody (object->geometry,object->body);
-            dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
+            dMassSetSphere (&object->mass,density,object->properties[0]);
             break;
         case OBJ_BOX:
             object->body = dBodyCreate (object->scene->world);
             object->geometry = dCreateBox (space,object->properties[0],object->properties[1],object->properties[2]);
-            dGeomSetData(object->geometry, (void*)(object));
-            dMassSetBox (&object->mass,1,object->properties[0],object->properties[1],object->properties[2]);
-            dBodySetMass (object->body,&object->mass);
-            dGeomSetBody (object->geometry,object->body);
-            dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
+            dMassSetBox (&object->mass,density,object->properties[0],object->properties[1],object->properties[2]);
             break;
         case OBJ_CAPSULE:
             object->body = dBodyCreate (object->scene->world);
             object->geometry = dCreateCapsule (space,object->properties[0],object->properties[1]);
-            dGeomSetData(object->geometry, (void*)(object));
-            dMassSetCapsule (&object->mass,1,1,object->properties[0],object->properties[1]);
-            dBodySetMass (object->body,&object->mass);
-            dGeomSetBody (object->geometry,object->body);
-            dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
+            dMassSetCapsule (&object->mass,density,1,object->properties[0],object->properties[1]);
             break;
         case OBJ_CYLINDER:
             object->body = dBodyCreate (object->scene->world);
             object->geometry = dCreateCylinder (space,object->properties[0],object->properties[1]);
-            dGeomSetData(object->geometry, (void*)(object));
-            dMassSetCylinder (&object->mass,1,1,object->properties[0],object->properties[1]);
-            dBodySetMass (object->body,&object->mass);
-            dGeomSetBody (object->geometry,object->body);
-            dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
+            dMassSetCylinder (&object->mass,density,1,object->properties[0],object->properties[1]);
             break;
         default:
+            return;
             break;
     }
+
+    dGeomSetData(object->geometry, (void*)(object));
+    dBodySetMass (object->body,&object->mass);
+    dGeomSetBody (object->geometry,object->body);
+    dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
+    //dBodySetRotation (object->body,tr);
 }
 
 Vector3f Physics::getObjectPosition(Object *obj){

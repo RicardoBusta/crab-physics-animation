@@ -17,6 +17,7 @@ public:
     ~Object();
 
     void draw();
+    void drawSelected();
 public:
     Scene *scene;
 

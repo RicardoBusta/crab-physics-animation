@@ -32,7 +32,7 @@ namespace Physics{
     void simSingleStep(Scene *scene);
     void worldStep(WorldID world, float stepSize);
     void getGeomTransform(GeomID geom, Matrix4f* transform);
-    void createObject(Object *obj, dSpaceID space, Vector3f position);
+    void createObject(Object *obj, dSpaceID space, float density, Vector3f position, Vector3f rotation);
 
     //Body Manipulation
     Vector3f getObjectPosition(Object *obj);
