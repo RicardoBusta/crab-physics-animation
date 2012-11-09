@@ -112,8 +112,10 @@ Scene::Scene(GLWidget *parent)
                              );
 
     selectedObjects.push_back(head);
-    selectedObjects.push_back(hand_left);
-    selectedObjects.push_back(hand_right);
+    //selectedObjects.push_back(hand_left);
+//    selectedObjects.push_back(hand_right);
+//    selectedObjects.push_back(foot_right);
+//    selectedObjects.push_back(foot_left);
 
     Joint *joint;
 
@@ -200,10 +202,10 @@ Object* Scene::addObject(int shape, int diffuse, Character *character = 0, Vecto
 
     if(character == 0){
         objects.push_back(obj);
-        Physics::createObject(obj, space, position);
+        Physics::createObject(obj, space, 1, position, NULL);
     }else{
         character->objects.push_back(obj);
-        Physics::createObject(obj, character->space, position);
+        Physics::createObject(obj, character->space, 1, position, NULL);
     }
 
     return obj;
@@ -235,22 +237,22 @@ void Scene::draw()
 
     camera->glApply();
 
+    floor->draw();
+
     Material mat;
     Vector3f drawVec;
 
     for(std::list<Object*>::iterator it = selectedObjects.begin(); it!=selectedObjects.end(); it++){
         drawVec = *externalForce;
         mat.setDiffuse(MAT_MAGENTA);
-        drawVec.realProductSelf(0.0001);
+        drawVec.realProductSelf(0.001);
         GLPrimitive::vector( drawVec , Physics::getObjectPosition((*it)), &mat);
 
         drawVec = *externalTorque;
         mat.setDiffuse(MAT_GREEN);
-        drawVec.realProductSelf(0.0001);
+        drawVec.realProductSelf(0.001);
         GLPrimitive::vector( drawVec , Physics::getObjectPosition((*it)), &mat);
     }
-
-    floor->draw();
 
     for(std::vector<Character*>::iterator it = characters.begin(); it!= characters.end(); it++){
         (*it)->draw();
@@ -269,11 +271,17 @@ void Scene::draw()
             delete p;
         }
     }
+
+    glDisable(GL_DEPTH_TEST);
+    for(std::list<Object*>::iterator it = selectedObjects.begin(); it!=selectedObjects.end(); it++){
+        (*it)->drawSelected();
+    }
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Scene::simulationStep()
 {
-    for(int i=0;i<10;i++){
+    for(int i=0;i<50;i++){
         for(std::list<Object*>::iterator it = selectedObjects.begin(); it!=selectedObjects.end(); it++){
             (*it)->appForce(externalForce);
             (*it)->appTorque(externalTorque);

@@ -45,6 +45,16 @@ float Matrix4f::get(int index) const
     }
 }
 
+float Matrix4f::getPosX(){
+    return matrix[12];
+}
+float Matrix4f::getPosY(){
+    return matrix[13];
+}
+float Matrix4f::getPosZ(){
+    return matrix[14];
+}
+
 void Matrix4f::setPos(float x, float y, float z)
 {
     matrix[12] = x;

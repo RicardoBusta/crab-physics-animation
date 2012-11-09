@@ -5,6 +5,12 @@
 #include "math/vector3f.h"
 #include "graphics/material.h"
 
+#include <QtOpenGL>
+#include "graphics/glutil.h"
+
+#include "scene/scene.h"
+#include "graphics/camera.h"
+
 Object::Object(Scene *scene)
 {
     this->scene = scene;
@@ -48,22 +54,56 @@ void Object::appForce(Vector3f *force)
 }
 
 void Object::draw(){
-     Physics::getGeomTransform(geometry, transform);
+    Physics::getGeomTransform(geometry, transform);
 
     switch(shape){
-    case OBJ_BOX:
-        GLPrimitive::box(properties[0],properties[1],properties[2], material, transform);
-        break;
-    case OBJ_SPHERE:
-        GLPrimitive::sphere(properties[0], material, transform);
-        break;
-    case OBJ_CYLINDER:
-        GLPrimitive::cylinder(properties[0], properties[1], material, transform);
-        break;
-    case OBJ_CAPSULE:
-        GLPrimitive::capsule(properties[0],properties[1], material, transform);
-        break;
-    default:
-        break;
+        case OBJ_BOX:
+            GLPrimitive::box(properties[0],properties[1],properties[2], material, transform);
+            break;
+        case OBJ_SPHERE:
+            GLPrimitive::sphere(properties[0], material, transform);
+            break;
+        case OBJ_CYLINDER:
+            GLPrimitive::cylinder(properties[0], properties[1], material, transform);
+            break;
+        case OBJ_CAPSULE:
+            GLPrimitive::capsule(properties[0],properties[1], material, transform);
+            break;
+        default:
+            break;
+    }
+}
+
+
+void Object::drawSelected(){
+    Physics::getGeomTransform(geometry, transform);
+
+    Vector3f normal = scene->camera->forward->realProduct(-1);
+
+    switch(shape){
+        case OBJ_BOX:
+            glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
+            GLPrimitive::wire_box(properties[0],properties[1],properties[2], material, transform);
+            break;
+        case OBJ_SPHERE:
+            glDisable(GL_DEPTH_TEST);
+            glPushMatrix();
+            glTranslatef(transform->getPosX(), transform->getPosY(), transform->getPosZ());
+            GLUtil::glSphereBillBoard();
+            material->glInverse();
+            glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
+            GLPrimitive::bb_circle( properties[0], 0 );
+            glPopMatrix();
+            glEnable(GL_DEPTH_TEST);
+//            GLPrimitive::wire_sphere(properties[0], material, transform);
+            break;
+        case OBJ_CYLINDER:
+            GLPrimitive::cylinder(properties[0], properties[1], material, transform);
+            break;
+        case OBJ_CAPSULE:
+            GLPrimitive::capsule(properties[0],properties[1], material, transform);
+            break;
+        default:
+            break;
     }
 }

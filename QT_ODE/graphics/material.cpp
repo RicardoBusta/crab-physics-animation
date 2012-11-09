@@ -140,6 +140,14 @@ void Material::setDiffuse(int color){
    diffuse_2[1] = 0.5*diffuse[1];
    diffuse_2[2] = 0.5*diffuse[2];
    diffuse_2[3] = diffuse[3];
+
+   diffuse_inv[0] = 1.0-diffuse[0];
+   diffuse_inv[1] = 1.0-diffuse[1];
+   diffuse_inv[2] = 1.0-diffuse[2];
+//   diffuse_inv[0] = 0;
+//   diffuse_inv[1] = 1;
+//   diffuse_inv[2] = 0;
+   diffuse_inv[3] = diffuse[3];
 }
 
 void Material::setSpecular(int color){
@@ -161,5 +169,12 @@ void Material::glHalf(){
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_2);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
+}
+
+void Material::glInverse(){
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_inv);
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
 }

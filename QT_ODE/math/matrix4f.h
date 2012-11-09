@@ -16,6 +16,10 @@ public:
     void get(float output[]) const;
     float get(int index) const;
 
+    float getPosX();
+    float getPosY();
+    float getPosZ();
+
     void setPos(float x, float y, float z);
     void setPos( Vector3f pos );
 

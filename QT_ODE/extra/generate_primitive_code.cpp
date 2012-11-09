@@ -11,8 +11,11 @@ using namespace std;
 #define CLASS "GLPrimitive"
 #define PI_180 0.017453292519943295769
 
+#define INVERSE_GROWTH 1.3
+
 void gen_sphere(int div);
 void gen_box();
+void gen_box_wire();
 void gen_icosphere(int div);
 void gen_icosphere_wire(int div);
 void gen_icocapsule(int div);
@@ -32,6 +35,17 @@ void transform_code_begin() {
 }
 void transform_code_end() {
     out << "\tglPopMatrix(); " << endl;
+}
+void material_code(bool inverse=false, bool half = false){
+    out << endl << "if(mat!=NULL){" << endl;
+    if(half){
+        out << endl << "\tmat->glHalf();" << endl;
+    }else if(inverse){
+        out << endl << "\tmat->glInverse();" << endl;
+    }else{
+        out << endl << "\tmat->gl();" << endl;
+    }
+    out << endl << "}" << endl;
 }
 
 int main() {
@@ -66,6 +80,13 @@ int main() {
         out << "void " << CLASS << "::box(float lx, float ly, float lz, Material *mat, Matrix4f *t){" << endl;
         transform_code_begin();
         gen_box();
+        transform_code_end();
+        out << "}" << endl << endl;
+
+        // WIRE BOX
+        out << "void " << CLASS << "::wire_box(float lx, float ly, float lz, Material *mat, Matrix4f *t){" << endl;
+        transform_code_begin();
+        gen_box_wire();
         transform_code_end();
         out << "}" << endl << endl;
 
@@ -138,7 +159,7 @@ void gen_sphere(int div) {
     float angj = PI_180*360.0/div;
     float ai1,ai2,aj1,aj2,x,y,z;
 
-    out << endl << "\tmat->gl();" << endl;
+    material_code();
 
     for(int i=0; i<div/2; i++) {
         ai1 = angi*i+90;
@@ -179,7 +200,7 @@ void gen_box() {
     out << "\t//BOX" << endl;
     out << "\t//PARAM: lx : x length / ly : y length / lz : z length" << endl;
 
-    out << endl << "\tmat->gl();" << endl;
+    material_code();
 
     out << "\tfloat lx_2 = lx/2, ly_2 = ly/2, lz_2 = lz/2;" << endl;
 
@@ -224,7 +245,7 @@ void gen_box() {
 }
 
 //--------------------------------------------------------------------------------
-//ICOSPHERE
+//ICOSPHERE WIRE
 //--------------------------------------------------------------------------------
 
 void icosphere_wire_rec(float x1, float y1, float z1,
@@ -271,14 +292,13 @@ void icosphere_wire_rec(float x1, float y1, float z1,
         icosphere_wire_rec(x2,y2,z2, x23,y23,z23, x12,y12,z12 ,depth-1);
         icosphere_wire_rec(x3,y3,z3, x31,y31,z31, x23,y23,z23 ,depth-1);
     } else {
-        out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
-        //out << "\tglNormal3f("<<x123<<","<<y123<<","<<z123<<");" << endl;
+        //out << "\tglNormal3f("<<x1<<","<<y1<<","<<z1<<");" << endl;
         out << "\tglVertex3f(r*"<<x1<<",r*"<<y1<<",r*"<<z1<<");" << endl;
-        out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
-        //out << "\tglNormal3f("<<x123<<","<<y123<<","<<z123<<");" << endl;
+
+        //out << "\tglNormal3f("<<x2<<","<<y2<<","<<z2<<");" << endl;
         out << "\tglVertex3f(r*"<<x2<<",r*"<<y2<<",r*"<<z2<<");" << endl;
-        out << "\tglNormal3f("<<x3<<","<<y3<<","<<z3<<");" << endl;
-        //out << "\tglNormal3f("<<x123<<","<<y123<<","<<z123<<");" << endl;
+
+        //out << "\tglNormal3f("<<x3<<","<<y3<<","<<z3<<");" << endl;
         out << "\tglVertex3f(r*"<<x3<<",r*"<<y3<<",r*"<<z3<<");" << endl;
     }
 }
@@ -287,7 +307,7 @@ void gen_icosphere(int div) {
     out << "\t//SPHERE DIV " << div << endl;
     out << "\t//PARAM: r : ray" << endl;
 
-    out << endl << "\tmat->gl();" << endl;
+    material_code();
 
     out << "\tglBegin(GL_TRIANGLES);" << endl;
     icosphere_wire_rec(0,1,0, 0,0,1, 1,0,0 ,div);
@@ -368,7 +388,7 @@ void gen_icosphere_wire(int div) {
     out << "\t//SPHERE WIRE DIV " << div << endl;
     out << "\t//PARAM: r : ray" << endl;
 
-    out << endl << "\tmat->gl();" << endl;
+    material_code(true,false);
 
     icosphere_rec(0,1,0, 0,0,1, 1,0,0 ,div);
     icosphere_rec(0,1,0, 1,0,0, 0,0,-1 ,div);
@@ -477,7 +497,7 @@ void gen_icocapsule(int div) {
     out << "\t//SPHERE DIV " << div << endl;
     out << "\t//PARAM: r : ray / l : length" << endl;
 
-    out << endl << "\tmat->gl();" << endl;
+    material_code();
 
     out << "\tfloat l_2 = l/2;" << endl;
 
@@ -549,7 +569,7 @@ void gen_icocylinder(int div) {
     out << "\t//CYLINDER DIV " << div << endl;
     out << "\t//PARAM: r : ray / l : length" << endl;
 
-    out << endl << "\tmat->gl();" << endl;
+    material_code();
 
     out << "\tfloat l_2 = l/2;" << endl;
 
@@ -567,7 +587,7 @@ void gen_chess_plane(int div) {
     out << "\t//PLANE DIV " << div << endl;
     out << "\t//PARAM: s : size" << endl;
 
-    out << endl << "\tmat->gl();" << endl;
+    material_code();
 
     out << "\tglBegin(GL_QUADS);" << endl;
     out << "\tglNormal3f(0,1,0);" << endl;
@@ -585,7 +605,7 @@ void gen_chess_plane(int div) {
     }
     out << "\tglEnd();" << endl;
 
-    out << endl << "\tmat->glHalf();" << endl;
+    material_code(false,true);
     out << "\tglBegin(GL_QUADS);" << endl;
     out << "\tglNormal3f(0,1,0);" << endl;
 
@@ -610,7 +630,7 @@ void gen_chess_plane(int div) {
 void gen_chess_floor() {
     out << "\t//PARAM: s : size" << endl;
 
-    out << endl << "\tmat->gl();" << endl;
+    material_code();
     out << "\tglBegin(GL_QUADS);" << endl;
     out << "\tglNormal3f(0,1,0);" << endl;
 
@@ -655,7 +675,7 @@ void gen_chess_floor() {
 void gen_circle() {
     out << "\t//PARAM: r : ray" << endl;
 
-    out << endl << "\tmat->gl();" << endl;
+    material_code();
     out << "\tglBegin(GL_LINE_LOOP);" << endl;
     out << "\tglNormal3f(0,0,1);" << endl;
 
@@ -684,7 +704,7 @@ void gen_vector() {
     out << "\ttt.get(transform); " << endl;
 
     out << "\tglMultMatrixf(transform); " << endl;
-    out << endl << "\tmat->gl();" << endl;
+    material_code();
 
     out << "\tfloat r = vector.size();" << endl;
 
@@ -728,6 +748,69 @@ void gen_vector() {
 
     out << "\tglPopMatrix(); " << endl;
 }
+
+//--------------------------------------------------------------------------------
+//BOX WIRE
+//--------------------------------------------------------------------------------
+
+void gen_box_wire() {
+    out << "\t//BOX INVERSE" << endl;
+    out << "\t//PARAM: lx : x length / ly : y length / lz : z length" << endl;
+
+    material_code(true,false);
+
+    out << "\tfloat lx_2 = (lx/2), ly_2 = (ly/2), lz_2 = (lz/2);" << endl;
+
+    out << "\tglBegin(GL_LINE_LOOP);" << endl;
+    //front
+    //out << "\tglNormal3f(0,0,+1);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglEnd();" << endl;
+    out << "\tglBegin(GL_LINE_LOOP);" << endl;
+    //back
+    //out << "\tglNormal3f(0,0,-1);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglEnd();" << endl;
+    out << "\tglBegin(GL_LINE_LOOP);" << endl;
+    //left
+    //out << "\tglNormal3f(-1,0,0);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglEnd();" << endl;
+    out << "\tglBegin(GL_LINE_LOOP);" << endl;
+    //right
+    //out << "\tglNormal3f(+1,0,0);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglEnd();" << endl;
+    out << "\tglBegin(GL_LINE_LOOP);" << endl;
+    //top
+    //out << "\tglNormal3f(0,+1,0);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,+ly_2,-lz_2);" << endl;
+    out << "\tglEnd();" << endl;
+    out << "\tglBegin(GL_LINE_LOOP);" << endl;
+    //bottom
+    //out << "\tglNormal3f(0,-1,0);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,-lz_2);" << endl;
+    out << "\tglVertex3f(+lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglVertex3f(-lx_2,-ly_2,+lz_2);" << endl;
+    out << "\tglEnd();" << endl;
+}
+
 
 //--------------------------------------------------------------------------------
 //SHAPE

@@ -151,15 +151,16 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     if(mouseButton==1){
         switch(control->mouse){
             case MOUSE_FPS:
-                control->rotateCamera(mousex/100.0,mousey/100.0);
+                control->rotateCamera(mousex,mousey);
                 break;
             case MOUSE_ORBIT:
+                control->rotateCamera(mousex,mousey);
                 break;
             case MOUSE_FORCE:
-                control->applyForce(mouserx*1000,mousery*1000);
+                control->applyForce(mouserx,mousery);
                 break;
             case MOUSE_TORQUE:
-                control->applyTorque(mouserx*1000,mousery*1000);
+                control->applyTorque(mouserx,mousery);
                 break;
         }
     }
