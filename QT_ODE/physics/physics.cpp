@@ -77,7 +77,7 @@ void Physics::initScene(Scene *scene){
     scene->world = dWorldCreate ();
     scene->space = dHashSpaceCreate (0);
     dWorldSetGravity (scene->world,0,-9.8,0);
-    //dWorldSetGravity (scene->world,0,0.1,0);
+    //dWorldSetGravity (scene->world,0,0,0);
     dWorldSetERP (scene->world,0.2);
     //dWorldSetCFM (scene->world,1e-3);
     dWorldSetCFM (scene->world,1e-009);
@@ -182,29 +182,29 @@ void Physics::getGeomTransform(GeomID geom, Matrix4f *transform){
 
 
     transform->set( 0, rot[0] );
-//    matrix[0]=R[0];
+    //    matrix[0]=R[0];
     transform->set( 1, rot[4] );
-//    matrix[1]=R[4];
+    //    matrix[1]=R[4];
     transform->set( 2, rot[8] );
-//    matrix[2]=R[8];
+    //    matrix[2]=R[8];
     transform->set( 3, 0 );
-//    matrix[3]=0;
+    //    matrix[3]=0;
     transform->set( 4, rot[1] );
-//    matrix[4]=R[1];
+    //    matrix[4]=R[1];
     transform->set( 5, rot[5] );
-//    matrix[5]=R[5];
+    //    matrix[5]=R[5];
     transform->set( 6, rot[9] );
-//    matrix[6]=R[9];
+    //    matrix[6]=R[9];
     transform->set( 7, 0 );
-//    matrix[7]=0;
+    //    matrix[7]=0;
     transform->set( 8, rot[2] );
-//    matrix[8]=R[2];
+    //    matrix[8]=R[2];
     transform->set( 9, rot[6] );
-//    matrix[9]=R[6];
+    //    matrix[9]=R[6];
     transform->set( 10, rot[10] );
-//    matrix[10]=R[10];
+    //    matrix[10]=R[10];
     transform->set( 11, 0 );
-//    matrix[11]=0;
+    //    matrix[11]=0;
 
     /*
     for(int i=0;i<12;i++){
@@ -263,4 +263,63 @@ void Physics::bodyAddForce(dBodyID body, dReal x, dReal y, dReal z){
 
 void Physics::bodySetForce(dBodyID body, dReal x, dReal y, dReal z){
     dBodySetForce(body,x,y,z);
+}
+
+
+#define EPSILON 0.01
+void Physics::ControlPDBall(dJointID joint,dQuaternion tarQ,double ks,double kd)
+{
+
+    dBodyID father = dJointGetBody(joint,0);
+    dBodyID son = dJointGetBody(joint,1);
+
+    const dReal* q1 = dBodyGetQuaternion(son);
+    const dReal* q2 = dBodyGetQuaternion(father);
+    const dReal* a1 = dBodyGetAngularVel(son);
+    const dReal* a2 = dBodyGetAngularVel(father);
+
+
+    dQuaternion tmp;  // Intermediate variable
+    dQuaternion difQ; // Change to be applied to body 2 in global coords
+    dVector3 difA;    // Relative angular velocity
+    dVector3 distA;
+    dVector3 torque = {0};
+
+    dQMultiply1(tmp,q1,q2);
+    dQMultiply0(difQ,tarQ,tmp);
+
+    dReal theta = 2*acos(difQ[0]);
+    dReal s = 1-difQ[0]*difQ[0];
+    s = 1/sqrt(s);
+    // Ensure we're not going the long way around
+    if (theta>M_PI) theta-=2*M_PI;
+    distA[0] = difQ[1]*s;
+    distA[1] = difQ[2]*s;
+    distA[2] = difQ[3]*s;
+
+    // Find the proportional component
+    if (fabs(theta)>EPSILON) {
+        dNormalize3(distA);
+
+        dOPC(torque,*,distA,ks);
+    }
+
+
+
+    dVector3 vel;
+
+
+    vel[0] = a2[0] - a1[0];
+    vel[1] = a2[1] - a1[1];
+    vel[2] = a2[2] - a1[2];
+    // Achando a velocidade entre as juntas
+    dOP(difA,-,a1,a2);
+    // Aplicando o fator da constante de velocidade
+    dOPEC(difA,*=,kd);
+    // Adicoionando ao torque
+    dOPE(torque,-=,difA);
+
+
+    dBodyAddTorque(son,torque[0],torque[1],torque[2]);
+    dBodyAddTorque(father,-torque[0],-torque[1],-torque[2]);
 }
