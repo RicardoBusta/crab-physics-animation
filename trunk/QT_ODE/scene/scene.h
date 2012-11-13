@@ -37,6 +37,8 @@ public:
 
     Prop *floor;
 
+    Joint *interestJoint;
+
     Vector3f *externalForce;
     Vector3f *externalTorque;
 

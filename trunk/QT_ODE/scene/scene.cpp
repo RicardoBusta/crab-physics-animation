@@ -15,6 +15,18 @@
 
 //TODO remove QtOpenGL include, and everything else as necessary.
 
+//TODO remove parameters from scene.
+double omega = -90;
+dQuaternion tarQ = {
+    cos(omega*(M_PI_2/180)),
+    sin(omega*(M_PI_2/180)),
+    0,
+    0
+};
+
+double ks = 2000000;
+double kd = 2000000;
+
 Scene::Scene(GLWidget *parent)
 {
     this->parent = parent;
@@ -40,6 +52,22 @@ Scene::Scene(GLWidget *parent)
     Vector3f headDimension(6,8,6);
     Vector3f handDimension(5,5,5);
 
+
+    Object *botpiece = addObject(OBJ_BOX, MAT_ORANGE, chara,
+                                   Vector3f(5,5,30),
+                                   Vector3f(0,40,15)
+                                   );
+    Object *toppiece = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                                   Vector3f(5,5,30),
+                                   Vector3f(0,40,-15)
+                                   );
+    selectedObjects.push_back(toppiece);
+
+    interestJoint = addJointBall(Vector3f(0,40,0), toppiece, botpiece, chara);
+    //*/
+
+
+/*
     Object *foot_right = addObject(OBJ_BOX, MAT_DARK_ORANGE, chara,
                                    footDimension,
                                    Vector3f(-footDimension.getX()/2, footDimension.getY()/2, (footDimension.getZ()-legDimension.getZ())/2)
@@ -113,9 +141,9 @@ Scene::Scene(GLWidget *parent)
 
     selectedObjects.push_back(head);
     //selectedObjects.push_back(hand_left);
-//    selectedObjects.push_back(hand_right);
-//    selectedObjects.push_back(foot_right);
-//    selectedObjects.push_back(foot_left);
+    //    selectedObjects.push_back(hand_right);
+    //    selectedObjects.push_back(foot_right);
+    //    selectedObjects.push_back(foot_left);
 
     Joint *joint;
 
@@ -130,8 +158,10 @@ Scene::Scene(GLWidget *parent)
     joint->setColor(MAT_GREEN);
     joint = addJointBall(arm1_left->initialPosition->addY( armDimension.getY()/2 ), arm2_left, arm1_left, chara);
     joint->setColor(MAT_GREEN);
+    interestJoint = joint;
     joint = addJointBall(hand_left->initialPosition->addY( handDimension.getY()/2 ), arm1_left, hand_left, chara);
     joint->setColor(MAT_GREEN);
+
 
     joint = addJointBall(leg2_right->initialPosition->addY( legDimension.getY()/2 ), body_bot, leg2_right, chara);
     joint = addJointBall(leg1_right->initialPosition->addY( legDimension.getY()/2 ), leg2_right, leg1_right, chara);
@@ -145,6 +175,8 @@ Scene::Scene(GLWidget *parent)
     joint->setColor(MAT_CYAN);
     joint = addJointBall(body_bot->initialPosition->addY( +bodyDimension.getY()/4 ), body_bot, body_top, chara);
     joint->setColor(MAT_CYAN);
+
+    //*/
 
     /*  ParticleEngine *PE;
     particleEngines.push_back( PE = new PESignal(2.5,30.0,0,15,this) );
@@ -286,6 +318,11 @@ void Scene::simulationStep()
             (*it)->appForce(externalForce);
             (*it)->appTorque(externalTorque);
         }
+
+        if(interestJoint!=NULL){
+            Physics::ControlPDBall(interestJoint->joint,tarQ,ks,kd);
+        }
+
         Physics::simSingleStep(this);
     }
 }

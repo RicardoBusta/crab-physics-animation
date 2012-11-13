@@ -54,6 +54,10 @@ namespace Physics{
     //Must use
     void initScene(Scene *scene);
     void closeScene(Scene *scene);
+
+    //PD Controllers
+
+    void ControlPDBall(dJointID joint,dQuaternion tarQ,double ks,double kd);
 }
 
 #endif // PHYSICS_H
