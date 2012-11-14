@@ -80,13 +80,14 @@ void Object::drawSelected(){
 
     Vector3f normal = scene->camera->forward->realProduct(-1);
 
+    glDisable(GL_DEPTH_TEST);
     switch(shape){
         case OBJ_BOX:
+            material->glInverse();
             glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
-            GLPrimitive::wire_box(properties[0],properties[1],properties[2], material, transform);
+            GLPrimitive::wire_box(properties[0],properties[1],properties[2], 0, transform);
             break;
         case OBJ_SPHERE:
-            glDisable(GL_DEPTH_TEST);
             glPushMatrix();
             glTranslatef(transform->getPosX(), transform->getPosY(), transform->getPosZ());
             GLUtil::glSphereBillBoard();
@@ -94,16 +95,20 @@ void Object::drawSelected(){
             glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
             GLPrimitive::bb_circle( properties[0], 0 );
             glPopMatrix();
-            glEnable(GL_DEPTH_TEST);
 //            GLPrimitive::wire_sphere(properties[0], material, transform);
             break;
         case OBJ_CYLINDER:
-            GLPrimitive::cylinder(properties[0], properties[1], material, transform);
+            material->glInverse();
+            glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
+            GLPrimitive::wire_cylinder(properties[0], properties[1], 0, transform);
             break;
         case OBJ_CAPSULE:
-            GLPrimitive::capsule(properties[0],properties[1], material, transform);
+            material->glInverse();
+            glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
+            GLPrimitive::wire_capsule(properties[0],properties[1], 0, transform);
             break;
         default:
             break;
     }
+    glEnable(GL_DEPTH_TEST);
 }
