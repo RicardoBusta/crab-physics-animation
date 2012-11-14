@@ -13,13 +13,10 @@ namespace GLPrimitive
     void cylinder(float r, float l, Material *mat, Matrix4f *t);
     void capsule(float r, float l, Material *mat, Matrix4f *t);
 
-    void sphere_inv(float r, Material *mat, Matrix4f *t);
-    void box_inv(float lx, float ly, float lz, Material *mat, Matrix4f *t);
-    void cylinder_inv(float r, float l, Material *mat, Matrix4f *t);
-    void capsule_inv(float r, float l, Material *mat, Matrix4f *t);
-
     void wire_sphere(float r, Material *mat, Matrix4f *t);
     void wire_box(float lx, float ly, float lz, Material *mat, Matrix4f *t);
+    void wire_cylinder(float r, float l, Material *mat, Matrix4f *t);
+    void wire_capsule(float r, float l, Material *mat, Matrix4f *t);
 
     //future implementation
     //void triMesh();

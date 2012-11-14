@@ -48,13 +48,13 @@ void Joint::draw()
 
     transform->setPos( pos );
 
-    GLPrimitive::sphere( 1, material, transform );
+    GLPrimitive::sphere( 0.5, material, transform );
 
     glDisable(GL_DEPTH_TEST);
     glPushMatrix();
     glTranslatef(pos.getX(), pos.getY(), pos.getZ());
     GLUtil::glSphereBillBoard();
-    GLPrimitive::bb_circle( 2, material );
+    GLPrimitive::bb_circle( 1.0, material );
     glPopMatrix();
     glEnable(GL_DEPTH_TEST);
 }

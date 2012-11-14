@@ -24,8 +24,8 @@ dQuaternion tarQ = {
     0
 };
 
-double ks = 2000000;
-double kd = 2000000;
+double ks = 200;
+double kd = 200;
 
 Scene::Scene(GLWidget *parent)
 {
@@ -39,31 +39,31 @@ Scene::Scene(GLWidget *parent)
 
     floor = new Prop(this,PROP_PLANE);
 
-    camera->moveForward(-200.0);
-    camera->moveUp(20.0);
+    camera->moveForward(-20.0);
+    camera->moveUp(2.0);
 
     Character *chara = new Character(this);
     this->characters.push_back(chara);
 
-    Vector3f footDimension(5,5,10);
-    Vector3f legDimension(4,8,4);
-    Vector3f armDimension(4,8,4);
-    Vector3f bodyDimension(10,16,5);
-    Vector3f headDimension(6,8,6);
-    Vector3f handDimension(5,5,5);
+    Vector3f footDimension(0.5,0.5,1.0);
+    Vector3f legDimension (0.4,0.8,0.4);
+    Vector3f armDimension (0.4,0.8,0.4);
+    Vector3f bodyDimension(1.0,1.6,0.5);
+    Vector3f headDimension(0.6,0.8,0.6);
+    Vector3f handDimension(0.5,0.5,0.5);
 
 
-    Object *botpiece = addObject(OBJ_BOX, MAT_ORANGE, chara,
-                                   Vector3f(5,5,30),
-                                   Vector3f(0,40,15)
+    Object *botpiece = addObject(OBJ_CAPSULE, MAT_ORANGE, chara,
+                                   Vector3f(0.5,3.0),
+                                   Vector3f(0,4.0,1.5)
                                    );
-    Object *toppiece = addObject(OBJ_BOX, MAT_YELLOW, chara,
-                                   Vector3f(5,5,30),
-                                   Vector3f(0,40,-15)
+    Object *toppiece = addObject(OBJ_CAPSULE, MAT_YELLOW, chara,
+                                   Vector3f(0.5,3.0),
+                                   Vector3f(0,4.0,-1.5)
                                    );
     selectedObjects.push_back(toppiece);
 
-    interestJoint = addJointBall(Vector3f(0,40,0), toppiece, botpiece, chara);
+    interestJoint = addJointBall(Vector3f(0,4.0,0), toppiece, botpiece, chara);
     //*/
 
 
@@ -277,12 +277,12 @@ void Scene::draw()
     for(std::list<Object*>::iterator it = selectedObjects.begin(); it!=selectedObjects.end(); it++){
         drawVec = *externalForce;
         mat.setDiffuse(MAT_MAGENTA);
-        drawVec.realProductSelf(0.001);
+        drawVec.realProductSelf(0.05);
         GLPrimitive::vector( drawVec , Physics::getObjectPosition((*it)), &mat);
 
         drawVec = *externalTorque;
         mat.setDiffuse(MAT_GREEN);
-        drawVec.realProductSelf(0.001);
+        drawVec.realProductSelf(0.05);
         GLPrimitive::vector( drawVec , Physics::getObjectPosition((*it)), &mat);
     }
 
