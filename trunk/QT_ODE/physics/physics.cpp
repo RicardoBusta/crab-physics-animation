@@ -39,7 +39,7 @@ void Physics::nearCallback(void *data, dGeomID o1, dGeomID o2){
                 // constraint force mixing parameter
                 //contact.surface.soft_cfm = 0.001;
 
-                dJointID c = dJointCreateContact (scene->world,Physics::contactGroup,&contact[i]);
+                dJointID c = dJointCreateContact (scene->world,scene->contactGroup,&contact[i]);
                 dJointAttach (c,b1,b2);
             }
         }
@@ -57,7 +57,7 @@ void Physics::simSingleStep (Scene *scene)
     // step the simulation
     dWorldQuickStep (scene->world,0.001);
     // remove all contact joints
-    dJointGroupEmpty (Physics::contactGroup);
+    dJointGroupEmpty (scene->contactGroup);
 }
 
 void Physics::initCharacter(Character *chara){
@@ -82,7 +82,7 @@ void Physics::initScene(Scene *scene){
     //dWorldSetCFM (scene->world,1e-3);
     dWorldSetCFM (scene->world,1e-009);
     dCreatePlane (scene->space,0,1,0,0); //todo remove
-    Physics::contactGroup = dJointGroupCreate (0);
+    scene->contactGroup = dJointGroupCreate (0);
 
     //juntas ligadas - >ERP:+ligadas
     //dWorldSetCFM (world,1e-009); //soft hard (colisao)- >CFM:+soft
@@ -151,7 +151,7 @@ Vector3f Physics::getObjectPosition(Object *obj){
 
 void Physics::closeScene(Scene *scene){
     // clean up
-    dJointGroupDestroy (Physics::contactGroup);
+    dJointGroupDestroy (scene->contactGroup);
     dSpaceDestroy (scene->space);
     dWorldDestroy (scene->world);
 
@@ -270,22 +270,22 @@ void Physics::bodySetForce(dBodyID body, dReal x, dReal y, dReal z){
 void Physics::ControlPDBall(dJointID joint,dQuaternion tarQ,double ks,double kd)
 {
 
-    dBodyID father = dJointGetBody(joint,0);
-    dBodyID son = dJointGetBody(joint,1);
+    dBodyID parent = dJointGetBody(joint,0);
+    dBodyID child = dJointGetBody(joint,1);
 
-    const dReal* q1 = dBodyGetQuaternion(son);
-    const dReal* q2 = dBodyGetQuaternion(father);
-    const dReal* a1 = dBodyGetAngularVel(son);
-    const dReal* a2 = dBodyGetAngularVel(father);
+    const dReal* childQuaternion = dBodyGetQuaternion(child);
+    const dReal* parentQuaternion = dBodyGetQuaternion(parent);
+    const dReal* childAngularVelocity = dBodyGetAngularVel(child);
+    const dReal* parentAngularVelocity = dBodyGetAngularVel(parent);
 
 
     dQuaternion tmp;  // Intermediate variable
     dQuaternion difQ; // Change to be applied to body 2 in global coords
-    dVector3 difA;    // Relative angular velocity
+    dVector3 relativeAngularVelocity;    // Relative angular velocity
     dVector3 distA;
     dVector3 torque = {0};
 
-    dQMultiply1(tmp,q1,q2);
+    dQMultiply1(tmp,childQuaternion,parentQuaternion);
     dQMultiply0(difQ,tarQ,tmp);
 
     dReal theta = 2*acos(difQ[0]);
@@ -309,17 +309,17 @@ void Physics::ControlPDBall(dJointID joint,dQuaternion tarQ,double ks,double kd)
     dVector3 vel;
 
 
-    vel[0] = a2[0] - a1[0];
-    vel[1] = a2[1] - a1[1];
-    vel[2] = a2[2] - a1[2];
+    vel[0] = parentAngularVelocity[0] - childAngularVelocity[0];
+    vel[1] = parentAngularVelocity[1] - childAngularVelocity[1];
+    vel[2] = parentAngularVelocity[2] - childAngularVelocity[2];
     // Achando a velocidade entre as juntas
-    dOP(difA,-,a1,a2);
+    dOP(relativeAngularVelocity,-,childAngularVelocity,parentAngularVelocity);
     // Aplicando o fator da constante de velocidade
-    dOPEC(difA,*=,kd);
+    dOPEC(relativeAngularVelocity,*=,kd);
     // Adicoionando ao torque
-    dOPE(torque,-=,difA);
+    dOPE(torque,-=,relativeAngularVelocity);
 
 
-    dBodyAddTorque(son,torque[0],torque[1],torque[2]);
-    dBodyAddTorque(father,-torque[0],-torque[1],-torque[2]);
+    dBodyAddTorque(child,torque[0],torque[1],torque[2]);
+    dBodyAddTorque(parent,-torque[0],-torque[1],-torque[2]);
 }

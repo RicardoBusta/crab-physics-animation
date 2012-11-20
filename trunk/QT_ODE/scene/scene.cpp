@@ -13,6 +13,13 @@
 #include "scene/joint.h"
 #include "scene/prop.h"
 
+#include <QDomDocument>
+#include <QDomElement>
+#include <QDomNode>
+#include <QFile>
+#include <iostream>
+//using namespace std;
+
 //TODO remove QtOpenGL include, and everything else as necessary.
 
 //TODO remove parameters from scene.
@@ -29,6 +36,8 @@ double kd = 200;
 
 Scene::Scene(GLWidget *parent)
 {
+    //loadFile(":/test.xml");
+
     this->parent = parent;
 
     externalForce = new Vector3f(0,0,0);
@@ -45,6 +54,22 @@ Scene::Scene(GLWidget *parent)
     Character *chara = new Character(this);
     this->characters.push_back(chara);
 
+
+    Object *botpiece = addObject(OBJ_CAPSULE, MAT_ORANGE, chara,
+                                 Vector3f(0.5,3.0),
+                                 Vector3f(0,4.0,1.5)
+                                 );
+    Object *toppiece = addObject(OBJ_CAPSULE, MAT_YELLOW, chara,
+                                 Vector3f(0.5,3.0),
+                                 Vector3f(0,4.0,-1.5)
+                                 );
+    selectedObjects.push_back(toppiece);
+
+    interestJoint = addJointBall(Vector3f(0,4.0,0), toppiece, botpiece, chara);
+
+    //*/
+
+/*
     Vector3f footDimension(0.5,0.5,1.0);
     Vector3f legDimension (0.4,0.8,0.4);
     Vector3f armDimension (0.4,0.8,0.4);
@@ -52,22 +77,6 @@ Scene::Scene(GLWidget *parent)
     Vector3f headDimension(0.6,0.8,0.6);
     Vector3f handDimension(0.5,0.5,0.5);
 
-
-    Object *botpiece = addObject(OBJ_CAPSULE, MAT_ORANGE, chara,
-                                   Vector3f(0.5,3.0),
-                                   Vector3f(0,4.0,1.5)
-                                   );
-    Object *toppiece = addObject(OBJ_CAPSULE, MAT_YELLOW, chara,
-                                   Vector3f(0.5,3.0),
-                                   Vector3f(0,4.0,-1.5)
-                                   );
-    selectedObjects.push_back(toppiece);
-
-    interestJoint = addJointBall(Vector3f(0,4.0,0), toppiece, botpiece, chara);
-    //*/
-
-
-/*
     Object *foot_right = addObject(OBJ_BOX, MAT_DARK_ORANGE, chara,
                                    footDimension,
                                    Vector3f(-footDimension.getX()/2, footDimension.getY()/2, (footDimension.getZ()-legDimension.getZ())/2)
@@ -158,7 +167,7 @@ Scene::Scene(GLWidget *parent)
     joint->setColor(MAT_GREEN);
     joint = addJointBall(arm1_left->initialPosition->addY( armDimension.getY()/2 ), arm2_left, arm1_left, chara);
     joint->setColor(MAT_GREEN);
-    interestJoint = joint;
+    //interestJoint = joint;
     joint = addJointBall(hand_left->initialPosition->addY( handDimension.getY()/2 ), arm1_left, hand_left, chara);
     joint->setColor(MAT_GREEN);
 
@@ -178,9 +187,7 @@ Scene::Scene(GLWidget *parent)
 
     //*/
 
-    /*  ParticleEngine *PE;
-    particleEngines.push_back( PE = new PESignal(2.5,30.0,0,15,this) );
-    PE->material->setDiffuse(MAT_BLACK);*/
+    saveFile("");
 }
 
 Scene::~Scene(){
@@ -198,7 +205,7 @@ Scene::~Scene(){
     }
 
     std::vector<Character*> characters;
-    //std::vector<Contact*> contacts;
+    //vector<Contact*> contacts;
 
     while(!objects.empty()){
         delete objects.back();
@@ -325,4 +332,112 @@ void Scene::simulationStep()
 
         Physics::simSingleStep(this);
     }
+}
+
+void Scene::loadFile(QString filename)
+{
+    std::cout << "loading" << std::endl;
+    QDomDocument doc("test");
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)){
+        std::cout << "fail1" << std::endl;
+        return;
+    }
+    if (!doc.setContent(&file)) {
+        std::cout << "fail2" << std::endl;
+        file.close();
+        return;
+    }
+    file.close();
+    std::cout << "loaded" << std::endl;
+
+    QDomElement docElem = doc.documentElement();
+
+    // Model Node
+    QDomNode n = docElem.firstChild();
+
+    std::cout << docElem.tagName().toStdString() << std::endl;
+    // Character Nodes
+    while(!n.isNull()) {
+        QDomElement e = n.toElement();
+        if(!e.isNull()) {
+            std::cout << e.tagName().toStdString() << std::endl; // the node really is an element.
+        }
+
+        // Character Elements
+        QDomNode n1 = n.firstChild();
+        while(!n1.isNull()) {
+            QDomElement e = n1.toElement();
+            if(!e.isNull()) {
+                std::cout << "    " << e.tagName().toStdString() << std::endl; // the node really is an element.
+            }
+
+            // Element Properties
+            QDomNode n2 = n1.firstChild();
+            while(!n2.isNull()) {
+                QDomElement e = n2.toElement();
+                if(!e.isNull()) {
+                    std::cout << "        " << e.tagName().toStdString() << std::endl; // the node really is an element.
+                }
+
+                QDomNode n3 = n2.firstChild();
+                while(!n3.isNull()) {
+                    QDomElement e = n3.toElement();
+                    if(!e.isNull()) {
+                        std::cout << "            " << e.tagName().toStdString() << std::endl; // the node really is an element.
+                    }
+                    n3 = n3.nextSibling();
+                }
+
+                n2 = n2.nextSibling();
+            }
+
+            n1 = n1.nextSibling();
+        }
+
+        n = n.nextSibling();
+    }
+}
+
+void Scene::saveFile(QString filename)
+{
+    QDomDocument doc("SIMMODEL v1.0");
+    QDomElement model = doc.createElement( "MODEL" );
+    doc.appendChild(model);
+
+    int charID=0;
+    for(std::vector<Character*>::iterator charIT = characters.begin(); charIT!= characters.end(); charIT++){
+        QDomElement character = doc.createElement("CHARACTER");
+        model.appendChild(character);
+        character.setAttribute("id",charID++);
+
+        int objID=0;
+        for(std::vector<Object*>::iterator objIT = (*charIT)->objects.begin(); objIT!= (*charIT)->objects.end(); objIT++){
+            QDomElement object = doc.createElement("OBJECT");
+            object.setAttribute("id",objID++);
+            object.setAttribute("shape",(*objIT)->shape);
+            character.appendChild(object);
+
+            QDomElement position = doc.createElement("POSITION");
+            position.setAttribute("x", (*objIT)->initialPosition->getX());
+            position.setAttribute("y", (*objIT)->initialPosition->getY());
+            position.setAttribute("z", (*objIT)->initialPosition->getZ());
+            object.appendChild(position);
+        }
+
+        int jID=0;
+        for(std::vector<Joint*>::iterator jointIT = (*charIT)->joints.begin(); jointIT!= (*charIT)->joints.end(); jointIT++){
+            QDomElement joint = doc.createElement("JOINT");
+            character.appendChild(joint);
+            joint.setAttribute("id",jID++);
+
+            QDomElement anchor = doc.createElement("ANCHOR");
+            anchor.setAttribute("x", (*jointIT)->initialAnchor->getX());
+            anchor.setAttribute("y", (*jointIT)->initialAnchor->getY());
+            anchor.setAttribute("z", (*jointIT)->initialAnchor->getZ());
+            joint.appendChild(anchor);
+        }
+    }
+
+    std::cout << doc.toString().toStdString() << std::endl;
 }

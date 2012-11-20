@@ -26,7 +26,7 @@ namespace Physics{
     //static dGeomID geom;
     //static dMass m;
     // Joint group for contact. Created and cleared on every step.
-    static dJointGroupID contactGroup;
+    //static dJointGroupID contactGroup;
 
     void nearCallback(void *data, dGeomID o1, dGeomID o2);
     void simSingleStep(Scene *scene);

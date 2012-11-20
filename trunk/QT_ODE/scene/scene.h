@@ -12,6 +12,7 @@ class Prop;
 
 #include <vector>
 #include <list>
+#include <QString>
 #include "physics/physics.h"
 
 //The scene where the objects are placed.
@@ -26,6 +27,7 @@ public:
     WorldID world;
     //TopLevelSpace
     SpaceID space;
+    JointGroupID contactGroup;
 
     //Physics
 
@@ -47,6 +49,11 @@ public:
     Object* addObject(int shape, int diffuse, Character* character, Vector3f properties, Vector3f position);
     Joint * addJointBall(Vector3f anchor, Object *parent, Object *child, Character *chara);
     void addParticle(Particle* particle);
+
+
+    //XML
+    void loadFile(QString filename);
+    void saveFile(QString filename);
 
     //!make private
 public:
