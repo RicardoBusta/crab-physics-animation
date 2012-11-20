@@ -17,6 +17,8 @@ public:
     Material *material;
     Matrix4f *transform;
 
+    Vector3f *initialAnchor;
+
     Character *character;
 
     Joint(Character *chara);

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl
+QT       += core gui opengl xml
 
 TARGET = QT_ODE
 TEMPLATE = app
@@ -72,7 +72,8 @@ OTHER_FILES += \
     shaders/phong.vert \
     shaders/phong.frag \
     shaders/toon.vert \
-    shaders/toon.frag
+    shaders/toon.frag \
+    models/test.xml
 
 #linux
 unix:!macx:!symbian: LIBS += -L$$PWD/../../../../../../usr/local/lib/ -lode
@@ -89,4 +90,5 @@ DEPENDPATH += $$PWD/../ode-0.12/include
 #DEFINES += WIN32
 
 RESOURCES += \
-    shaders/shaders.qrc
+    shaders/shaders.qrc \
+    models/models.qrc

@@ -1,0 +1,43 @@
+<!-- DOCUMENTO -->
+<MODEL>
+    <CHARACTER>
+        <ID>1</ID>
+        <OBJECT>
+            <ID>1</ID>
+            <POSITION>
+                <X>0</X>
+                <Y>0</Y>
+                <Z>0</Z>
+            </POSITION>
+            <ORIENTATION>
+                <S>0</S>
+                <X>0</X>
+                <Y>0</Y>
+                <Z>0</Z>
+            </ORIENTATION>
+        </OBJECT>
+        <JOINT>
+
+        </JOINT>
+    </CHARACTER>
+    <CHARACTER>
+        <ID>1</ID>
+        <OBJECT>
+            <ID>1</ID>
+            <POSITION>
+                <X>0</X>
+                <Y>0</Y>
+                <Z>0</Z>
+            </POSITION>
+            <ORIENTATION>
+                <S>0</S>
+                <X>0</X>
+                <Y>0</Y>
+                <Z>0</Z>
+            </ORIENTATION>
+        </OBJECT>
+        <JOINT>
+
+        </JOINT>
+    </CHARACTER>
+</MODEL>

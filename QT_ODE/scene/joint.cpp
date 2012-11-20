@@ -19,6 +19,7 @@ Joint::Joint(Character *chara)
     material->setDiffuse(MAT_RED);
     transform = new Matrix4f();
     transform->setIdentity();
+    initialAnchor = new Vector3f();
 }
 
 Joint::~Joint(){
@@ -30,10 +31,14 @@ Joint::~Joint(){
     if(transform!=0){
         delete transform;
     }
+    if(initialAnchor!=0){
+        delete initialAnchor;
+    }
 }
 
 void Joint::init(Vector3f anchor)
 {
+    initialAnchor->set( anchor );
     Physics::initJointBall(this, anchor);
 }
 
