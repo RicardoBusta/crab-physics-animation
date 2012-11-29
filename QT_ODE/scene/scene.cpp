@@ -72,7 +72,7 @@ Scene::Scene(GLWidget *parent)
 
     //*/
 
-/*
+    /*
     Vector3f footDimension(0.5,0.5,1.0);
     Vector3f legDimension (0.4,0.8,0.4);
     Vector3f armDimension (0.4,0.8,0.4);
@@ -237,6 +237,7 @@ Object* Scene::addObject(int shape, int diffuse, Character *character = 0, Vecto
     obj->shape = (OBJECT_SHAPE)shape;
     obj->material->setDiffuse(diffuse);
     *obj->initialPosition = position;
+    *obj->initialRotation = rotation;
     obj->properties[0] = properties.getX();
     obj->properties[1] = properties.getY();
     obj->properties[2] = properties.getZ();
@@ -418,14 +419,27 @@ void Scene::saveFile(QString filename)
         for(std::vector<Object*>::iterator objIT = (*charIT)->objects.begin(); objIT!= (*charIT)->objects.end(); objIT++){
             QDomElement object = doc.createElement("OBJECT");
             object.setAttribute("id",objID++);
-            object.setAttribute("shape",(*objIT)->shape);
             character.appendChild(object);
+
+            QDomElement properties = doc.createElement("PROPERTIES");
+            properties.setAttribute("shape",(*objIT)->shape);
+            properties.setAttribute("p0",(*objIT)->properties[0]);
+            properties.setAttribute("p1",(*objIT)->properties[1]);
+            properties.setAttribute("p2",(*objIT)->properties[2]);
+            object.appendChild(properties);
 
             QDomElement position = doc.createElement("POSITION");
             position.setAttribute("x", (*objIT)->initialPosition->getX());
             position.setAttribute("y", (*objIT)->initialPosition->getY());
             position.setAttribute("z", (*objIT)->initialPosition->getZ());
             object.appendChild(position);
+
+            QDomElement rotation = doc.createElement("ROTATION");
+            rotation.setAttribute("w", (*objIT)->initialRotation->w);
+            rotation.setAttribute("x", (*objIT)->initialRotation->x);
+            rotation.setAttribute("y", (*objIT)->initialRotation->y);
+            rotation.setAttribute("z", (*objIT)->initialRotation->z);
+            object.appendChild(rotation);
         }
 
         int jID=0;
