@@ -3,6 +3,7 @@
 #include "graphics/glprimitive.h"
 #include "math/matrix4f.h"
 #include "math/vector3f.h"
+#include "math/quaternion4f.h"
 #include "graphics/material.h"
 
 #include <QtOpenGL>
@@ -33,6 +34,9 @@ Object::~Object(){
     }
     if(initialPosition!=NULL){
         delete initialPosition;
+    }
+    if(initialRotation!=NULL){
+        delete initialRotation;
     }
 }
 
