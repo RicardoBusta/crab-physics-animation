@@ -15,17 +15,18 @@ Object::Object(Scene *scene)
 {
     this->scene = scene;
 
-    transform = new Matrix4f();
-    transform->setIdentity();
+    currentTransform = new Matrix4f();
+    currentTransform->setIdentity();
 
     initialPosition = new Vector3f();
+    initialRotation = new Quaternion4f();
 
     material = new Material();
 }
 
 Object::~Object(){
-    if(transform!=NULL){
-        delete transform;
+    if(currentTransform!=NULL){
+        delete currentTransform;
     }
     if(material!=NULL){
         delete material;
@@ -54,20 +55,20 @@ void Object::appForce(Vector3f *force)
 }
 
 void Object::draw(){
-    Physics::getGeomTransform(geometry, transform);
+    Physics::getGeomTransform(geometry, currentTransform);
 
     switch(shape){
         case OBJ_BOX:
-            GLPrimitive::box(properties[0],properties[1],properties[2], material, transform);
+            GLPrimitive::box(properties[0],properties[1],properties[2], material, currentTransform);
             break;
         case OBJ_SPHERE:
-            GLPrimitive::sphere(properties[0], material, transform);
+            GLPrimitive::sphere(properties[0], material, currentTransform);
             break;
         case OBJ_CYLINDER:
-            GLPrimitive::cylinder(properties[0], properties[1], material, transform);
+            GLPrimitive::cylinder(properties[0], properties[1], material, currentTransform);
             break;
         case OBJ_CAPSULE:
-            GLPrimitive::capsule(properties[0],properties[1], material, transform);
+            GLPrimitive::capsule(properties[0],properties[1], material, currentTransform);
             break;
         default:
             break;
@@ -76,7 +77,7 @@ void Object::draw(){
 
 
 void Object::drawSelected(){
-    Physics::getGeomTransform(geometry, transform);
+    Physics::getGeomTransform(geometry, currentTransform);
 
     Vector3f normal = scene->camera->forward->realProduct(-1);
 
@@ -85,11 +86,11 @@ void Object::drawSelected(){
         case OBJ_BOX:
             material->glInverse();
             glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
-            GLPrimitive::wire_box(properties[0],properties[1],properties[2], 0, transform);
+            GLPrimitive::wire_box(properties[0],properties[1],properties[2], 0, currentTransform);
             break;
         case OBJ_SPHERE:
             glPushMatrix();
-            glTranslatef(transform->getPosX(), transform->getPosY(), transform->getPosZ());
+            glTranslatef(currentTransform->getPosX(), currentTransform->getPosY(), currentTransform->getPosZ());
             GLUtil::glSphereBillBoard();
             material->glInverse();
             glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
@@ -100,12 +101,12 @@ void Object::drawSelected(){
         case OBJ_CYLINDER:
             material->glInverse();
             glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
-            GLPrimitive::wire_cylinder(properties[0], properties[1], 0, transform);
+            GLPrimitive::wire_cylinder(properties[0], properties[1], 0, currentTransform);
             break;
         case OBJ_CAPSULE:
             material->glInverse();
             glNormal3f(normal.getX(), normal.getY(), normal.getZ()) ;
-            GLPrimitive::wire_capsule(properties[0],properties[1], 0, transform);
+            GLPrimitive::wire_capsule(properties[0],properties[1], 0, currentTransform);
             break;
         default:
             break;

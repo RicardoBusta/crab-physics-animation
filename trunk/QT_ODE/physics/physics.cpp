@@ -4,6 +4,7 @@
 #include "scene/scene.h"
 #include "math/matrix4f.h"
 #include "math/vector3f.h"
+#include "math/quaternion4f.h"
 #include "scene/character.h"
 #include "scene/joint.h"
 
@@ -100,7 +101,7 @@ void Physics::initScene(Scene *scene){
     // run simulation
 }
 
-void Physics::createObject(Object *object, SpaceID space, float density, Vector3f position, Vector3f rotation){
+void Physics::createObject(Object *object, SpaceID space, float density, Vector3f position, Quaternion4f rotation){
 
 
     switch(object->shape){
@@ -133,7 +134,9 @@ void Physics::createObject(Object *object, SpaceID space, float density, Vector3
     dBodySetMass (object->body,&object->mass);
     dGeomSetBody (object->geometry,object->body);
     dBodySetPosition (object->body,position.getX(),position.getY(),position.getZ());
-    //dBodySetRotation (object->body,tr);
+
+    float rot[] = {rotation.w,rotation.x,rotation.y,rotation.z};
+    dBodySetQuaternion (object->body,rot);
 }
 
 Vector3f Physics::getObjectPosition(Object *obj){

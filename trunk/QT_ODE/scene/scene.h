@@ -6,6 +6,7 @@ class Object;
 class Particle;
 class ParticleEngine;
 class Vector3f;
+class Quaternion4f;
 class GLWidget;
 class Character;
 class Prop;
@@ -46,7 +47,7 @@ public:
 
     //Manipulate World
 
-    Object* addObject(int shape, int diffuse, Character* character, Vector3f properties, Vector3f position);
+    Object* addObject(int shape, int diffuse, Character* character, Vector3f properties, Vector3f position, Quaternion4f rotation);
     Joint * addJointBall(Vector3f anchor, Object *parent, Object *child, Character *chara);
     void addParticle(Particle* particle);
 

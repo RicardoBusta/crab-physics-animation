@@ -5,6 +5,7 @@
 #include "graphics/camera.h"
 #include "math/matrix4f.h"
 #include "math/vector3f.h"
+#include "math/quaternion4f.h"
 #include "scene/object.h"
 #include "scene/character.h"
 #include "scene/particle.h"
@@ -57,11 +58,13 @@ Scene::Scene(GLWidget *parent)
 
     Object *botpiece = addObject(OBJ_CAPSULE, MAT_ORANGE, chara,
                                  Vector3f(0.5,3.0),
-                                 Vector3f(0,4.0,1.5)
+                                 Vector3f(0,4.0,1.5),
+                                 Quaternion4f()
                                  );
     Object *toppiece = addObject(OBJ_CAPSULE, MAT_YELLOW, chara,
                                  Vector3f(0.5,3.0),
-                                 Vector3f(0,4.0,-1.5)
+                                 Vector3f(0,4.0,-1.5),
+                                 Quaternion4f()
                                  );
     selectedObjects.push_back(toppiece);
 
@@ -228,7 +231,7 @@ Scene::~Scene(){
     }
 }
 
-Object* Scene::addObject(int shape, int diffuse, Character *character = 0, Vector3f properties = Vector3f(0,0,0), Vector3f position = Vector3f(0,0,0) )
+Object* Scene::addObject(int shape, int diffuse, Character *character = 0, Vector3f properties = Vector3f(0,0,0), Vector3f position = Vector3f(0,0,0), Quaternion4f rotation = Quaternion4f(1,0,0,0) )
 {
     Object *obj = new Object(this);
     obj->shape = (OBJECT_SHAPE)shape;
@@ -241,10 +244,10 @@ Object* Scene::addObject(int shape, int diffuse, Character *character = 0, Vecto
 
     if(character == 0){
         objects.push_back(obj);
-        Physics::createObject(obj, space, 1, position, NULL);
+        Physics::createObject(obj, space, 1, position, rotation);
     }else{
         character->objects.push_back(obj);
-        Physics::createObject(obj, character->space, 1, position, NULL);
+        Physics::createObject(obj, character->space, 1, position, rotation);
     }
 
     return obj;
