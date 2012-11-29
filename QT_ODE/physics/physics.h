@@ -13,6 +13,7 @@
 
 class Matrix4f;
 class Vector3f;
+class Quaternion4f;
 class Scene;
 class Object;
 class Character;
@@ -32,7 +33,7 @@ namespace Physics{
     void simSingleStep(Scene *scene);
     void worldStep(WorldID world, float stepSize);
     void getGeomTransform(GeomID geom, Matrix4f* transform);
-    void createObject(Object *obj, dSpaceID space, float density, Vector3f position, Vector3f rotation);
+    void createObject(Object *obj, dSpaceID space, float density, Vector3f position, Quaternion4f rotation);
 
     //Body Manipulation
     Vector3f getObjectPosition(Object *obj);

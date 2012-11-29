@@ -39,7 +39,8 @@ public:
     OBJECT_SHAPE shape;
     float properties[3];
     Vector3f *initialPosition;
-    Matrix4f *transform;
+    Quaternion4f *initialRotation;
+    Matrix4f *currentTransform;
 
     // Properties
     // box      0:x 1:y 2:z
