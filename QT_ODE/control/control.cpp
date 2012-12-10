@@ -25,7 +25,7 @@ void Control::moveCamera(float mx, float my){
 
 void Control::applyForce(float x, float y)
 {
-    *scene->externalForce = scene->camera->side->realProduct(x*0.5).add( scene->camera->up->realProduct(y*0.5) );
+    *scene->externalForce = scene->camera->side->realProduct(x*0.2).add( scene->camera->up->realProduct(y*0.2) );
 }
 
 void Control::applyTorque(float x, float y)

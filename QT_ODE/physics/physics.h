@@ -58,7 +58,8 @@ namespace Physics{
 
     //PD Controllers
 
-    void ControlPDBall(dJointID joint,dQuaternion tarQ,double ks,double kd);
+    void ControlPDBallDanilo(dJointID joint,dQuaternion tarQ,double ks,double kd);
+    void ControlPDBallRubens(Joint *joint,dQuaternion tarQ,double ks,double kd);
 }
 
 #endif // PHYSICS_H

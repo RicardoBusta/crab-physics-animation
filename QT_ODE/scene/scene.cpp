@@ -24,16 +24,20 @@
 //TODO remove QtOpenGL include, and everything else as necessary.
 
 //TODO remove parameters from scene.
-double omega = -90;
+double omega = 0;
+Vector3f axis = Vector3f(0,0,1);
+
 dQuaternion tarQ = {
     cos(omega*(M_PI_2/180)),
-    sin(omega*(M_PI_2/180)),
-    0,
-    0
+    sin(omega*(M_PI_2/180))*axis.getX(),
+    sin(omega*(M_PI_2/180))*axis.getY(),
+    sin(omega*(M_PI_2/180))*axis.getZ()
 };
 
-double ks = 200;
-double kd = 200;
+double ks = 100;
+double kd = 10;
+
+Object *asdfg;
 
 Scene::Scene(GLWidget *parent)
 {
@@ -56,19 +60,20 @@ Scene::Scene(GLWidget *parent)
     this->characters.push_back(chara);
 
 
-    Object *botpiece = addObject(OBJ_CAPSULE, MAT_ORANGE, chara,
-                                 Vector3f(0.5,3.0),
-                                 Vector3f(0,4.0,1.5),
+    Object *botpiece = addObject(OBJ_BOX, MAT_ORANGE, chara,
+                                 Vector3f(1,3,1),
+                                 Vector3f(0,4,0),
                                  Quaternion4f()
                                  );
-    Object *toppiece = addObject(OBJ_CAPSULE, MAT_YELLOW, chara,
-                                 Vector3f(0.5,3.0),
-                                 Vector3f(0,4.0,-1.5),
+    Object *toppiece = addObject(OBJ_BOX, MAT_YELLOW, chara,
+                                 Vector3f(1,3,1),
+                                 Vector3f(0,7,0),
                                  Quaternion4f()
                                  );
+    asdfg = botpiece;
     selectedObjects.push_back(toppiece);
 
-    interestJoint = addJointBall(Vector3f(0,4.0,0), toppiece, botpiece, chara);
+    interestJoint = addJointBall(Vector3f(0,5.5,0), toppiece, botpiece, chara);
 
     //*/
 
@@ -324,14 +329,16 @@ void Scene::draw()
 
 void Scene::simulationStep()
 {
+    dBodyEnable(asdfg->body);
     for(int i=0;i<50;i++){
         for(std::list<Object*>::iterator it = selectedObjects.begin(); it!=selectedObjects.end(); it++){
+            dBodyEnable((*it)->body);
             (*it)->appForce(externalForce);
             (*it)->appTorque(externalTorque);
         }
 
         if(interestJoint!=NULL){
-            Physics::ControlPDBall(interestJoint->joint,tarQ,ks,kd);
+            Physics::ControlPDBallRubens(interestJoint,tarQ,ks,kd);
         }
 
         Physics::simSingleStep(this);
